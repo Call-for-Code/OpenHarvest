@@ -25,13 +25,14 @@ projectname Is a group submission for [Call for Code](https://developer.ibm.com/
 
 ### What's the problem?
 
-Essentially farmers are told that India is having a shortage on onions for example. The farmers then grow as many onions as they can. 6 months pass and all of these farmers have been growing so many onions that there is a massive surplus that will go to waste. The farmers ruined their crops to produce this and did not get to sell. One of our group members’ father is a farmer in India so he has a lot of insight on this.
+Farmers in India are struggling with marketing their crops. The greatest instance of this was with India's recent onion shortage. Essentially, farmers are being told that the market needs specific goods which results in a massive surplus as all the farmers dedicated their crops to the market's needs. This results in many farmer's watching entire crops go to waste. These crops can take over a year to grow and leave the farmer in debt rather than making a profit. One of our group members has great insight into this issue as he has family in the farming industry.
 
 ### How can technology help?
-
+A central app for farmers to view the details of eachothers crops will allow them to make a more educated decision on what they will grow themselves to ensure profits.
 
 ### The idea
-
+projectname is a technology designed for the government of India. Farmers will be able to publicly share the details of their crops/land to allow all farmers to stay informed on the best crops they can grow without risk of a surplus crisis. 
+Ultimately we will balance farming production.
 
 ## Demo video
 
