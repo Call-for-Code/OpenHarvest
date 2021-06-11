@@ -1,0 +1,386 @@
+openapi: "3.0.0"
+info:
+  description: "{ProjectName} API"
+  version: "1.0.0"
+  title: "{ProjectName}"
+  termsOfService: "termsOfServiceUrl"
+  contact:
+    email: "add-team-email-id@email.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+tags:
+- name: "Farmer"
+  description: "Farmer API"
+- name: "Lot"
+  description: "Lot API"
+- name: "Crop"
+  description: "Crop API"
+
+paths:
+  /farmer:
+    post:
+      tags:
+      - "Farmer"
+      summary: "Add a new farmer"
+      description: ""
+      operationId: "addFarmer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Farmer"
+      responses:
+        "201":
+          description: "Farmer Added"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Farmer'
+                - $ref: '#/components/schemas/Status'
+    put:
+      tags:
+      - "Farmer"
+      summary: "Update an existing Farmer"
+      description: ""
+      operationId: "updateFarmer"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Farmer"
+      responses:
+        "200":
+          description: "Farmer updated"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Farmer'
+                - $ref: '#/components/schemas/Status'
+    get:
+      tags:
+      - "Farmer"
+      summary: "Find all farmers"
+      description: ""
+      operationId: "findAllFarmers"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Farmer'
+                  - $ref: '#/components/schemas/Status'
+
+  /farmer/{farmerId}:
+    get:
+      tags:
+      - "Farmer"
+      summary: "Find requested farmer"
+      description: ""
+      parameters:
+        - in: path
+          name: farmerId
+          required: true
+          schema:
+            type: integer
+      operationId: "findFarmer"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Farmer'
+                - $ref: '#/components/schemas/Status'
+    delete:
+      tags:
+      - "Farmer"
+      summary: "Delete farmer"
+      description: ""
+      parameters:
+        - in: path
+          name: farmerId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "successful operation"
+  /lot:
+    post:
+      tags:
+      - "Lot"
+      summary: "Add a new lot"
+      description: ""
+      operationId: "addLot"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lot"
+      responses:
+        "201":
+          description: "Lot Added"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Lot'
+                - $ref: '#/components/schemas/Status'
+    put:
+      tags:
+      - "Lot"
+      summary: "Update an existing Lot"
+      description: ""
+      operationId: "updateLot"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Lot"
+      responses:
+        "200":
+          description: "Lot updated"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Lot'
+                - $ref: '#/components/schemas/Status'
+    get:
+      tags:
+      - "Lot"
+      summary: "Find all lots"
+      description: ""
+      operationId: "findAllLots"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Lot'
+                  - $ref: '#/components/schemas/Status'
+              
+  /lot/{lotId}:
+    get:
+      tags:
+      - "Lot"
+      summary: "Find requested lot"
+      description: ""
+      parameters:
+        - in: path
+          name: lotId
+          required: true
+          schema:
+            type: integer
+      operationId: "findLot"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Lot'
+                - $ref: '#/components/schemas/Status'
+    delete:
+      tags:
+      - "Lot"
+      summary: "Delete Lot"
+      description: ""
+      parameters:
+        - in: path
+          name: lotId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "successful operation"
+  
+  /crop:
+    post:
+      tags:
+      - "Crop"
+      summary: "Add a new crop"
+      description: ""
+      operationId: "addCrop"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Crop"
+      responses:
+        "201":
+          description: "Crop Added"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Crop'
+                - $ref: '#/components/schemas/Status'
+    put:
+      tags:
+      - "Crop"
+      summary: "Update an existing Crop"
+      description: ""
+      operationId: "updateCrop"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Crop"
+      responses:
+        "200":
+          description: "Crop updated"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Crop'
+                - $ref: '#/components/schemas/Status'
+    get:
+      tags:
+      - "Crop"
+      summary: "Find all crops"
+      description: ""
+      operationId: "findAllCrops"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - type: object
+                    properties:
+                      content:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/Crop'
+                  - $ref: '#/components/schemas/Status'
+              
+  /crop/{cropId}:
+    get:
+      tags:
+      - "Crop"
+      summary: "Find requested crop"
+      description: ""
+      parameters:
+        - in: path
+          name: cropId
+          required: true
+          schema:
+            type: integer
+      operationId: "findCrop"
+      responses:
+        "200":
+          description: "successful operation"
+          content:
+            application/json:
+              schema:
+                allOf:
+                - type: object
+                  properties:
+                    content:
+                      $ref: '#/components/schemas/Crop'
+                - $ref: '#/components/schemas/Status'
+    delete:
+      tags:
+      - "Crop"
+      summary: "Delete Crop"
+      description: ""
+      parameters:
+        - in: path
+          name: cropId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "successful operation"   
+          
+components:
+  schemas:
+    Status:
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          format: "int64"
+        message:
+          type: "string"
+        type:
+          type: "string"
+          enum: [info, error, warning]
+            
+    Farmer:
+      type: "object"
+      properties:
+        id:
+          type: integer
+          format: "int64"
+    Lot:
+      type: "object"
+      properties:
+        id:
+          type: integer
+          format: "int64"
+        location:
+          type: integer
+          format: "int64"
+    Crop:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: "int64"
+        name:
+          type: string
