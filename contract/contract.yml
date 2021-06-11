@@ -367,15 +367,30 @@ components:
         id:
           type: integer
           format: "int64"
+        name:
+          type: string
+        mobile:
+          type: string
+        lots:
+          type: array
+          items:
+            $ref: '#/components/schemas/Lot'
+      required:
+        - name
+        - mobile      
     Lot:
       type: "object"
       properties:
         id:
           type: integer
           format: "int64"
-        location:
-          type: integer
-          format: "int64"
+        type:
+          type: string
+          enum: [region, village, market]
+        crops:
+          type: array
+          items:
+            $ref: '#/components/schemas/Crop'
     Crop:
       type: object
       properties:
@@ -383,4 +398,14 @@ components:
           type: integer
           format: "int64"
         name:
+          type: string
+        plantingSeasons:
+          type: array
+          items:
+            type: string
+        isOngoing:
+          type: boolean
+        planted:
+          type: string
+        harvested:
           type: string
