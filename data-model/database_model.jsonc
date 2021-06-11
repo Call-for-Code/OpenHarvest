@@ -1,0 +1,68 @@
+// Farmer
+{
+    "_id": "farmer:<CLOUDANT_UUID>",
+    "type": "farmer",
+    "name": "Ryan Pereira",
+    "mobile": "+91213432134",
+    "land_ids": [121,2331,33232,33423,1324]
+}
+
+// Farmer Example
+{
+    "_id": "farmer:d1385dabdf1363bfc61b88b9ed0b0c95",
+    "type": "farmer",
+    "name": "Ryan Pereira",
+    "mobile": "+91213432134",
+    "land_ids": [
+        121,
+        2331,
+        33232,
+        33423,
+        1324
+    ]
+}
+
+// Land
+{
+    "_id": "land:111",
+    "type": "land",
+    "fid": 111,
+    "crops":[{
+        "_id": "crop:2",
+        "type": "crop",
+        "name": "Test Crop",
+        "planted": "2021-06-11T00:37:03.496Z",
+        "harvested": "2021-06-15T00:37:03.496Z",
+        "farmer": "uuid",
+        "crop": {
+            // ... crop details from crop database
+        }
+    },{
+        "_id": "crop:1",
+        "type": "crop",
+        "name": "Rice",
+        "planted": "2021-06-11T00:37:03.496Z",
+        "harvested": null,
+        "farmer": "uuid",
+        "crop": {
+            // ... crop details from crop database
+        }
+    }]
+}
+
+// Land Levels
+{
+    "_id": "land_levels:1",
+    "type": "land_levels",
+    "level_type": "region", // other values: "village", "market"
+    "bbox": [[-37,151], [-37,151], [-37,151], [-37,151]]
+}
+
+// Crop
+{
+    "_id": "crop:1",
+    "type": "crop",
+    "name": "Rice",
+    "planting_season": ["2021-06-11T00:37:03.496Z", "2021-06-11T00:37:03.496Z"], // I realise this depends on latitude, but MVP....
+    "is_ongoing": "false"
+}
