@@ -1,0 +1,15 @@
+---
+applications:
+- instances: 1
+  timeout: 180
+  name: farmerpro
+  buildpack: nodejs_buildpack
+  command: npm start
+  disk_quota: 1G
+  memory: 128MB
+  domain: au-syd.mybluemix.net
+  host: farmer-pro
+  services:
+    - farmer-pro-cloudant-1623588052968-55593
+  env:
+    OPTIMIZE_MEMORY: true
