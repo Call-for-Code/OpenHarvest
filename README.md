@@ -70,7 +70,7 @@ In this section you add the instructions to run your project on your local machi
 
 ## Built with
 
-[Carbon Design System](https://github.com/carbon-design-system/carbon-tutorial-angular) - web framework used
+[Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
 
 ## Contributing
 
