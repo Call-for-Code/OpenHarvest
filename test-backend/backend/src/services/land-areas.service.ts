@@ -1,5 +1,5 @@
 import { CloudantV1 } from "@ibm-cloud/cloudant";
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { ConfigService } from "@nestjs/config";
 
 const db = process.env['CLOUDANT_LAND_DATABASE'];
@@ -26,21 +26,36 @@ export class LandAreasService {
 
     async getAreasInBbox(box: Bbox) {
         const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`
-        const result = await this.client.getGeo({
+        const response = await this.client.getGeoAsStream({
             db: this.db,
             ddoc: "landAreaDesignDoc",
             index: "landAreaGeoIndex",
-            bbox,
             includeDocs: true,
-            nearest: true,
+            nearest: false,
+            bbox,
+            relation: "touches",
             format: "geojson"
         });
-        if (result.status >= 400) {
-            throw result;
+
+        if (response.status >= 400) {
+            throw new HttpException(JSON.stringify(response), +response.statusText);
         }
-        else {
-            return result.result;
-        }
+
+        const stream: NodeJS.ReadableStream = response.result as unknown as NodeJS.ReadableStream;
+
+        let result = "";
+
+        stream.on('data', (data: Buffer) => {
+            result += data.toString();
+        });
+
+        return new Promise((resolve, reject) => {
+            stream.on('end', () => {
+                // console.log(result);
+                resolve(result);
+            });
+        });
+        
     }
 
 }

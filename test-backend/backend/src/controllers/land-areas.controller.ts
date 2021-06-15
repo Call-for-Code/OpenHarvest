@@ -22,7 +22,7 @@ export class LandAreasController {
                 lng: elems[3]
             },
         }
-        console.log(bbox);
+        // console.log(bbox);
         return this.landAreasService.getAreasInBbox(bbox);
         // return "it worked!";
     }

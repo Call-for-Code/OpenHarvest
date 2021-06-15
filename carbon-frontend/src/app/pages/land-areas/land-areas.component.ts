@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectangle, geoJSON } from "leaflet";
+import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectangle, geoJSON, LatLng } from "leaflet";
 
 // Import Leaflet Libraries
 import virtualGrid from 'leaflet-virtual-grid';
@@ -21,12 +21,20 @@ export class LandAreasComponent implements OnInit {
       this.OSMBaseLayer,
       // this.ESRISatelliteLayer
     ],
-    zoom: 10,
+    zoom: 14,
     minZoom: 8,
-    center: latLng(-34.615870, 143.585049)
+    center: latLng(-33.908035299892994, 150.76915740966797)
   };
 
-  landAreas = geoJSON()
+  landAreas = geoJSON(undefined, {
+    style: {
+      fillOpacity: 0.3
+    },
+    coordsToLatLng: (coords) => {
+      // console.log(coords);
+      return latLng(coords[1], coords[0]);
+    }
+  })
 
   layersControl = {
     baseLayers: {
@@ -39,10 +47,10 @@ export class LandAreasComponent implements OnInit {
   }
 
   // Virtual Grids
-  coordsToKey = (coords) => coords.x + ':' + coords.y; // + ':' + coords.z;
+  coordsToKey = (coords) => coords.x + ':' + coords.y + ':' + coords.z;
 
   grid = new virtualGrid({
-    cellSize: 1024
+    cellSize: 512
   });
 
   rects = {};
@@ -59,8 +67,16 @@ export class LandAreasComponent implements OnInit {
     this.grid.on('cellcreate', async (e) => {
       console.log('cellcreate', e);
 
+
+      this.rects[this.coordsToKey(e.coords)] = rectangle(e.bounds, {
+        color: '#3ac1f0',
+        weight: 2,
+        opacity: 0.5,
+        fillOpacity: 0.25
+      }).addTo(map);
+
       try {
-        const areas = await this.landAreasService.getLandAreas(e.bounds);
+        const areas = await this.landAreasService.getAreasQueued(e.bounds);
         console.log(areas);
 
         this.landAreas.addData(areas);
@@ -70,12 +86,7 @@ export class LandAreasComponent implements OnInit {
         return;
       }
 
-      // this.rects[this.coordsToKey(e.coords)] = rectangle(e.bounds, {
-      //   color: '#3ac1f0',
-      //   weight: 2,
-      //   opacity: 0.5,
-      //   fillOpacity: 0.25
-      // }).addTo(map);
+      
 
 
     });
@@ -83,15 +94,15 @@ export class LandAreasComponent implements OnInit {
     this.grid.on('cellenter', (e) => {
       console.log('cellenter', e);
 
-      // var rect = this.rects[this.coordsToKey(e.coords)];
-      // map.addLayer(rect);
+      var rect = this.rects[this.coordsToKey(e.coords)];
+      map.addLayer(rect);
     });
 
     this.grid.on('cellleave', (e) => {
       console.log('cellleave', e);
 
-      // var rect = this.rects[this.coordsToKey(e.coords)];
-      // map.removeLayer(rect);
+      var rect = this.rects[this.coordsToKey(e.coords)];
+      map.removeLayer(rect);
     });
 
     this.grid.addTo(map);
