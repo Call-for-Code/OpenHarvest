@@ -1,0 +1,8 @@
+{
+  "cloudant_apikey": "193JMAkmRLwfMrLCzKo4Zm3cy_-f3dopsCvIdA6qzx4i",
+  "cloudant_host": "74898a7f-a78c-4c9d-9d5c-29a59965210a-bluemix.cloudantnosqldb.appdomain.cloud",
+  "cloudant_password": "a82e29d23651b1fe1055a95ff9086f64",
+  "cloudant_port": 443,
+  "cloudant_url": "https://apikey-v2-139he7dz6fcw56bwuaq0gi6kpc05r6tl8o74e5hvqubq:a82e29d23651b1fe1055a95ff9086f64@74898a7f-a78c-4c9d-9d5c-29a59965210a-bluemix.cloudantnosqldb.appdomain.cloud",
+  "cloudant_username": "apikey-v2-139he7dz6fcw56bwuaq0gi6kpc05r6tl8o74e5hvqubq"
+}

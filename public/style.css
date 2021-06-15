@@ -1,0 +1,31 @@
+html, body {
+  font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+}
+
+#logo {
+  height: 150px;
+}
+
+.logo-center {
+  text-align: center;
+}
+
+#name {
+  font-size: large;
+  color: #5f5c5c;
+  width: 300px;
+  margin: auto;
+  height: 40%;
+  overflow-y: auto;
+}
+
+input {
+  font-size: large;
+  color: #858383;
+  height: 2rem;
+  border-style: solid;
+  border-radius: 6px;
+  border-color: #d4d2d2;
+  text-indent: 10px;
+}
