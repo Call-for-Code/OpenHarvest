@@ -40,6 +40,7 @@ Ultimately we will balance farming production.
 ## The architecture
 
 
+![Architecture](./images/architecture.PNG)
 ## Long description
 
 More detail is available here ..make seperate file
