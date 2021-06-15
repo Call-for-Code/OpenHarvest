@@ -6,10 +6,6 @@ applications:
   buildpack: nodejs_buildpack
   command: npm start
   disk_quota: 1G
-  memory: 128MB
-  domain: au-syd.mybluemix.net
-  host: farmer-pro
-  services:
-    - farmer-pro-cloudant-1623588052968-55593
+  memory: 256MB
   env:
     OPTIMIZE_MEMORY: true
