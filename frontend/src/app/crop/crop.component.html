@@ -1,0 +1,20 @@
+<ibm-modal
+    [size]="size"
+    [open]="open"
+    (overlaySelected)="closeModal()">
+    <ibm-modal-header (closeSelect)="closeModal()">
+        <h3 ibmModalHeaderHeading>Crop</h3>
+    </ibm-modal-header>
+    <section ibmModalContent hasForm="true">
+        <form>
+            <button class="bx--btn bx--btn--primary" (click) = "showAddForm()">Add</button> &nbsp;
+            <button class="bx--btn bx--btn--primary">Update</button> &nbsp;
+            <button class="bx--btn bx--btn--primary">Delete</button> &nbsp;
+        </form>
+
+        <app-add-crop *ngIf="addFormFlag"></app-add-crop>
+    </section>
+    <ibm-modal-footer>
+        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="closeModal()">Close</button>
+    </ibm-modal-footer>
+</ibm-modal>

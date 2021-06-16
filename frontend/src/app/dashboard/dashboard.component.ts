@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from 'carbon-components-angular';
+import { CropComponent } from '../crop/crop.component';
 import { LoginComponent } from '../login/login.component';
 
 @Component({
@@ -18,9 +19,9 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  loginDialog() {
+  cropDialog() {
 		this.modalService.create({
-			component: LoginComponent,
+			component: CropComponent,
       inputs: {
 				modalText: this.modalText,
 				size: this.size

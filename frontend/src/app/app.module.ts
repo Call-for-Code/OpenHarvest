@@ -6,12 +6,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
 // carbon-components-angular default imports
-import { 
-	IconModule, 
-	IconService, 
-	UIShellModule, 
-	PlaceholderModule, 
-	ModalModule, 
+import {
+	IconModule,
+	IconService,
+	UIShellModule,
+	PlaceholderModule,
+	ModalModule,
 	GridModule,
 	ListModule,
 	TabsModule,
@@ -33,6 +33,8 @@ import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
 import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration/registration.component';
+import { CropComponent } from './crop/crop.component';
+import { AddCropComponent } from './crop/add-crop/add-crop.component';
 
 @NgModule({
 	declarations: [
@@ -45,7 +47,9 @@ import { RegistrationComponent } from './registration/registration.component';
 		DashboardComponent,
 		LoginComponent,
 		FooterComponent,
-		RegistrationComponent
+		RegistrationComponent,
+		CropComponent,
+		AddCropComponent
 	],
 	imports: [
 		CommonModule,
