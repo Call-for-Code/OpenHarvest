@@ -1,0 +1,35 @@
+<ibm-modal
+    [size]="size"
+    [open]="open"
+    (overlaySelected)="closeModal()">
+    <ibm-modal-header (closeSelect)="closeModal()">
+        <h3 ibmModalHeaderHeading>Sign In</h3>
+    </ibm-modal-header>
+    <section ibmModalContent hasForm="true">
+        <form>
+            <div class="bx--text-input__field-wrapper">
+                <ibm-label>
+                    User name: 
+                    <input
+                        ibmText
+                        placeholder="User Name"
+                        [autocomplete]="false">
+                </ibm-label>
+            </div>
+            <div class="bx--text-input__field-wrapper">
+                <ibm-label>
+                    Password: 
+                    <input
+                        ibmText
+                        type="password"
+                        placeholder="Password"
+                        [autocomplete]="false">
+                </ibm-label>
+            </div>
+        </form>
+    </section>
+    <ibm-modal-footer>
+        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="login()">Login</button>
+        <button class="bx--btn bx--btn--secondary" modal-primary-focus (click)="closeModal()">Close</button>
+    </ibm-modal-footer>
+</ibm-modal>
