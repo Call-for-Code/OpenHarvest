@@ -1,7 +1,9 @@
 import { Component, HostBinding, Input } from '@angular/core';
 import { ModalService } from 'carbon-components-angular';
+import { CropComponent } from '../crop/crop.component';
 import { LoginComponent } from '../login/login.component';
 import { LoginService } from '../login/login.service';
+import { LotComponent } from '../lot/lot.component';
 import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
@@ -35,6 +37,26 @@ export class HeaderComponent {
 			inputs: {
 				modalText: this.modalText,
 				size: "xs"
+			}
+		});
+	}
+
+	cropDialog() {
+		this.modalService.create({
+			component: CropComponent,
+      inputs: {
+				modalText: this.modalText,
+				size: 'default'
+			}
+		});
+	}
+
+  lotDialog() {
+		this.modalService.create({
+			component: LotComponent,
+      inputs: {
+				modalText: this.modalText,
+				size: 'default'
 			}
 		});
 	}

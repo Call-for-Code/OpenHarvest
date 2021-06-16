@@ -37,6 +37,12 @@ import { RegistrationComponent } from './registration/registration.component';
 import { CropComponent } from './crop/crop.component';
 import { AddCropComponent } from './crop/add-crop/add-crop.component';
 import { LoginService } from './login/login.service';
+import { UpdateCropComponent } from './crop/update-crop/update-crop.component';
+import { DeleteCropComponent } from './crop/delete-crop/delete-crop.component';
+import { LotComponent } from './lot/lot.component';
+import { AddLotComponent } from './lot/add-lot/add-lot.component';
+import { UpdateLotComponent } from './lot/update-lot/update-lot.component';
+import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 
 @NgModule({
 	declarations: [
@@ -51,7 +57,13 @@ import { LoginService } from './login/login.service';
 		FooterComponent,
 		RegistrationComponent,
 		CropComponent,
-		AddCropComponent
+		AddCropComponent,
+		UpdateCropComponent,
+		DeleteCropComponent,
+		LotComponent,
+		AddLotComponent,
+		UpdateLotComponent,
+		DeleteLotComponent
 	],
 	imports: [
 		CommonModule,

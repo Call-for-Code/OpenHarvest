@@ -7,7 +7,6 @@ import { BaseModal, ModalService } from 'carbon-components-angular';
 	styleUrls: ['./crop.component.scss']
 })
 export class CropComponent extends BaseModal implements OnInit {
-	addFormFlag = false;
 
 	constructor(@Inject("modalText") public modalText,
 				@Inject("size") public size,
@@ -16,9 +15,5 @@ export class CropComponent extends BaseModal implements OnInit {
 	}
 
 	ngOnInit(): void {
-	}
-
-	showAddForm() {
-		this.addFormFlag = true;
 	}
 }
