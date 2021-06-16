@@ -1,7 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
-import { Login } from './login';
 import { LoginService } from './login.service';
 
 @Component({
@@ -26,7 +25,6 @@ export class LoginComponent extends BaseModal implements OnInit {
 
   login() {
     //Login here and close when login is successful.
-
 
     this.loginService.authenticate(this.userName, this.password);
 

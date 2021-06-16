@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { RegistrationService } from './registration.service';
 
 @Component({
   selector: 'app-registration',
@@ -7,11 +8,15 @@ import { BaseModal, ModalService } from 'carbon-components-angular';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent extends BaseModal implements OnInit {
+  name = '';
+  password = '';
+  mobileNumber = '';
 
   constructor(
     @Inject("modalText") public modalText,
 		@Inject("size") public size,
-    protected modalService: ModalService) {
+    protected modalService: ModalService,
+    protected registrationService: RegistrationService) {
     super();
    }
 
@@ -19,7 +24,12 @@ export class RegistrationComponent extends BaseModal implements OnInit {
   }
 
   register() {
-    
+    this.registrationService.register();
+    this.closeModal();
+  }
+
+  isFormInvalid() {
+    return this.name === '' || this.password === '' || this.mobileNumber === '';
   }
 
 }
