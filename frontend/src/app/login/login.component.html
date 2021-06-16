@@ -13,7 +13,9 @@
                     <input
                         ibmText
                         placeholder="User Name"
-                        [autocomplete]="false">
+                        [autocomplete]="false"
+                        [(ngModel)]="userName"
+                        name="userName">
                 </ibm-label>
             </div>
             <div class="bx--text-input__field-wrapper">
@@ -23,13 +25,15 @@
                         ibmText
                         type="password"
                         placeholder="Password"
-                        [autocomplete]="false">
+                        [autocomplete]="false"
+                        [(ngModel)]="password"
+                        name="password">
                 </ibm-label>
             </div>
         </form>
     </section>
     <ibm-modal-footer>
-        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="login()">Login</button>
+        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="login()" [disabled] = "isInvalidForm()">Login</button>
         <button class="bx--btn bx--btn--secondary" modal-primary-focus (click)="closeModal()">Close</button>
     </ibm-modal-footer>
 </ibm-modal>
