@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HttpClientModule } from '@angular/common/http';
 
 // carbon-components-angular default imports
 import {
@@ -35,6 +36,7 @@ import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration/registration.component';
 import { CropComponent } from './crop/crop.component';
 import { AddCropComponent } from './crop/add-crop/add-crop.component';
+import { LoginService } from './login/login.service';
 
 @NgModule({
 	declarations: [
@@ -66,7 +68,8 @@ import { AddCropComponent } from './crop/add-crop/add-crop.component';
 		TabsModule,
 		TilesModule,
 		ButtonModule,
-		InputModule
+		InputModule,
+		HttpClientModule
 	],
 	bootstrap: [AppComponent]
 })

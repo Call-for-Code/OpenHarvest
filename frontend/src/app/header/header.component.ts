@@ -1,6 +1,7 @@
 import { Component, HostBinding, Input } from '@angular/core';
 import { ModalService } from 'carbon-components-angular';
 import { LoginComponent } from '../login/login.component';
+import { LoginService } from '../login/login.service';
 import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
@@ -13,10 +14,8 @@ export class HeaderComponent {
 	@HostBinding('class.bx--header') headerClass = true;
 	@Input() modalText = "Hello, World";
 
-	@Input() size = "default";
-
-
-	constructor(protected modalService: ModalService) {
+	constructor(protected modalService: ModalService,
+				protected loginService: LoginService) {
 
 	}
 
@@ -25,7 +24,7 @@ export class HeaderComponent {
 			component: LoginComponent,
 			inputs: {
 				modalText: this.modalText,
-				size: this.size
+				size: "xs"
 			}
 		});
 	}
@@ -35,8 +34,16 @@ export class HeaderComponent {
 			component: RegistrationComponent,
 			inputs: {
 				modalText: this.modalText,
-				size: this.size
+				size: "xs"
 			}
 		});
+	}
+
+	isUserLoggedIn() {
+		return this.loginService.isAlreadyLoggedIn();
+	}
+
+	logout() {
+		this.loginService.logout();
 	}
 }
