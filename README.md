@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) 
 
-projectname Is a group submission for [Call for Code](https://developer.ibm.com/callforcode/) 
+Open-Harvest Is a group submission for [Call for Code](https://developer.ibm.com/callforcode/) 
 
 
 ## Contents
