@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-add-lot',
@@ -6,14 +7,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-lot.component.scss']
 })
 export class AddLotComponent implements OnInit {
-  lotName;
+  addForm: FormGroup;
   
   constructor() { }
 
   ngOnInit(): void {
+    this.addForm = new FormGroup({
+      lotName: new FormControl('', [Validators.required])
+    });
   }
 
   isFormInvalid() {
-    return true;
+    return this.addForm.invalid;
   }
 }

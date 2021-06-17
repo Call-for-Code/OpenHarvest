@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-update-lot',
@@ -6,36 +7,41 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./update-lot.component.scss']
 })
 export class UpdateLotComponent implements OnInit {
-  searchLot = {lotId:''};
-  lotData = {lotId: '', lotName: ''};
+  searchForm: FormGroup;
+  updateForm: FormGroup;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.searchForm = new FormGroup({
+      lotId: new FormControl('', [Validators.required])
+    });
+
+    this.updateForm = new FormGroup({
+      lotId: new FormControl('', [Validators.required]),
+      lotName: new FormControl('', [Validators.required])
+    })
   }
 
   isFormInvalid() {
-    return this.isEmpty(this.lotData.lotId) || 
-          this.isEmpty(this.lotData.lotName);
-  }
-
-  isEmpty(val) {
-    return val === '';
+    return this.updateForm.invalid;
   }
 
   isSearchFormInvalid() {
-    return !this.searchLot || this.searchLot.lotId === '';
+    return this.searchForm.invalid;
   }
 
   findLot() {
-    this.lotData = {
-      lotId: this.searchLot.lotId, 
+    const lotData = {
+      lotId: this.searchForm.get('lotId'),
       lotName: 'Lot 1'
     };
+
+    this.updateForm.patchValue(lotData);
   }
 
   hasLot() {
-    return this.lotData.lotId !== '';
+    return this.updateForm.valid;
   }
 
 }

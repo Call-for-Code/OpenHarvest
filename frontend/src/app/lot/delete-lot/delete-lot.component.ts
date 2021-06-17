@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angular';
 
 @Component({
@@ -7,16 +8,20 @@ import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angula
   styleUrls: ['./delete-lot.component.scss']
 })
 export class DeleteLotComponent implements OnInit {
-  searchLot = {lotId:''};
+  searchForm: FormGroup;
+  
   searchLotModel = new TableModel();
 
   constructor() { }
 
   ngOnInit(): void {
+    this.searchForm = new FormGroup({
+      lotId: new FormControl('', [Validators.required])
+    });
   }
 
   isSearchFormInvalid() {
-    return !this.searchLot || this.searchLot.lotId === '';
+    return this.searchForm.invalid;
   }
 
   findLot() {

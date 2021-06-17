@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="searchForm">
     <div ibmGrid class="search-section">
         <div ibmRow class="form-item">
             <div ibmCol>
@@ -7,9 +7,9 @@
                         ibmText
                         placeholder="Lot Id"
                         [autocomplete]="false"
-                        [(ngModel)]="searchLot.lotId"
+                        formControlName="lotId"
                         sm
-                        name="searchLot.lotId">
+                        name="lotId">
                 </ibm-label>
             </div>
             <div ibmCol>
@@ -18,7 +18,7 @@
         </div>
     </div>
 </form>
-<form *ngIf="hasLot()">
+<form *ngIf="hasLot()" [formGroup]="updateForm">
     <div ibmGrid>
         <div ibmRow class="form-item">
             <ibm-label>
@@ -27,7 +27,7 @@
                     ibmText
                     placeholder="Lot Name"
                     [autocomplete]="false"
-                    [(ngModel)]="lotData.lotName"
+                    formControlName="lotName"
                     name="lotName">
             </ibm-label>
         </div>
