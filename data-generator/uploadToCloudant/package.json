@@ -10,6 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.21.1"
+    "@ibm-cloud/cloudant": "^0.0.15",
+    "axios": "^0.21.1",
+    "dotenv": "^6.2.0"
   }
 }

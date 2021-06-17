@@ -1,0 +1,48 @@
+[
+    {
+        "_id": "farmer:1",
+        "type": "farmer",
+        "name": "Ryan Pereira",
+        "mobile": "+91213432134",
+        "land_ids": [
+            121,
+            2331,
+            33232,
+            33423,
+            1324
+        ]
+    },
+    {
+        "_id": "lot:111",
+        "type": "lot",
+        "fid": 111,
+        "crops_planted": [
+            {
+                "_id": "crop:2",
+                "type": "crop",
+                "name": "Test Crop",
+                "planted": "2021-06-11T00:37:03.496Z",
+                "harvested": "2021-06-15T00:37:03.496Z",
+                "farmer": "farmer:1"
+            },
+            {
+                "_id": "crop:1",
+                "type": "crop",
+                "name": "Rice",
+                "planted": "2021-06-11T00:37:03.496Z",
+                "harvested": null,
+                "farmer": "farmer:1"
+            }
+        ]
+    },
+    {
+        "_id": "crop:1",
+        "type": "crop",
+        "name": "Rice",
+        "planting_season": [
+            "2021-06-11T00:37:03.496Z",
+            "2021-06-11T00:37:03.496Z"
+        ],
+        "time_to_harvest": 30
+    }
+]
