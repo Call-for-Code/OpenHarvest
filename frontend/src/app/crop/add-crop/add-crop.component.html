@@ -1,10 +1,40 @@
 <form>
-    Crop Name: <input type="text" />
+    <div ibmGrid>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Crop name: 
+                <input
+                    ibmText
+                    placeholder="Crop Name"
+                    [autocomplete]="false"
+                    [(ngModel)]="cropName"
+                    name="cropName">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Planting Season: 
+                <input
+                    ibmText
+                    placeholder="Planting Season"
+                    [autocomplete]="false"
+                    [(ngModel)]="plantingSeason"
+                    name="plantingSeason">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Harvest time: 
+                <input
+                    ibmText
+                    placeholder="Harvest Time"
+                    [autocomplete]="false"
+                    [(ngModel)]="harvestTime"
+                    name="harvestTime">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item action">
+            <button ibmButton [disabled]="isFormInvalid()">Add</button>
+        </div>
+    </div>
 </form>
-<form>
-    Planting season: <input type="text" />
-</form>
-<form>
-    Harvest time: <input type="text" />
-</form>
-<button class="bx--btn bx--btn--primary" >Add crop</button>

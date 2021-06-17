@@ -18,7 +18,8 @@ import {
 	TabsModule,
 	TilesModule,
 	ButtonModule,
-	InputModule
+	InputModule,
+	TableModule
 } from 'carbon-components-angular';
 
 import Notification20 from '@carbon/icons/es/notification/20';
@@ -43,6 +44,7 @@ import { LotComponent } from './lot/lot.component';
 import { AddLotComponent } from './lot/add-lot/add-lot.component';
 import { UpdateLotComponent } from './lot/update-lot/update-lot.component';
 import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
+import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 
 @NgModule({
 	declarations: [
@@ -63,7 +65,8 @@ import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 		LotComponent,
 		AddLotComponent,
 		UpdateLotComponent,
-		DeleteLotComponent
+		DeleteLotComponent,
+		SearchCropComponent
 	],
 	imports: [
 		CommonModule,
@@ -81,7 +84,8 @@ import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 		TilesModule,
 		ButtonModule,
 		InputModule,
-		HttpClientModule
+		HttpClientModule,
+		TableModule
 	],
 	bootstrap: [AppComponent]
 })

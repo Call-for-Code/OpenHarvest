@@ -1,11 +1,60 @@
-
 <form>
-    Crop Name: <input type="text" />
+    <div ibmGrid class="search-section">
+        <div ibmRow class="form-item">
+            <div ibmCol>
+                <ibm-label>
+                    <input
+                        ibmText
+                        placeholder="Crop Id"
+                        [autocomplete]="false"
+                        [(ngModel)]="searchCrop.cropId"
+                        sm
+                        name="searchCrop.cropId">
+                </ibm-label>
+            </div>
+            <div ibmCol>
+                <button ibmButton [disabled]="isSearchFormInvalid()" sm (click)="findCrop()">Search</button>
+            </div>
+        </div>
+    </div>
 </form>
-<form>
-    Planting season: <input type="text" />
+<form *ngIf="hasCrop()">
+    <div ibmGrid>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Crop name: 
+                <input
+                    ibmText
+                    placeholder="Crop Name"
+                    [autocomplete]="false"
+                    [(ngModel)]="cropData.cropName"
+                    name="cropName">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Planting Season: 
+                <input
+                    ibmText
+                    placeholder="Planting Season"
+                    [autocomplete]="false"
+                    [(ngModel)]="cropData.plantingSeason"
+                    name="plantingSeason">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Harvest time: 
+                <input
+                    ibmText
+                    placeholder="Harvest Time"
+                    [autocomplete]="false"
+                    [(ngModel)]="cropData.harvestTime"
+                    name="harvestTime">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item action">
+            <button ibmButton [disabled]="isFormInvalid()">Update</button>
+        </div>
+    </div>
 </form>
-<form>
-    Harvest time: <input type="text" />
-</form>
-<button class="bx--btn bx--btn--primary" >Update crop</button>

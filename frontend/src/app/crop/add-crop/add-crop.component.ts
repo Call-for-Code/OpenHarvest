@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-crop.component.scss']
 })
 export class AddCropComponent implements OnInit {
+  cropName;
+  plantingSeason;
+  harvestTime;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  isFormInvalid() {
+    return true;
   }
 
 }

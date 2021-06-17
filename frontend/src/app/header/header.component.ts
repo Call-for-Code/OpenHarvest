@@ -46,7 +46,7 @@ export class HeaderComponent {
 			component: CropComponent,
       inputs: {
 				modalText: this.modalText,
-				size: 'default'
+				size: 'small'
 			}
 		});
 	}
@@ -56,7 +56,7 @@ export class HeaderComponent {
 			component: LotComponent,
       inputs: {
 				modalText: this.modalText,
-				size: 'default'
+				size: 'small'
 			}
 		});
 	}

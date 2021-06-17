@@ -1,5 +1,31 @@
-
 <form>
-    Crop Name: <input type="text" />
+    <div ibmGrid class="search-section">
+        <div ibmRow class="form-item">
+            <div ibmCol>
+                <ibm-label>
+                    <input
+                        ibmText
+                        placeholder="Crop Id"
+                        [autocomplete]="false"
+                        [(ngModel)]="searchCrop.cropId"
+                        sm
+                        name="searchCrop.cropId">
+                </ibm-label>
+            </div>
+            <div ibmCol>
+                <button ibmButton [disabled]="isSearchFormInvalid()" sm (click)="findCrop()">Search</button>
+            </div>
+        </div>
+    </div>
 </form>
-<button class="bx--btn bx--btn--primary" >Delete crop</button>
+
+<form *ngIf="isTableNotEmpty()" class="result-section">
+        <ibm-table-container>
+            <ibm-table
+                [model]="searchCropModel">
+            </ibm-table>
+        </ibm-table-container>
+        <div class="form-item action">
+            <button ibmButton="danger" [disabled]="isItemNotSelected()" sm (click)="deleteCrop()">Delete</button>
+        </div>
+</form>

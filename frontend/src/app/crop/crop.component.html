@@ -7,6 +7,9 @@
     </ibm-modal-header>
     <section ibmModalContent hasForm="true">
         <ibm-tabs>
+            <ibm-tab heading="Search">
+                <app-search-crop></app-search-crop>
+            </ibm-tab>
             <ibm-tab heading="Add">
                 <app-add-crop></app-add-crop>
             </ibm-tab>
@@ -18,7 +21,4 @@
             </ibm-tab>
         </ibm-tabs>
     </section>
-    <ibm-modal-footer>
-        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="closeModal()">Close</button>
-    </ibm-modal-footer>
 </ibm-modal>
