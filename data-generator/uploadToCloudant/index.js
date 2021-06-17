@@ -49,8 +49,11 @@ async function main() {
     // set _id's for all records
     console.log("Matching _id and fid");
     for (let i = 0; i < data.length; i++) {
-        data[i]._id = data[i].properties.fid + "";        
+        data[i]._id = "lot:" + data[i].properties.fid;
     }
+
+    console.log(data[0], data[1], data[2]);
+    process.exit();
 
     const chunkSize = 1000;
 
