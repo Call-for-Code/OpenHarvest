@@ -28,7 +28,7 @@ async function getToken(apikey) {
 
 async function main() {
 
-    const key = fs.readFileSync("apiKey.txt", 'utf8')
+    const key = fs.readFileSync("apiKey.txt", 'utf8');
     
     // Getting Token
     console.log("Getting Token");
