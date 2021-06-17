@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="searchForm">
     <div ibmGrid class="search-section">
         <div ibmRow class="form-item">
             <div ibmCol>
@@ -7,9 +7,9 @@
                         ibmText
                         placeholder="Crop Id"
                         [autocomplete]="false"
-                        [(ngModel)]="searchCrop.cropId"
+                        formControlName="cropId"
                         sm
-                        name="searchCrop.cropId">
+                        name="cropId">
                 </ibm-label>
             </div>
             <div ibmCol>
@@ -18,7 +18,7 @@
         </div>
     </div>
 </form>
-<form *ngIf="hasCrop()">
+<form *ngIf="hasCrop()" [formGroup]="updateForm">
     <div ibmGrid>
         <div ibmRow class="form-item">
             <ibm-label>
@@ -27,7 +27,7 @@
                     ibmText
                     placeholder="Crop Name"
                     [autocomplete]="false"
-                    [(ngModel)]="cropData.cropName"
+                    formControlName="cropName"
                     name="cropName">
             </ibm-label>
         </div>
@@ -38,7 +38,7 @@
                     ibmText
                     placeholder="Planting Season"
                     [autocomplete]="false"
-                    [(ngModel)]="cropData.plantingSeason"
+                    formControlName="plantingSeason"
                     name="plantingSeason">
             </ibm-label>
         </div>
@@ -49,7 +49,7 @@
                     ibmText
                     placeholder="Harvest Time"
                     [autocomplete]="false"
-                    [(ngModel)]="cropData.harvestTime"
+                    formControlName="harvestTime"
                     name="harvestTime">
             </ibm-label>
         </div>

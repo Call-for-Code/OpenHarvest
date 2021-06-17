@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { Login } from './login';
 import { LoginService } from './login.service';
 
 @Component({
@@ -9,8 +10,7 @@ import { LoginService } from './login.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent extends BaseModal implements OnInit {
-  userName = '';
-  password = '';
+  loginForm: FormGroup;
 
   constructor(
     @Inject("modalText") public modalText,
@@ -21,18 +21,21 @@ export class LoginComponent extends BaseModal implements OnInit {
    }
 
   ngOnInit(): void {
+    this.loginForm = new FormGroup({
+      userName: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required])
+    });
   }
 
   login() {
     //Login here and close when login is successful.
-
-    this.loginService.authenticate(this.userName, this.password);
+    this.loginService.authenticate(this.loginForm.get('userName'), this.loginForm.get('password'));
 
     this.closeModal();
   }
 
   isInvalidForm() {
-    return this.userName === '' || this.password === '';
+    return this.loginForm.invalid;
   }
 
 }

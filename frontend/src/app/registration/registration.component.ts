@@ -1,4 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
 import { RegistrationService } from './registration.service';
 
@@ -8,9 +9,7 @@ import { RegistrationService } from './registration.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent extends BaseModal implements OnInit {
-  name = '';
-  password = '';
-  mobileNumber = '';
+  registrationForm: FormGroup;
 
   constructor(
     @Inject("modalText") public modalText,
@@ -21,6 +20,11 @@ export class RegistrationComponent extends BaseModal implements OnInit {
    }
 
   ngOnInit(): void {
+    this.registrationForm = new FormGroup({
+      name: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      mobileNumber: new FormControl('', [Validators.required, Validators.pattern('[- +()0-9]+')])
+    });
   }
 
   register() {
@@ -29,7 +33,7 @@ export class RegistrationComponent extends BaseModal implements OnInit {
   }
 
   isFormInvalid() {
-    return this.name === '' || this.password === '' || this.mobileNumber === '';
+    return this.registrationForm.invalid;
   }
 
 }

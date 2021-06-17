@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -37,7 +37,6 @@ import { CommonModule } from '@angular/common';
 import { RegistrationComponent } from './registration/registration.component';
 import { CropComponent } from './crop/crop.component';
 import { AddCropComponent } from './crop/add-crop/add-crop.component';
-import { LoginService } from './login/login.service';
 import { UpdateCropComponent } from './crop/update-crop/update-crop.component';
 import { DeleteCropComponent } from './crop/delete-crop/delete-crop.component';
 import { LotComponent } from './lot/lot.component';
@@ -87,7 +86,8 @@ import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 		ButtonModule,
 		InputModule,
 		HttpClientModule,
-		TableModule
+		TableModule,
+		ReactiveFormsModule
 	],
 	bootstrap: [AppComponent]
 })

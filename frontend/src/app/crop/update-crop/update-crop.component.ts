@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-update-crop',
@@ -6,39 +7,44 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./update-crop.component.scss']
 })
 export class UpdateCropComponent implements OnInit {
-  searchCrop = {cropId:''};
-  cropData = {cropId: '', cropName: '', plantingSeason: '', harvestTime: ''};
+  searchForm: FormGroup;
+  updateForm: FormGroup;
 
   constructor() { }
 
   ngOnInit(): void {
+    this.searchForm = new FormGroup({
+      cropId: new FormControl('', [Validators.required])
+    });
+
+    this.updateForm = new FormGroup({
+      cropId: new FormControl('', [Validators.required]),
+      cropName: new FormControl('', [Validators.required]),
+      plantingSeason: new FormControl('', [Validators.required]),
+      harvestTime: new FormControl('', [Validators.required])
+    });
   }
 
   isFormInvalid() {
-    return this.isEmpty(this.cropData.cropId) || 
-          this.isEmpty(this.cropData.cropName) ||
-          this.isEmpty(this.cropData.plantingSeason) ||
-          this.isEmpty(this.cropData.harvestTime);
-  }
-
-  isEmpty(val) {
-    return val === '';
+    return this.updateForm.invalid;
   }
 
   isSearchFormInvalid() {
-    return !this.searchCrop || this.searchCrop.cropId === '';
+    return this.searchForm.invalid;
   }
 
   findCrop() {
-    this.cropData = {
-      cropId: this.searchCrop.cropId, 
+    const cropData = {
+      cropId: this.searchForm.get('cropId'), 
       cropName: 'Crop 1',
       plantingSeason: 'July',
       harvestTime: 'Oct'
     };
+
+    this.updateForm.patchValue(cropData);
   }
 
   hasCrop() {
-    return this.cropData.cropId !== '';
+    return this.updateForm.valid;
   }
 }

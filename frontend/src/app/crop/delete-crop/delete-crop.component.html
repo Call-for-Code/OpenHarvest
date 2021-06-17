@@ -1,4 +1,4 @@
-<form>
+<form [formGroup]="searchForm">
     <div ibmGrid class="search-section">
         <div ibmRow class="form-item">
             <div ibmCol>
@@ -7,9 +7,9 @@
                         ibmText
                         placeholder="Crop Id"
                         [autocomplete]="false"
-                        [(ngModel)]="searchCrop.cropId"
+                        formControlName="cropId"
                         sm
-                        name="searchCrop.cropId">
+                        name="cropId">
                 </ibm-label>
             </div>
             <div ibmCol>

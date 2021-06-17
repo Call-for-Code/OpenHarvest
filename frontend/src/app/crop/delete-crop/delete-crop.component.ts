@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angular';
 
 @Component({
@@ -7,16 +8,22 @@ import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angula
   styleUrls: ['./delete-crop.component.scss']
 })
 export class DeleteCropComponent implements OnInit {
-  searchCrop = {cropId:''};
+  searchForm: FormGroup;
+
   searchCropModel = new TableModel();
 
   constructor() { }
 
   ngOnInit(): void {
+
+    this.searchForm = new FormGroup({
+      cropId: new FormControl('', [Validators.required])
+    });
+
   }
 
   isSearchFormInvalid() {
-    return !this.searchCrop || this.searchCrop.cropId === '';
+    return this.searchForm.invalid;
   }
 
   findCrop() {
