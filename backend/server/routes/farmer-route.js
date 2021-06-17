@@ -14,8 +14,22 @@ router.get("/", async (req, res) => {
         includeDocs: true,
         partitionKey: "farmer"
     });
+    console.log(farmers);
     res.send(farmers.result);
 });
+
+async function createOrUpdateFarmer(req, res) {
+    const farmer = req.body;
+    const response = await client.postDocument({
+        db,
+        document: farmer
+    })
+    res.send(farmers.result);
+}
+
+router.post("/", createOrUpdateFarmer);
+
+router.put("/", createOrUpdateFarmer);
 
 router.get("/:id", async (req, res) => {
     const id = req.params["id"];
@@ -29,6 +43,7 @@ router.get("/:id", async (req, res) => {
     });
     res.send(farmer.result);
 });
+
 
 
 module.exports = router;

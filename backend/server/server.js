@@ -32,7 +32,7 @@ app.use(express.static(path.join('public')));
 // routes and api calls
 app.use('/health', healthRoutes);
 // app.use('/api/names', nameRoutes);
-app.use('/api/farmers', farmerRoutes);
+app.use('/farmer', farmerRoutes);
 
 // start node server
 const port = process.env.PORT || 3000;
