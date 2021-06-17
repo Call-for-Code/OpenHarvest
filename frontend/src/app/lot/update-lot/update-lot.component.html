@@ -1,5 +1,38 @@
-
 <form>
-    Lot Name: <input type="text" />
-    <button class="bx--btn bx--btn--primary" >Update lot</button>
+    <div ibmGrid class="search-section">
+        <div ibmRow class="form-item">
+            <div ibmCol>
+                <ibm-label>
+                    <input
+                        ibmText
+                        placeholder="Lot Id"
+                        [autocomplete]="false"
+                        [(ngModel)]="searchLot.lotId"
+                        sm
+                        name="searchLot.lotId">
+                </ibm-label>
+            </div>
+            <div ibmCol>
+                <button ibmButton [disabled]="isSearchFormInvalid()" sm (click)="findLot()">Search</button>
+            </div>
+        </div>
+    </div>
+</form>
+<form *ngIf="hasLot()">
+    <div ibmGrid>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Lot name: 
+                <input
+                    ibmText
+                    placeholder="Lot Name"
+                    [autocomplete]="false"
+                    [(ngModel)]="lotData.lotName"
+                    name="lotName">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item action">
+            <button ibmButton [disabled]="isFormInvalid()">Update</button>
+        </div>
+    </div>
 </form>

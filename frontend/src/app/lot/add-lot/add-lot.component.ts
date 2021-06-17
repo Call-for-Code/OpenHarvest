@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./add-lot.component.scss']
 })
 export class AddLotComponent implements OnInit {
-
+  lotName;
+  
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  isFormInvalid() {
+    return true;
+  }
 }

@@ -45,6 +45,7 @@ import { AddLotComponent } from './lot/add-lot/add-lot.component';
 import { UpdateLotComponent } from './lot/update-lot/update-lot.component';
 import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 import { SearchCropComponent } from './crop/search-crop/search-crop.component';
+import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 
 @NgModule({
 	declarations: [
@@ -66,7 +67,8 @@ import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 		AddLotComponent,
 		UpdateLotComponent,
 		DeleteLotComponent,
-		SearchCropComponent
+		SearchCropComponent,
+		SearchLotComponent
 	],
 	imports: [
 		CommonModule,

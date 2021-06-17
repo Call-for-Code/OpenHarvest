@@ -1,5 +1,18 @@
-
 <form>
-    Lot Name: <input type="text" />
-    <button class="bx--btn bx--btn--primary" >Add lot</button>
+    <div ibmGrid>
+        <div ibmRow class="form-item">
+            <ibm-label>
+                Lot name: 
+                <input
+                    ibmText
+                    placeholder="Lot Name"
+                    [autocomplete]="false"
+                    [(ngModel)]="lotName"
+                    name="lotName">
+            </ibm-label>
+        </div>
+        <div ibmRow class="form-item action">
+            <button ibmButton [disabled]="isFormInvalid()">Add</button>
+        </div>
+    </div>
 </form>
