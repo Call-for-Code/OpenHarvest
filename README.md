@@ -64,7 +64,6 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
 
 - [sample-react-app](./sample-react-app/README.md)
-- [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
 - [Explore other projects](https://github.com/upkarlidder/ibmhacks)
 
 ## Live demo
@@ -72,8 +71,8 @@ In this section you add the instructions to run your project on your local machi
 
 ## Built with
 
-[Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
-
+- [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
+- [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
 ## Contributing
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
