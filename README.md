@@ -13,10 +13,7 @@ Open-Harvest Is a group submission for [Call for Code](https://developer.ibm.com
 1. [Long description](#long-description)
 1. [Project roadmap](#project-roadmap)
 1. [Getting started](#getting-started)
-1. [Live demo](#live-demo)
 1. [Built with](#built-with)
-1. [Contributing](#contributing)
-1. [Versioning](#versioning)
 1. [Authors](#authors)
 1. [License](#license)
 1. [Acknowledgments](#acknowledgments)
@@ -63,20 +60,10 @@ In this section you add the instructions to run your project on your local machi
 - [sample-react-app](./sample-react-app/README.md)
 - [Explore other projects](https://github.com/upkarlidder/ibmhacks)
 
-## Live demo
-
-
 ## Built with
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
 - [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
-## Contributing
-
-Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## Authors
 - Tyler Philips
