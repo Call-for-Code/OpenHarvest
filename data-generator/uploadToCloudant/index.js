@@ -49,7 +49,10 @@ async function main() {
     // set _id's for all records
     console.log("Matching _id and fid");
     for (let i = 0; i < data.length; i++) {
-        data[i]._id = data[i].properties.fid + "";        
+        data[i]._id = "" + data[i].properties.fid;
+        data[i].properties.data = {
+            crops_planted: []
+        }
     }
 
     const chunkSize = 1000;
@@ -70,7 +73,7 @@ async function main() {
         
         const options = {
             method: 'POST',
-            url: 'https://9c6d0ad3-d24f-4c34-ad3c-9efbc0209d29-bluemix.cloudantnosqldb.appdomain.cloud/land-areas/_bulk_docs',
+            url: 'https://9c6d0ad3-d24f-4c34-ad3c-9efbc0209d29-bluemix.cloudantnosqldb.appdomain.cloud/lot-areas/_bulk_docs',
             headers: {
                 Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -84,7 +87,7 @@ async function main() {
         // process.exit();
 
         const percentage = (chunksSent / numChunks) * 100;
-        console.log(`Sending Chunk: ${i}. ${chunksSent}/${numChunks} Chunks Sent. ${percentage}%`);
+        console.log(`Sending Chunk: ${i}. ${chunksSent}/${numChunks} Chunks Sent. ${percentage.toFixed(0)}%`);
 
         await axios.request(options);
 

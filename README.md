@@ -42,8 +42,7 @@ Ultimately we will balance farming production.
 
 ![Architecture](./images/architecture.PNG)
 ## Long description
-
-More detail is available here ..make seperate file
+[More detail are available here](./docs/DESCRIPTION.md)
 
 ## Project roadmap
 
@@ -53,11 +52,9 @@ The project currently does the following things.
 - Feature 2
 - Feature 3
 
-It's in a free tier IBM Cloud Kubernetes cluster. In the future we plan to run on Red Hat OpenShift, for example.
-
 See below for our proposed schedule on next steps after Call for Code 2021 submission.
 
-
+![Roadmap](./images/roadmap2.PNG)
 
 ## Getting started
 

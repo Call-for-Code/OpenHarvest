@@ -3,7 +3,7 @@
   "cloudant_url": {
     "searchPatterns": [
       "cloudfoundry:$['cloudantNoSQLDB'][0].credentials.url",
-      "file:/server/localdev-config.json:$.cloudant_url"
+      "file:/localdev-config.json:$.cloudant_url"
     ]
   },
   "application_name": {
@@ -15,7 +15,7 @@
   "cloudant_apikey": {
     "searchPatterns": [
       "cloudfoundry:$['cloudantNoSQLDB'][0].credentials.apikey",
-      "file:/server/localdev-config.json:$.cloudant_apikey"
+      "file:/localdev-config.json:$.cloudant_apikey"
     ]
   },
   "cloudant_host": {
