@@ -13,7 +13,6 @@ Open-Harvest Is a group submission for [Call for Code](https://developer.ibm.com
 1. [Long description](#long-description)
 1. [Project roadmap](#project-roadmap)
 1. [Getting started](#getting-started)
-1. [Live demo](#live-demo)
 1. [Built with](#built-with)
 1. [Authors](#authors)
 1. [License](#license)
@@ -60,9 +59,6 @@ In this section you add the instructions to run your project on your local machi
 
 - [sample-react-app](./sample-react-app/README.md)
 - [Explore other projects](https://github.com/upkarlidder/ibmhacks)
-
-## Live demo
-
 
 ## Built with
 
