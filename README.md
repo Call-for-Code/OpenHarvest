@@ -42,7 +42,7 @@ Ultimately we will balance farming production.
 
 ![Architecture](./images/architecture.PNG)
 ## Long description
-[More detail are available here](./docs/DESCRIPTION.md)
+[More detail are available here](./DESCRIPTION.md)
 
 ## Project roadmap
 
