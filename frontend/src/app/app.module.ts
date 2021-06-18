@@ -87,7 +87,7 @@ import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 		InputModule,
 		HttpClientModule,
 		TableModule,
-		ReactiveFormsModule
+		ReactiveFormsModule,
 	],
 	bootstrap: [AppComponent]
 })
