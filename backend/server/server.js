@@ -1,10 +1,18 @@
+const IBMCloudEnv = require('ibm-cloud-env');
+IBMCloudEnv.init('/server/config/mappings.json');
+
+// Setup env for ibm cloud cloudant sdk
+process.env['CLOUDANT_URL'] = IBMCloudEnv.getString('cloudant_url');
+process.env['CLOUDANT_APIKEY'] = IBMCloudEnv.getString('cloudant_apikey');
+
 // import dependencies and initialize express
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
-const nameRoutes = require('./routes/names-route.js');
+// const nameRoutes = require('./routes/names-route.js');
 const healthRoutes = require('./routes/health-route.js');
+const farmerRoutes = require('./routes/farmer-route.js');
 
 const app = express();
 
@@ -23,7 +31,8 @@ app.use(express.static(path.join('public')));
 
 // routes and api calls
 app.use('/health', healthRoutes);
-app.use('/api/names', nameRoutes);
+// app.use('/api/names', nameRoutes);
+app.use('/farmer', farmerRoutes);
 
 // start node server
 const port = process.env.PORT || 3000;
