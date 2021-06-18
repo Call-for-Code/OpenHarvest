@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
         partitionKey: "farmer"
     });
     console.log(farmers);
-    res.send(farmers.result);
+    res.json(farmers.result);
 });
 
 async function createOrUpdateFarmer(req, res) {
@@ -24,7 +24,7 @@ async function createOrUpdateFarmer(req, res) {
         db,
         document: farmer
     })
-    res.send(farmers.result);
+    res.json(farmers.result);
 }
 
 router.post("/", createOrUpdateFarmer);
@@ -41,9 +41,22 @@ router.get("/:id", async (req, res) => {
         db,
         docId: `farmer:${id}`
     });
-    res.send(farmer.result);
+    res.json(farmer.result);
 });
 
+router.delete("/:id", async (req, res) => {
+    const id = req.params["id"];
+    if (!id) {
+        res.sendStatus(400).end();
+        return;
+    }
+    const response = await client.deleteDocument({
+        db,
+        docId: id
+    });
+    res.json(response.result)
+});
 
+router
 
 module.exports = router;

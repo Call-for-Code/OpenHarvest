@@ -1,7 +1,7 @@
 #!/bin/bash
-cd carbon-frontend
+cd frontend
 npm i
 npm run build
 cd ..
 rm -rf backend/public/
-mv carbon-frontend/dist/ backend/public
+mv frontend/dist/ backend/public
