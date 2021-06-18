@@ -50,6 +50,9 @@ async function main() {
     console.log("Matching _id and fid");
     for (let i = 0; i < data.length; i++) {
         data[i]._id = "" + data[i].properties.fid;
+        data[i].properties.data = {
+            crops_planted: []
+        }
     }
 
     const chunkSize = 1000;
