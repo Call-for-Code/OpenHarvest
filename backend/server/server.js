@@ -7,18 +7,27 @@ process.env['CLOUDANT_APIKEY'] = IBMCloudEnv.getString('cloudant_apikey');
 
 // import dependencies and initialize express
 const express = require('express');
+const session = require('express-session');
 const path = require('path');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+
 // const nameRoutes = require('./routes/names-route.js');
 const healthRoutes = require('./routes/health-route.js');
 const farmerRoutes = require('./routes/farmer-route.js');
+const authRoutes = require('./routes/auth-route.js');
 
 const app = express();
 
 // enable parsing of http request body
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+
+// Enable session
+app.use(session({
+  secret: 'test',
+  resave: true,
+  saveUninitialized: true}));
 
 // if production, enable helmet
 /* istanbul ignore if  */
@@ -33,6 +42,7 @@ app.use(express.static(path.join('public')));
 app.use('/health', healthRoutes);
 // app.use('/api/names', nameRoutes);
 app.use('/farmer', farmerRoutes);
+app.use('/auth', authRoutes);
 
 // start node server
 const port = process.env.PORT || 3000;

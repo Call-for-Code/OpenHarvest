@@ -28,6 +28,7 @@
     "carbon-components": "^10.24.0",
     "carbon-components-angular": "^4.42.0",
     "core-js": "^3.9.1",
+    "cors": "^2.8.5",
     "rxjs": "^6.5.3",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

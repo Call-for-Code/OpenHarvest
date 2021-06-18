@@ -6,7 +6,7 @@ import { Login } from "./login";
     providedIn: 'root'
 })
 export class LoginService {
-    userName = '';
+    name = '';
     loggedIn = true;
     constructor(private http: HttpClient) {}
 
@@ -14,13 +14,17 @@ export class LoginService {
         console.log('Authenticated!!!');
 
         //Change URL here
-        this.http.post('login', login).subscribe((response) => {
+        this.http.post('http://localhost:3000/auth/login', login).subscribe((response: Login) => {
             this.loggedIn = true;
+            this.name = response.name;
         });
     }
 
     logout() {
-        this.loggedIn = false;
+
+        this.http.post('http://localhost:3000/auth/logout', {}).subscribe((response) => {
+            this.loggedIn = false;
+        });
     }
 
     isAlreadyLoggedIn() {
