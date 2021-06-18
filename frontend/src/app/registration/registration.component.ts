@@ -28,7 +28,7 @@ export class RegistrationComponent extends BaseModal implements OnInit {
   }
 
   register() {
-    this.registrationService.register();
+    this.registrationService.register(this.registrationForm.value);
     this.closeModal();
   }
 

@@ -1,4 +1,6 @@
+import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Login } from "./login";
 
 @Injectable({
     providedIn: 'root'
@@ -6,13 +8,15 @@ import { Injectable } from "@angular/core";
 export class LoginService {
     userName = '';
     loggedIn = true;
-    constructor() {}
+    constructor(private http: HttpClient) {}
 
-    authenticate(userName, password) {
+    authenticate(login: Login) {
         console.log('Authenticated!!!');
-        console.log(`user name ${userName}, password ${password}`);
-        this.loggedIn = true;
-        //API call is required here
+
+        //Change URL here
+        this.http.post('login', login).subscribe((response) => {
+            this.loggedIn = true;
+        });
     }
 
     logout() {

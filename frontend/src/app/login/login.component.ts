@@ -22,14 +22,14 @@ export class LoginComponent extends BaseModal implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = new FormGroup({
-      userName: new FormControl('', [Validators.required]),
+      name: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required])
     });
   }
 
   login() {
     //Login here and close when login is successful.
-    this.loginService.authenticate(this.loginForm.get('userName'), this.loginForm.get('password'));
+    this.loginService.authenticate(this.loginForm.value);
 
     this.closeModal();
   }
