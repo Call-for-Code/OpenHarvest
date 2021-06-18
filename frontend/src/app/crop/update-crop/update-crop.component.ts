@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -10,7 +11,7 @@ export class UpdateCropComponent implements OnInit {
   searchForm: FormGroup;
   updateForm: FormGroup;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -46,5 +47,11 @@ export class UpdateCropComponent implements OnInit {
 
   hasCrop() {
     return this.updateForm.valid;
+  }
+
+  updateCrop() {
+    this.http.put("/crop", this.updateForm.value).subscribe((response) => {
+      console.log('Crop updated: ', this.updateForm.value);
+    });
   }
 }

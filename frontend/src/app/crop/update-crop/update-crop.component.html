@@ -54,7 +54,7 @@
             </ibm-label>
         </div>
         <div ibmRow class="form-item action">
-            <button ibmButton [disabled]="isFormInvalid()">Update</button>
+            <button ibmButton [disabled]="isFormInvalid()" (click)="updateCrop()">Update</button>
         </div>
     </div>
 </form>

@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
@@ -9,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class AddCropComponent implements OnInit {
   cropForm: FormGroup;
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
     this.cropForm = new FormGroup({
@@ -21,6 +22,14 @@ export class AddCropComponent implements OnInit {
 
   isFormInvalid() {
     return this.cropForm.invalid;
+  }
+
+  addCrop() {
+    this.http.post('/crop', this.cropForm.value).subscribe((response) => {
+      //Crop added
+      console.log("Added crop", this.cropForm.value);
+      
+    });
   }
 
 }

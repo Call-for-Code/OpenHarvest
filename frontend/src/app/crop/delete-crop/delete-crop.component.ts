@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angular';
@@ -12,7 +13,7 @@ export class DeleteCropComponent implements OnInit {
 
   searchCropModel = new TableModel();
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 
   ngOnInit(): void {
 
@@ -49,7 +50,11 @@ export class DeleteCropComponent implements OnInit {
   }
 
   deleteCrop() {
-
+    const cropId = this.searchForm.get("cropId");
+    this.http.delete(`/crop/${cropId}`).subscribe((response) => {
+      //Crop deleted
+      console.log("Crop deleted: ", cropId);
+    });
   }
 
   isItemSelected() {
