@@ -14,13 +14,13 @@ const LotAreaService = require("./../services/lot-areas.service");
 const lotAreas = new LotAreaService();
 
 router.get("/", async (req, res) => {
-    const farmers = await client.postPartitionAllDocs({
+    const crops = await client.postPartitionAllDocs({
         db,
         includeDocs: true,
         partitionKey: "crop"
     });
-    console.log(farmers);
-    res.json(farmers.result);
+    // console.log(crops);
+    res.json(crops.result.rows.map(it => it.doc));
 });
 
 async function createOrUpdateCrop(req, res) {

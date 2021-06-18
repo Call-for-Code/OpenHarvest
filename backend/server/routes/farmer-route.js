@@ -22,8 +22,7 @@ router.get("/", async (req, res) => {
         includeDocs: true,
         partitionKey: "farmer"
     });
-    console.log(farmers);
-    res.json(farmers.result);
+    res.json(farmers.result.rows.map(it => it.doc));
 });
 
 async function createOrUpdateFarmer(req, res) {

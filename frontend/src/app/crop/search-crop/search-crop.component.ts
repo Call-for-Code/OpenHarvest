@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angular';
+import { Crop, CropService } from "../crop.service";
 
 @Component({
   selector: 'app-search-crop',
@@ -10,13 +11,37 @@ export class SearchCropComponent implements OnInit {
 
   searchCropModel = new TableModel();
 
-  constructor() { }
+  constructor(private cropService: CropService) { }
 
-  ngOnInit(): void {
-    this.populateModel();
+  async ngOnInit() {
+    // this.populateModelWithTestData();
+
+    this.searchCropModel.header = [
+      new TableHeaderItem({ data: "ID" }),
+      new TableHeaderItem({ data: 'Name' }),
+      new TableHeaderItem({ data: 'Planted Season' }),
+      new TableHeaderItem({ data: 'Days until Harvest' })
+    ];
+
+    const crops = await this.cropService.getAllCrops();
+    this.updateModel(crops);
   }
 
-  populateModel() {
+  updateModel(crops: Crop[]) {
+    const dataArr = []
+    for (const crop of crops) {
+      dataArr.push([
+        new TableItem({ data: crop._id }),
+        new TableItem({ data: crop.name }),
+        new TableItem({ data: `${crop.planting_season[0]} - ${crop.planting_season[1]}` }),
+        new TableItem({ data: crop.time_to_harvest })
+      ]);
+    }
+    this.searchCropModel.data = dataArr;
+    console.log(this.searchCropModel.data);
+  }
+ 
+  populateModelWithTestData() {
     this.searchCropModel.header = [
       new TableHeaderItem({data: "ID"}),
       new TableHeaderItem({data: 'Name'}),

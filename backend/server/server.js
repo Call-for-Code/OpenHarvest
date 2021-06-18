@@ -8,6 +8,7 @@ process.env['CLOUDANT_APIKEY'] = IBMCloudEnv.getString('cloudant_apikey');
 // import dependencies and initialize express
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 
@@ -18,6 +19,8 @@ const lotRoutes = require('./routes/lot-route');
 const cropRoutes = require('./routes/crop-route');
 
 const app = express();
+
+app.use(cors())
 
 // enable parsing of http request body
 app.use(bodyParser.urlencoded({ extended: false }));
