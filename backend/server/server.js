@@ -1,5 +1,5 @@
 const IBMCloudEnv = require('ibm-cloud-env');
-IBMCloudEnv.init('/server/config/mappings.json');
+IBMCloudEnv.init('/config/mappings.json');
 
 // Setup env for ibm cloud cloudant sdk
 process.env['CLOUDANT_URL'] = IBMCloudEnv.getString('cloudant_url');
@@ -10,9 +10,12 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+
 // const nameRoutes = require('./routes/names-route.js');
-const healthRoutes = require('./routes/health-route.js');
+// const healthRoutes = require('./routes/health-route.js');
 const farmerRoutes = require('./routes/farmer-route.js');
+const lotRoutes = require('./routes/lot-route');
+const cropRoutes = require('./routes/crop-route');
 
 const app = express();
 
@@ -30,9 +33,12 @@ if (process.env.VCAP_APPLICATION) {
 app.use(express.static(path.join('public')));
 
 // routes and api calls
-app.use('/health', healthRoutes);
+// app.use('/health', healthRoutes);
 // app.use('/api/names', nameRoutes);
+
 app.use('/farmer', farmerRoutes);
+app.use('/lot', lotRoutes);
+app.use('/crop', cropRoutes);
 
 // start node server
 const port = process.env.PORT || 3000;
