@@ -1,10 +1,14 @@
 // const { CloudantV1 } = require("@ibm-cloud/cloudant");
 // const client = CloudantV1.newInstance({});
 
-const client = require("./../db/cloudant");
+const plantedCrops = require("../db/cloudant");
+const { CloudantV1 } = require("@ibm-cloud/cloudant");
+const client = CloudantV1.newInstance({});
 
 const LOT_DB = "lot-areas";
 const db = LOT_DB;
+// const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
+// const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
 
 class LotAreas {
     constructor() {}
@@ -51,9 +55,9 @@ class LotAreas {
 
     async getAreasInBbox(box) {
         const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`;
-        const result = await this.client.getGeo({
+        const result = await client.getGeo({
             db: this.db,
-            ddoc: "newGeoIndexDov",
+            ddoc: "newGeoIndexDoc",
             index: "newGeoIndex",
             bbox,
             includeDocs: true,
@@ -68,18 +72,24 @@ class LotAreas {
     }
 
     async getOverallCropDistribution() {
-        const result = await this.client.getGeo({
-            db: this.db,
-            ddoc: "newGeoIndexDov",
-            index: "newGeoIndex",
-            includeDocs: true,
-            nearest: true,
-            format: "geojson",
+        const response = await client.postView({
+            db: LOT_DB,
+            ddoc: plantedCrops,
+            view: "cropPlantedArea",
+            group: true,
+            include_docs: true,
         });
-        if (result.status >= 400) {
-            throw result;
+
+        if (response.status >= 400) {
+            throw response;
         } else {
-            return result.result;
+            const rows = response.result.rows;
+            return rows.map(row => {
+                return {
+                    crop: row.key,
+                    area: row.value,
+                };
+            });
         }
     }
 }

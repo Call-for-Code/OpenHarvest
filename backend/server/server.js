@@ -18,6 +18,7 @@ const farmerRoutes = require("./routes/farmer-route.js");
 const authRoutes = require("./routes/auth-route.js");
 const lotRoutes = require("./routes/lot-route");
 const cropRoutes = require("./routes/crop-route");
+const dashboardRoutes = require("./routes/dashoboard-route");
 
 const app = express();
 
@@ -49,6 +50,7 @@ app.use("/api/farmer", farmerRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/lot", lotRoutes);
 app.use("/api/crop", cropRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 // start node server
 const port = process.env.PORT || 3000;
