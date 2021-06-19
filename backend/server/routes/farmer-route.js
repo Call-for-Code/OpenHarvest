@@ -17,12 +17,17 @@ const LotAreaService = require("./../services/lot-areas.service");
 const lotAreas = new LotAreaService();
 
 router.get("/", async (req, res) => {
-    const farmers = await client.postPartitionAllDocs({
-        db,
-        includeDocs: true,
-        partitionKey: "farmer"
-    });
-    res.json(farmers.result.rows.map(it => it.doc));
+    try {
+        const farmers = await client.postPartitionAllDocs({
+            db,
+            includeDocs: true,
+            partitionKey: "farmer"
+        });
+        res.json(farmers.result.rows.map(it => it.doc));
+    } catch (e) {
+            console.error(e);
+            res.status(500).json(e);
+        }
 });
 
 async function createOrUpdateFarmer(req, res) {

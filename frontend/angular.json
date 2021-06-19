@@ -53,7 +53,8 @@
 				"serve": {
 					"builder": "@angular-devkit/build-angular:dev-server",
 					"options": {
-						"browserTarget": "carbon-angular-starter:build"
+						"browserTarget": "carbon-angular-starter:build",
+						"proxyConfig": "proxy.config.json"
 					},
 					"configurations": {
 						"production": {

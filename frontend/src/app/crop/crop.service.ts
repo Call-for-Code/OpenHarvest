@@ -1,6 +1,5 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from '@angular/core';
-import { environment } from "./../../environments/environment";
 
 export interface Crop {
 	_id: string;
@@ -16,13 +15,11 @@ export interface Crop {
 })
 export class CropService {
 
-  API_URL = environment.production ? "/crop" : "http://localhost:3000/crop";
-
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
   getAllCrops() {
-    return this.http.get<Crop[]>(this.API_URL).toPromise();
+    return this.http.get<Crop[]>("/api/crop").toPromise();
   }
 }
