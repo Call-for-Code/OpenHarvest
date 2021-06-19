@@ -11,11 +11,11 @@ Implemented using IBM's Carbon Design System and hosted on IBM Cloudant, Open-Ha
 
 The dashboard will also have a public view where all the data collected from users is gathered and displayed. This will provide the farmers with the insight they need to make an informed decision on their land use to ensure profits.
 
-# Recommendation feature
+### Recommendation feature
 
 Open-Harvest's recommendation feature will accept details on what a farmer may be planning to grow on their lot, analyze the entirity of our database and provide a proposal suitable for the farmer's requirments that will have the harvest and profit.
 
-### Target Audience
+## Target Audience
 
 There would be difficulty in providing incentive for farmers to publicly share their crop details. Long term if a farmer shares updates on their crops then they will also get to see what his competitors are growing.  We decided Open-Harvest is a tool best utilized by the government of India. The government has enough power to use our solution to make a change with the farmers.
 
