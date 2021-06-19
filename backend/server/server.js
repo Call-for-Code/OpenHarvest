@@ -1,6 +1,8 @@
 const IBMCloudEnv = require('ibm-cloud-env');
 IBMCloudEnv.init('/config/mappings.json');
 
+const development = 'development';
+const env = process.env.NODE_ENV || development;
 // Setup env for ibm cloud cloudant sdk
 process.env['CLOUDANT_URL'] = IBMCloudEnv.getString('cloudant_url');
 process.env['CLOUDANT_APIKEY'] = IBMCloudEnv.getString('cloudant_apikey');
@@ -41,7 +43,11 @@ if (process.env.VCAP_APPLICATION) {
 }
 
 // access to static files
-app.use(express.static(path.join('public')));
+if (env === development) {
+  app.use(express.static(path.join(__dirname, '../../frontend/dist')));
+} else {
+  app.use(express.static(path.join('public')));
+}
 
 // routes and api calls
 // app.use('/health', healthRoutes);
