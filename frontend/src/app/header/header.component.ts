@@ -4,6 +4,7 @@ import { CropComponent } from '../crop/crop.component';
 import { LoginComponent } from '../login/login.component';
 import { LoginService } from '../login/login.service';
 import { LotComponent } from '../lot/lot.component';
+import {RecommendationComponent} from '../recommendation/recommendation.component';
 import { RegistrationComponent } from '../registration/registration.component';
 
 @Component({
@@ -20,7 +21,7 @@ export class HeaderComponent {
 				protected loginService: LoginService) {
 
 	}
-
+	
 	loginDialog() {
 		this.modalService.create({
 			component: LoginComponent,
@@ -40,7 +41,15 @@ export class HeaderComponent {
 			}
 		});
 	}
-
+	recommendationDialog(){
+		this.modalService.create({
+			component: RecommendationComponent,
+			inputs: {
+				modalText: this.modalText,
+				size: "xs"
+			}
+		});
+	}
 	cropDialog() {
 		this.modalService.create({
 			component: CropComponent,
