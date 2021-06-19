@@ -1,3 +1,7 @@
-app-dashboard {
+:host {
   display: flex;
+  width: 100%;
+  ibm-donut-chart {
+    height: 500px;
+  }
 }
