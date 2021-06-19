@@ -48,6 +48,7 @@ import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
+import { RecommendationFormComponent } from './recommendation/recommendation-form/recommendation-form.component';
 
 @NgModule({
 	declarations: [
@@ -71,7 +72,8 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 		DeleteLotComponent,
 		SearchCropComponent,
 		SearchLotComponent,
-		RecommendationComponent
+		RecommendationComponent,
+		RecommendationFormComponent
 	],
 	imports: [
 		CommonModule,
