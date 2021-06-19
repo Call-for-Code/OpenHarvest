@@ -11,7 +11,7 @@ Implemented using IBM's Carbon Design System and hosted on IBM Cloudant, Open-Ha
 
 The dashboard will also have a public view where all the data collected from users is gathered and displayed. This will provide the farmers with the insight they need to make an informed decision on their land use to ensure profits.
 
-##Recommendation feature
+# Recommendation feature
 
 Open-Harvest's recommendation feature will accept details on what a farmer may be planning to grow on their lot, analyze the entirity of our database and provide a proposal suitable for the farmer's requirments that will have the harvest and profit.
 
