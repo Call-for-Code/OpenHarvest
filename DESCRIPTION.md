@@ -19,6 +19,6 @@ Open-Harvest's recommendation feature will accept details on what a farmer may b
 
 There would be difficulty in providing incentive for farmers to publicly share their crop details. Long term if a farmer shares updates on their crops then they will also get to see what his competitors are growing.  We decided Open-Harvest is a tool best utilized by the government of India. The government has enough power to use our solution to make a change with the farmers.
 
-## The Future
+## The Future OF Open-Harvest
 
 The goal of Open-Harvest is to stabilise the production of crops. Every year there is a consistent volume of crops produced to feed the people of India. Open-Harvest is best fit for governing bodies across the globe to assist in planning for the future fo their country.
