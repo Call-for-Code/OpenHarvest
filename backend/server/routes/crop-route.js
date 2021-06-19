@@ -7,17 +7,17 @@ const client = CloudantV1.newInstance({});
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;
 
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
-const LotAreaService = require("./../services/lot-areas.service");
-const lotAreas = new LotAreaService();
+// const LotAreaService = require("./../services/lot-areas.service");
+// const lotAreas = new LotAreaService();
 
-router.get("/", async (req, res) => {
+router.get("/", async(req, res) => {
     const crops = await client.postPartitionAllDocs({
         db,
         includeDocs: true,
-        partitionKey: "crop"
+        partitionKey: "crop",
     });
     // console.log(crops);
     res.json(crops.result.rows.map(it => it.doc));
@@ -32,11 +32,10 @@ async function createOrUpdateCrop(req, res) {
     try {
         const response = await client.postDocument({
             db,
-            document: crop
-        })
+            document: crop,
+        });
         res.json(response.result);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
@@ -46,7 +45,7 @@ router.post("/", createOrUpdateCrop);
 
 router.put("/", createOrUpdateCrop);
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async(req, res) => {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -55,18 +54,17 @@ router.get("/:id", async (req, res) => {
     try {
         const crop = await client.getDocument({
             db,
-            docId: `crop:${id}`
+            docId: `crop:${id}`,
         });
         res.json(crop.result);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
 });
 
 // Delete Crop
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async(req, res) => {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -75,11 +73,10 @@ router.delete("/:id", async (req, res) => {
     try {
         const response = await client.deleteDocument({
             db,
-            docId: id
+            docId: id,
         });
-        res.json(response.result)
-    }
-    catch (e) {
+        res.json(response.result);
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }

@@ -10,5 +10,12 @@
     "parserOptions": { 
         "ecmaVersion": 10,
         "sourceType": "module"
+    },
+    "rules": {
+        "quotes": ["error", "double", { "allowTemplateLiterals": true }],
+        "indent": ["error", 4],
+        "max-len": ["error", 200],
+        "no-unused-vars": "off"
     }
+
 }

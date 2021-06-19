@@ -14,7 +14,7 @@ class LotAreas {
         const response = await client.putDocument({
             db,
             docId: lot._id,
-            document: lot
+            document: lot,
         });
         if (response.status >= 400) {
             throw new Error(response);
@@ -25,8 +25,8 @@ class LotAreas {
     async getLot(id) {
         const response = await client.getDocument({
             db,
-            docId: id
-        })
+            docId: id,
+        });
         if (response.status >= 400) {
             throw new Error(response);
         }
@@ -38,8 +38,8 @@ class LotAreas {
             db,
             queries: [{
                 include_docs: true,
-                keys: ids
-            }]
+                keys: ids,
+            }],
 
         });
         if (response.status >= 400) {
@@ -50,7 +50,7 @@ class LotAreas {
     }
 
     async getAreasInBbox(box) {
-        const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`
+        const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`;
         const result = await this.client.getGeo({
             db: this.db,
             ddoc: "newGeoIndexDov",
@@ -58,12 +58,27 @@ class LotAreas {
             bbox,
             includeDocs: true,
             nearest: true,
-            format: "geojson"
+            format: "geojson",
         });
         if (result.status >= 400) {
             throw result;
+        } else {
+            return result.result;
         }
-        else {
+    }
+
+    async getOverallCropDistribution() {
+        const result = await this.client.getGeo({
+            db: this.db,
+            ddoc: "newGeoIndexDov",
+            index: "newGeoIndex",
+            includeDocs: true,
+            nearest: true,
+            format: "geojson",
+        });
+        if (result.status >= 400) {
+            throw result;
+        } else {
             return result.result;
         }
     }

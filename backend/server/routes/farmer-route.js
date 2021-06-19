@@ -7,27 +7,27 @@ const client = require("./../db/cloudant");
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;
 
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 /**
- * 
+ *
  */
 const LotAreaService = require("./../services/lot-areas.service");
 const lotAreas = new LotAreaService();
 
-router.get("/", async (req, res) => {
+router.get("/", async(req, res) => {
     try {
         const farmers = await client.postPartitionAllDocs({
             db,
             includeDocs: true,
-            partitionKey: "farmer"
+            partitionKey: "farmer",
         });
         res.json(farmers.result.rows.map(it => it.doc));
     } catch (e) {
-            console.error(e);
-            res.status(500).json(e);
-        }
+        console.error(e);
+        res.status(500).json(e);
+    }
 });
 
 async function createOrUpdateFarmer(req, res) {
@@ -39,22 +39,21 @@ async function createOrUpdateFarmer(req, res) {
     try {
         const response = await client.postDocument({
             db,
-            document: farmer
-        })
+            document: farmer,
+        });
         res.json(response.result);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
-    
+
 }
 
 router.post("/", createOrUpdateFarmer);
 
 router.put("/", createOrUpdateFarmer);
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", async(req, res) => {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -63,18 +62,15 @@ router.get("/:id", async (req, res) => {
     try {
         const response = await client.getDocument({
             db,
-            docId: `farmer:${id}`
+            docId: `farmer:${id}`,
         });
         const farmer = response.result;
         farmer.lots = await lotAreas.getLots(farmer.lot_ids);
         res.json(farmer);
-    }
-    catch (e) {
-        if (e.status == 404) {
+    } catch (e) {
+        if (e.status === 404) {
             res.status(404).json(e);
-            return;
-        }
-        else {
+        } else {
             console.error(e);
             res.status(500).json(e);
         }
@@ -82,7 +78,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Delete Farmer
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", async(req, res) => {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -91,22 +87,21 @@ router.delete("/:id", async (req, res) => {
     try {
         const response = await client.deleteDocument({
             db,
-            docId: id
+            docId: id,
         });
-        res.json(response.result)
-    }
-    catch (e) {
+        res.json(response.result);
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
-    } 
-    
+    }
+
 });
 
 // Link Lot
-router.post(":id/lot", async (req, res) => {
+router.post(":id/lot", async(req, res) => {
     const id = req.params["id"];
     const lot = req.body; // Lot Details with crops
-    
+
     if (!id || !lot) {
         res.sendStatus(400).end();
         return;
@@ -119,20 +114,19 @@ router.post(":id/lot", async (req, res) => {
 
         const farmer = await client.getDocument({
             db,
-            docId: `farmer:${id}`
+            docId: `farmer:${id}`,
         });
 
-        farmer.lot_ids.append(lot._id); //Convert to int
+        farmer.lot_ids.append(lot._id); // Convert to int
 
         const newFarmer = await client.putDocument({
             db,
             docId: farmer._id,
-            document: farmer
+            document: farmer,
         });
 
-        res.json(newFarmer.result); 
-    }
-    catch (e) {
+        res.json(newFarmer.result);
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
@@ -140,7 +134,7 @@ router.post(":id/lot", async (req, res) => {
 });
 
 // Delete Lot link
-router.delete(":id/lot/:lot_id", async (req, res) => {
+router.delete(":id/lot/:lot_id", async(req, res) => {
     const id = req.params["id"];
     const lot_id = req.params["lot_id"];
 
@@ -152,13 +146,12 @@ router.delete(":id/lot/:lot_id", async (req, res) => {
     try {
         const farmer = await client.getDocument({
             db,
-            docId: `farmer:${id}`
+            docId: `farmer:${id}`,
         });
 
         if (farmer.lot_ids.includes(lot_id)) {
-            farmer.lot_ids = farmer.lot_ids.filter(it => it != lot_id);
-        }
-        else {
+            farmer.lot_ids = farmer.lot_ids.filter(it => it !== lot_id);
+        } else {
             res.sendStatus(400).end();
             return;
         }
@@ -166,16 +159,15 @@ router.delete(":id/lot/:lot_id", async (req, res) => {
         const newFarmer = await client.putDocument({
             db,
             docId: farmer._id,
-            document: farmer
+            document: farmer,
         });
 
         res.json(newFarmer.result);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
-    
+
 });
 
 module.exports = router;
