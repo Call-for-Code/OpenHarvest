@@ -1,8 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from 'carbon-components-angular';
-import { CropComponent } from '../crop/crop.component';
-import { LoginComponent } from '../login/login.component';
-import { LotComponent } from '../lot/lot.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -11,32 +8,46 @@ import { LotComponent } from '../lot/lot.component';
 })
 export class DashboardComponent implements OnInit {
 
-  @Input() modalText = "Hello, World";
+	data = [
+		{
+		  "group": "2V2N 9KYPM version 1",
+		  "value": 20000
+		},
+		{
+		  "group": "L22I P66EP L22I P66EP L22I P66EP",
+		  "value": 65000
+		},
+		{
+		  "group": "JQAI 2M4L1",
+		  "value": 75000
+		},
+		{
+		  "group": "J9DZ F37AP",
+		  "value": 1200
+		},
+		{
+		  "group": "YEL48 Q6XK YEL48",
+		  "value": 10000
+		},
+		{
+		  "group": "Misc",
+		  "value": 25000
+		}
+	  ];
 
-	@Input() size = "default";
+	  options = {
+		"title": "Donut",
+		"resizable": true,
+		"donut": {
+		  "center": {
+			"label": "Browsers"
+		  }
+		},
+		"height": "400px"
+	  };
 
   constructor(protected modalService: ModalService) { }
 
   ngOnInit(): void {
   }
-
-  cropDialog() {
-		this.modalService.create({
-			component: CropComponent,
-      inputs: {
-				modalText: this.modalText,
-				size: this.size
-			}
-		});
-	}
-
-  lotDialog() {
-		this.modalService.create({
-			component: LotComponent,
-      inputs: {
-				modalText: this.modalText,
-				size: this.size
-			}
-		});
-	}
 }
