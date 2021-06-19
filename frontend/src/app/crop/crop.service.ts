@@ -6,7 +6,7 @@ export interface Crop {
 	_rev: string;
 	type: string;
 	name: string;
-	planting_season: [string, string];
+	planting_season: string[];
 	time_to_harvest: number;
 }
 
@@ -21,5 +21,13 @@ export class CropService {
 
   getAllCrops() {
     return this.http.get<Crop[]>("/api/crop").toPromise();
+  }
+
+  addCrop(crop: Crop) {
+    return this.http.post<Crop>("/api/crop", crop).toPromise();
+  }
+
+  updateCrop(crop: Crop) {
+    return this.http.put<Crop>("/api/crop", crop).toPromise();
   }
 }

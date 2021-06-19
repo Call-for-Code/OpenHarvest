@@ -60,7 +60,7 @@ export class HeaderComponent {
 		});
 	}
 
-  lotDialog() {
+  	lotDialog() {
 		this.modalService.create({
 			component: LotComponent,
       inputs: {
@@ -76,5 +76,9 @@ export class HeaderComponent {
 
 	logout() {
 		this.loginService.logout();
+	}
+
+	getLoggedInUserName() {
+		return this.loginService.name;
 	}
 }

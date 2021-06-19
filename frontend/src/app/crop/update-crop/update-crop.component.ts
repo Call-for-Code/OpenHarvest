@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CropService } from '../crop.service';
 
 @Component({
   selector: 'app-update-crop',
@@ -11,7 +12,8 @@ export class UpdateCropComponent implements OnInit {
   searchForm: FormGroup;
   updateForm: FormGroup;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private service: CropService) { }
 
   ngOnInit(): void {
     this.searchForm = new FormGroup({
@@ -21,8 +23,9 @@ export class UpdateCropComponent implements OnInit {
     this.updateForm = new FormGroup({
       cropId: new FormControl('', [Validators.required]),
       cropName: new FormControl('', [Validators.required]),
-      plantingSeason: new FormControl('', [Validators.required]),
-      harvestTime: new FormControl('', [Validators.required])
+      plantingSeasonFrom: new FormControl('', [Validators.required]),
+      plantingSeasonTo: new FormControl('', [Validators.required]),
+      harvestTime: new FormControl('', [Validators.required, Validators.pattern("^[0-9]*$")])
     });
   }
 
@@ -38,8 +41,9 @@ export class UpdateCropComponent implements OnInit {
     const cropData = {
       cropId: this.searchForm.get('cropId'), 
       cropName: 'Crop 1',
-      plantingSeason: 'July',
-      harvestTime: 'Oct'
+      plantingSeasonFrom: 'July',
+      plantingSeasonTo: 'Oct',
+      harvestTime: 3
     };
 
     this.updateForm.patchValue(cropData);
@@ -50,8 +54,17 @@ export class UpdateCropComponent implements OnInit {
   }
 
   updateCrop() {
-    this.http.put("/crop", this.updateForm.value).subscribe((response) => {
-      console.log('Crop updated: ', this.updateForm.value);
-    });
+    const crop = {
+      _id: this.updateForm.get("cropId").value + '',
+      _rev: '',
+      type: 'crop',
+      name: this.updateForm.get("cropName").value + '',
+      planting_season: [this.updateForm.get("plantingSeasonFrom").value + '', this.updateForm.get("plantingSeasonTo").value + ''],
+      time_to_harvest: Number.parseInt(this.updateForm.get('harvestTime').value)
+    };
+
+    this.service.updateCrop(crop).then(res => {
+      console.log('Updated crop', res);
+    })
   }
 }

@@ -13,9 +13,7 @@ export class RegistrationService {
     }
 
     register(registration: Registration) {
-        //Register user and login automatically
-        //register()
-        this.http.post('http://localhost:3000/farmer', registration).subscribe((response) => {
+        this.http.post('/api/auth/register', registration).subscribe((response) => {
             this.loginService.authenticate({name: registration.name, password: registration.password});
         });
     }

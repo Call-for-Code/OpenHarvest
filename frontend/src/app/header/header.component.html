@@ -7,7 +7,7 @@
 	</ibm-header-navigation>
 	<ibm-header-global>
 		<ibm-header-navigation>
-			<ibm-header-menu title="User Name" *ngIf = "isUserLoggedIn()">
+			<ibm-header-menu title="{{getLoggedInUserName()}}" *ngIf = "isUserLoggedIn()">
 				<ibm-header-item (click) = "logout()">Sign Out</ibm-header-item>
 			</ibm-header-menu>
 			<ibm-header-menu title="Farmer" *ngIf = "!isUserLoggedIn()" ibmIcon="user--avatar">

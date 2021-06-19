@@ -36,10 +36,17 @@
                 Planting Season: 
                 <input
                     ibmText
-                    placeholder="Planting Season"
+                    placeholder="Planting Season From"
                     [autocomplete]="false"
-                    formControlName="plantingSeason"
-                    name="plantingSeason">
+                    formControlName="plantingSeasonFrom"
+                    name="plantingSeasonFrom"
+                    class="season-from">
+                <input
+                    ibmText
+                    placeholder="Planting Season To"
+                    [autocomplete]="false"
+                    formControlName="plantingSeasonTo"
+                    name="plantingSeasonTo">
             </ibm-label>
         </div>
         <div ibmRow class="form-item">
