@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -19,7 +19,8 @@ import {
 	TilesModule,
 	ButtonModule,
 	InputModule,
-	TableModule
+	TableModule,
+	ComboBoxModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -48,7 +49,6 @@ import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
-import { RecommendationFormComponent } from './recommendation/recommendation-form/recommendation-form.component';
 
 @NgModule({
 	declarations: [
@@ -72,8 +72,7 @@ import { RecommendationFormComponent } from './recommendation/recommendation-for
 		DeleteLotComponent,
 		SearchCropComponent,
 		SearchLotComponent,
-		RecommendationComponent,
-		RecommendationFormComponent
+		RecommendationComponent
 	],
 	imports: [
 		CommonModule,
@@ -94,7 +93,8 @@ import { RecommendationFormComponent } from './recommendation/recommendation-for
 		HttpClientModule,
 		TableModule,
 		ReactiveFormsModule,
-		ChartsModule
+		ChartsModule,
+		ComboBoxModule
 	],
 	bootstrap: [AppComponent]
 })
