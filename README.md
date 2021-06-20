@@ -28,7 +28,7 @@ Farmers in India are struggling with marketing their crops. The greatest instanc
 A central app for farmers to view the details of eachothers crops will allow them to make a more educated decision on what they will grow themselves to ensure profits.
 
 ### The idea
-projectname is a technology designed for the government of India. Farmers will be able to publicly share the details of their crops/land to allow all farmers to stay informed on the best crops they can grow without risk of a surplus crisis. 
+Open-Harvest is a technology designed for the government of India. Farmers will be able to publicly share the details of their crops/land to allow all farmers to stay informed on the best crops they can grow without risk of a surplus crisis. 
 Ultimately we will balance farming production.
 
 ## Demo video
