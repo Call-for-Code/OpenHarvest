@@ -20,10 +20,20 @@
 						"tsConfig": "src/tsconfig.app.json",
 						"polyfills": "src/polyfills.ts",
 						"assets": [
-							"src/favicon.ico"
+							"src/favicon.ico",
+							{
+								"glob": "**/*",
+								"input": "./node_modules/leaflet/dist/images",
+								"output": "assets/"
+							}
 						],
-						"styles": ["src/styles.scss"],
-						"scripts": [],
+						"styles": [
+							"src/styles.scss",
+							"./node_modules/leaflet/dist/leaflet.css"
+						],
+						"scripts": [
+							
+						],
 						"aot": true
 					},
 					"configurations": {

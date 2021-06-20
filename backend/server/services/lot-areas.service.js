@@ -1,3 +1,4 @@
+const {client, plantedCrops} = require("../db/cloudant");
 // const { CloudantV1 } = require("@ibm-cloud/cloudant");
 // const client = CloudantV1.newInstance({});
 
@@ -54,21 +55,38 @@ class LotAreas {
     }
 
     async getAreasInBbox(box) {
-        const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`;
-        const result = await client.getGeo({
-            db: db,
+        const bbox = `${box.lowerLeft.lng},${box.lowerLeft.lat},${box.upperRight.lng},${box.upperRight.lat}`;
+        const response = await client.getGeoAsStream({
+            db,
             ddoc: "newGeoIndexDoc",
             index: "newGeoIndex",
-            bbox,
             includeDocs: true,
-            nearest: true,
-            format: "geojson",
+            nearest: false,
+            bbox,
+            relation: "intersects",
+            format: "geojson"
         });
-        if (result.status >= 400) {
-            throw result;
-        } else {
-            return result.result;
+        
+        if (response.status >= 400) {
+            throw response;
         }
+
+        const stream = response.result;
+
+        let result = "";
+
+        stream.on('data', (data) => {
+            result += data.toString();
+        });
+
+        return new Promise((resolve, reject) => {
+            stream.on('end', () => {
+                const parsed = JSON.parse(result); 
+                console.log(parsed.features.length);
+                resolve(parsed);
+            });
+        });
+
     }
 
     async getOverallCropDistribution() {
