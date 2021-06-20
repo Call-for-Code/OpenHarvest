@@ -102,6 +102,6 @@ export class LandAreasService {
 
     const bboxStr = `${sw.lat},${sw.lng},${ne.lat},${ne.lng},`
     
-    return this.http.get<FeatureCollection>(`http://localhost:3000/land-areas/${bboxStr}`).toPromise();
+    return this.http.get<FeatureCollection>(`api/lot/inBbox/${bboxStr}`).toPromise();
   }
 }

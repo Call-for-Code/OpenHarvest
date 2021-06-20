@@ -35,7 +35,7 @@ router.put("/", async(req, res) => {
 });
 
 router.get("/inBbox/:bboxString", async(req, res) => {
-    const bboxStr = req.params("bboxString");
+    const bboxStr = req.params["bboxString"];
     console.log(bboxStr);
     const elems = bboxStr.split(",");
     const bbox = {
@@ -48,7 +48,16 @@ router.get("/inBbox/:bboxString", async(req, res) => {
             lng: elems[3]
         },
     }
-    
+    try {
+        const response = await lotAreas.getAreasInBbox(bbox);
+        // console.log(response);
+        res.json(response);
+    }
+    catch (e) {
+        console.error(e);
+        res.status(500).json(e);
+    }
+
 });
 
 module.exports = router;

@@ -3,7 +3,7 @@ import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectan
 
 // Import Leaflet Libraries
 import virtualGrid from 'leaflet-virtual-grid';
-import { LandAreasService } from "./../../services/land-areas.service";
+import { LotAreaCacheService } from "./../../services/lot-area-cache.service";
 
 @Component({
   selector: 'app-land-areas',
@@ -19,11 +19,11 @@ export class LandAreasComponent implements OnInit {
   options: MapOptions = {
     layers: [
       this.OSMBaseLayer,
-      // this.ESRISatelliteLayer
+      this.ESRISatelliteLayer
     ],
     zoom: 14,
-    minZoom: 8,
-    center: latLng(-33.908035299892994, 150.76915740966797)
+    minZoom: 12,
+    center: latLng(-33.751244, 141.965266)
   };
 
   landAreas = geoJSON(undefined, {
@@ -38,13 +38,15 @@ export class LandAreasComponent implements OnInit {
 
   layersControl = {
     baseLayers: {
-      // 'ESRI Satellite Layer': this.ESRISatelliteLayer,
       'Open Street Map': this.OSMBaseLayer,
+      'ESRI Satellite Layer': this.ESRISatelliteLayer,
     },
     overlays: {
       'Land Areas': this.landAreas,
     }
   }
+
+  map: Map;
 
   // Virtual Grids
   coordsToKey = (coords) => coords.x + ':' + coords.y + ':' + coords.z;
@@ -55,57 +57,81 @@ export class LandAreasComponent implements OnInit {
 
   rects = {};
 
-  constructor(private landAreasService: LandAreasService) {
+  constructor(private lotAreaCache: LotAreaCacheService) {
     console.log("rects", this.rects);
   }
 
   ngOnInit(): void {
   }
 
-  onMapReady(map: Map) {
-    // when new cells come into view...
-    this.grid.on('cellcreate', async (e) => {
-      console.log('cellcreate', e);
+  async onMapMoved(event: any) {
+    console.log("Moved", event);
+    if (this.map == undefined) {
+      return;
+    }
 
+    // console.log(this.map.getBounds());
+    // return;
 
-      this.rects[this.coordsToKey(e.coords)] = rectangle(e.bounds, {
-        color: '#3ac1f0',
-        weight: 2,
-        opacity: 0.5,
-        fillOpacity: 0.25
-      }).addTo(map);
-
-      try {
-        const areas = await this.landAreasService.getAreasQueued(e.bounds);
+    try {
+        const areas = await this.lotAreaCache.getAreas(this.map.getBounds());
         console.log(areas);
 
-        this.landAreas.addData(areas);
+        if (areas.features.length != 0) {
+          this.landAreas.addData(areas);
+        }
+
       }
       catch (e) {
         console.error("Failed to fetch Areas", e);
         return;
       }
+  }
 
-      
+  onMapReady(map: Map) {
+    this.map = map;
 
 
-    });
+    // when new cells come into view...
+    // this.grid.on('cellcreate', async (e) => {
+    //   console.log('cellcreate', e);
 
-    this.grid.on('cellenter', (e) => {
-      console.log('cellenter', e);
 
-      var rect = this.rects[this.coordsToKey(e.coords)];
-      map.addLayer(rect);
-    });
+    //   this.rects[this.coordsToKey(e.coords)] = rectangle(e.bounds, {
+    //     color: '#3ac1f0',
+    //     weight: 2,
+    //     opacity: 0.5,
+    //     fillOpacity: 0.25
+    //   }).addTo(map);
 
-    this.grid.on('cellleave', (e) => {
-      console.log('cellleave', e);
+    //   try {
+    //     const areas = await this.landAreasService.getAreasQueued(e.bounds);
+    //     console.log(areas);
 
-      var rect = this.rects[this.coordsToKey(e.coords)];
-      map.removeLayer(rect);
-    });
+    //     this.landAreas.addData(areas);
+    //   }
+    //   catch (e) {
+    //     console.error("Failed to fetch Areas", e);
+    //     return;
+    //   }
 
-    this.grid.addTo(map);
+    // });
+
+    // this.grid.on('cellenter', (e) => {
+    //   console.log('cellenter', e);
+
+    //   var rect = this.rects[this.coordsToKey(e.coords)];
+    //   map.addLayer(rect);
+    // });
+
+    // this.grid.on('cellleave', (e) => {
+    //   console.log('cellleave', e);
+
+    //   var rect = this.rects[this.coordsToKey(e.coords)];
+    //   map.removeLayer(rect);
+    // });
+
+    // this.grid.addTo(map);
 
     this.landAreas.addTo(map);
   }

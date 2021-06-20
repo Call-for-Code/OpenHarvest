@@ -72,5 +72,8 @@ function createOverallCropDistributionView() {
 }
 
 
-module.exports = client;
-module.exports = plantedCrops;
+module.exports = {
+    client,
+    plantedCrops,
+}
+//module.exports = plantedCrops;

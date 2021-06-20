@@ -13,7 +13,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 
-// const healthRoutes = require('./routes/health-route.js');
 const farmerRoutes = require("./routes/farmer-route.js");
 const authRoutes = require("./routes/auth-route.js");
 const lotRoutes = require("./routes/lot-route");

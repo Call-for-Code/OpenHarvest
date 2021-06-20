@@ -6,7 +6,7 @@
     "entrypoint": "server/server.js"
   },
   "scripts": {
-    "dev": "nodemon server/server.js",
+    "dev": "nodemon -w server/ server/server.js",
     "start": "node server/server.js",
     "check-coverage": "nyc report --check-coverage --lines 100",
     "lint": "eslint --ignore-path .gitignore .",
