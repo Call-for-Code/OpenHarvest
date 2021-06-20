@@ -1,0 +1,58 @@
+[
+    {
+        "_id": "crop:1",
+        "type": "crop",
+        "name": "Wheat",
+        "planting_season": [3, 7],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    },
+    {
+        "_id": "crop:2",
+        "type": "crop",
+        "name": "Barley",
+        "planting_season": [3, 7],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    },
+    {
+        "_id": "crop:3",
+        "type": "crop",
+        "name": "Canola",
+        "planting_season": [3, 7],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    },
+    {
+        "_id": "crop:4",
+        "type": "crop",
+        "name": "Grain",
+        "planting_season": [9, 2],
+        "is_ongoing": "false",
+        "time_to_harvest": 130
+    },
+    {
+        "_id": "crop:5",
+        "type": "crop",
+        "name": "Cotton",
+        "planting_season": [9, 2],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    },
+    {
+        "_id": "crop:6",
+        "type": "crop",
+        "name": "Cottonseed",
+        "planting_season": [9, 2],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    },
+    {
+        "_id": "crop:7",
+        "type": "crop",
+        "name": "Rice",
+        "planting_season": [9, 2],
+        "is_ongoing": "false",
+        "time_to_harvest": 150
+    }
+]
