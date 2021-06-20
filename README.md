@@ -43,11 +43,9 @@ Ultimately we will balance farming production.
 
 ## Project roadmap
 
-The project currently does the following things.
-
-- Feature 1
-- Feature 2
-- Feature 3
+- Feature 1:Dashboard UI displaying land and crop statistics
+- Feature 2: Farmer, crop, and lot registration
+- Feature 3:Connected to NoSQL DB 
 
 See below for our proposed schedule on next steps after Call for Code 2021 submission.
 
