@@ -7,6 +7,13 @@ export interface CropDistribution {
     distribution: number;
 }
 
+export interface CropProductionForecast {
+    crop: string;
+    date: Date;
+    yield: number;
+}
+
+
 @Injectable({
     providedIn: "root"
 })
@@ -18,5 +25,9 @@ export class DashboardService {
 
     getCropDistribution() {
         return this.http.get<CropDistribution[]>("/api/dashboard/crop-distribution").toPromise();
+    }
+
+    getCropProductionForecast() {
+        return this.http.get<CropProductionForecast[]>("/api/dashboard/crop-production-forecast").toPromise();
     }
 }

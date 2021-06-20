@@ -3,6 +3,7 @@ import { ModalService } from "carbon-components-angular";
 import { DashboardService } from "./dashboard.service";
 
 interface DonutChartProps { group: string; value: number; }
+interface AreaChartProps { group: string; date: Date; value: number; }
 
 
 @Component({
@@ -19,45 +20,29 @@ export class DashboardComponent implements OnInit {
         "resizable": true,
         "donut": {
             "center": {
-                "label": "Land Area"
+                "label": "Land Area (kha)"
             }
         },
         "height": "500px"
     };
 
-    data2 = [
-        {
-            "group": "Qty",
-            "value": 65000
-        },
-        {
-            "group": "More",
-            "value": 29123
-        },
-        {
-            "group": "Sold",
-            "value": 35213
-        },
-        {
-            "group": "Restocking",
-            "value": 51213
-        },
-        {
-            "group": "Misc",
-            "value": 16932
-        }
-    ];
+    data2: AreaChartProps[] = [];
     options2 = {
-        "title": "Vertical simple bar (discrete)",
+        "title": "Crop production - forecast",
         "axes": {
             "left": {
-                "mapsTo": "value"
+                "stacked": true,
+                "scaleType": "linear",
+                "mapsTo": "value",
+                "title": "Yield (kt)",
             },
             "bottom": {
-                "mapsTo": "group",
-                "scaleType": "labels"
+                "title": "Time",
+                "scaleType": "time",
+                "mapsTo": "date"
             }
         },
+        "curve": "curveMonotoneX",
         "height": "500px"
     };
 
@@ -69,9 +54,25 @@ export class DashboardComponent implements OnInit {
             .then(value => this.data = value.map(value1 => {
                 return {
                     group: value1.crop,
-                    value: value1.area
+                    value: value1.area / 1000
                 };
-            }))
+            }).sort(this.sortByGroup))
             .catch(() => this.data = []);
+
+        this.dashboardService.getCropProductionForecast()
+            .then(value => this.data2 = value.map(value1 => {
+                return {
+                    group: value1.crop,
+                    date: value1.date,
+                    value: value1.yield,
+                };
+            }).sort(this.sortByGroup))
+            .catch(() => this.data2 = []);
+    }
+
+    sortByGroup(a, b) {
+        const groupA = a.group.toUpperCase();
+        const groupB = b.group.toUpperCase();
+        return (groupA < groupB) ? -1 : (groupA > groupB) ? 1 : 0;
     }
 }

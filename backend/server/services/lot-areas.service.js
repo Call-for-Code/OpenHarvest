@@ -1,7 +1,8 @@
 // const { CloudantV1 } = require("@ibm-cloud/cloudant");
 // const client = CloudantV1.newInstance({});
 
-const plantedCrops = require("../db/cloudant");
+// const { plantedCrops, cropProductionForecast} = require("../db/cloudant");
+const {plantedCrops, plantedAreaView, cropProductionByMonthView, cropProductionForecast} = require("../db/cloudant");
 const { CloudantV1 } = require("@ibm-cloud/cloudant");
 const client = CloudantV1.newInstance({});
 
@@ -12,7 +13,6 @@ const db = LOT_DB;
 
 class LotAreas {
     constructor() {}
-
 
     async updateLot(lot) {
         const response = await client.putDocument({
@@ -56,7 +56,7 @@ class LotAreas {
     async getAreasInBbox(box) {
         const bbox = `${box.lowerLeft.lat},${box.lowerLeft.lng},${box.upperRight.lat},${box.upperRight.lng}`;
         const result = await client.getGeo({
-            db: this.db,
+            db: db,
             ddoc: "newGeoIndexDoc",
             index: "newGeoIndex",
             bbox,
@@ -72,13 +72,14 @@ class LotAreas {
     }
 
     async getOverallCropDistribution() {
-        const response = await client.postView({
+        const params = {
             db: LOT_DB,
             ddoc: plantedCrops,
-            view: "cropPlantedArea",
+            view: plantedAreaView,
             group: true,
             include_docs: true,
-        });
+        };
+        const response = await client.postView(params);
 
         if (response.status >= 400) {
             throw response;
@@ -88,6 +89,29 @@ class LotAreas {
                 return {
                     crop: row.key,
                     area: row.value,
+                };
+            });
+        }
+    }
+
+    async getCropProductionForecast() {
+        const response = await client.postView({
+            db: LOT_DB,
+            ddoc: cropProductionForecast,
+            view: cropProductionByMonthView,
+            group: true,
+            groupLevel: 2,
+        });
+
+        if (response.status >= 400) {
+            throw response;
+        } else {
+            const rows = response.result.rows;
+            return rows.map(row => {
+                return {
+                    date: row.key[0],
+                    crop: row.key[1],
+                    yield: row.value,
                 };
             });
         }

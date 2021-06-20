@@ -14,4 +14,14 @@ router.get("/crop-distribution", async(req, res) => {
     }
 });
 
+router.get("/crop-production-forecast", async(req, res) => {
+    try {
+        const cropProductionForecast = await lotAreas.getCropProductionForecast();
+        res.json(cropProductionForecast);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json(e);
+    }
+});
+
 module.exports = router;

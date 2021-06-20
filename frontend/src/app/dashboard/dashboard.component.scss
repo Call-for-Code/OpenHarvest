@@ -1,7 +1,17 @@
 :host {
   display: flex;
   width: 100%;
+  .area-chart {
+    margin: 1rem;
+    flex: auto;
+  }
+  .donut-chart {
+    margin: 1rem;
+  }
+
   ibm-donut-chart {
     height: 500px;
+    width: 500px;
+
   }
 }
