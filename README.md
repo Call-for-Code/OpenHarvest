@@ -42,7 +42,7 @@ Ultimately we will balance farming production.
 [More detail are available here](./DESCRIPTION.md)
 
 ## Project roadmap
-
+Current Features:
 - Feature 1:Dashboard UI displaying land and crop statistics
 - Feature 2: Farmer, crop, and lot registration
 - Feature 3:Connected to NoSQL DB 
