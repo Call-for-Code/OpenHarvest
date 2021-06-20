@@ -8,13 +8,10 @@ import { Registration } from "./registration";
 })
 export class RegistrationService {
 
-    constructor(protected loginService: LoginService,
-        private http: HttpClient) {
+    constructor(private http: HttpClient) {
     }
 
     register(registration: Registration) {
-        this.http.post('/api/auth/register', registration).subscribe((response) => {
-            this.loginService.authenticate({name: registration.name, password: registration.password});
-        });
+        return this.http.post('/api/auth/register', registration).toPromise();
     }
 }

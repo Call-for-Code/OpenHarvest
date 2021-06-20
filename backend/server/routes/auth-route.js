@@ -12,13 +12,14 @@ router.use(cors());
 router.post("/login", async(req, res) => {
 
     const {name, password} = req.body;
+    const loginSuccess = await authService.login(name, password);
 
-    if (authService.login(name, password)) {
+    if (loginSuccess) {
         req.session.loggedIn = true;
         req.session.name = name;
         res.json({name: name});
     } else {
-        res.status(401);
+        res.status(401).send("Invalid name/password!");
     }
 });
 
@@ -31,15 +32,22 @@ router.post("/logout", async(req, res) => {
 
 router.post("/register", async(req, res) => {
     const farmer = req.body;
+
     if (!farmer) {
         res.sendStatus(400).end();
         return;
     }
+
+    const userExists = await authService.isUserExists(farmer.name);
+    if (userExists) {
+        res.status(400).send("User already exists!").end();
+        return;
+    }
+
     try {
         const response = authService.register(farmer.name, farmer.password, farmer.mobileNumber);
         res.json(response);
     } catch (e) {
-        console.error(e);
         res.status(500).json(e);
     }
 });

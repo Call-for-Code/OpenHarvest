@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { LoginService } from '../login/login.service';
 import { RegistrationService } from './registration.service';
 
 @Component({
@@ -10,12 +11,14 @@ import { RegistrationService } from './registration.service';
 })
 export class RegistrationComponent extends BaseModal implements OnInit {
   registrationForm: FormGroup;
+  notification: Object;
 
   constructor(
     @Inject("modalText") public modalText,
 		@Inject("size") public size,
     protected modalService: ModalService,
-    protected registrationService: RegistrationService) {
+    protected registrationService: RegistrationService,
+    protected loginService: LoginService) {
     super();
    }
 
@@ -28,12 +31,28 @@ export class RegistrationComponent extends BaseModal implements OnInit {
   }
 
   register() {
-    this.registrationService.register(this.registrationForm.value);
-    this.closeModal();
+    const registration = this.registrationForm.value;
+    this.registrationService.register(registration).then(response => {
+      console.log('Response ', response);
+      this.loginService.authenticate({name: registration.name, password: registration.password});
+      this.closeModal();
+    }).catch(e => {
+      this.notification = {
+        type: 'error',
+        title: '',
+        message: e.error,
+        showClose: false,
+        lowContrast: true
+      };
+    });
   }
 
   isFormInvalid() {
     return this.registrationForm.invalid;
+  }
+
+  showNotification() {
+    return this.notification;
   }
 
 }

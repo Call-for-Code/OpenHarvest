@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, MinLengthValidator, Validators } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { Registration } from '../registration/registration';
 import { Login } from './login';
 import { LoginService } from './login.service';
 
@@ -11,6 +12,7 @@ import { LoginService } from './login.service';
 })
 export class LoginComponent extends BaseModal implements OnInit {
   loginForm: FormGroup;
+  notification: Object;
 
   constructor(
     @Inject("modalText") public modalText,
@@ -29,13 +31,28 @@ export class LoginComponent extends BaseModal implements OnInit {
 
   login() {
     //Login here and close when login is successful.
-    this.loginService.authenticate(this.loginForm.value);
-
-    this.closeModal();
+    this.loginService.authenticate(this.loginForm.value).then((res: Registration) => {
+      console.log('Response ', res);
+      this.loginService.setUserName(res.name);
+      this.closeModal();
+    }).catch(e => {
+      this.notification = {
+        type: 'error',
+        title: '',
+        message: e.error,
+        showClose: false,
+        lowContrast: true
+      };
+    });
+   
   }
 
   isInvalidForm() {
     return this.loginForm.invalid;
+  }
+
+  showNotification() {
+    return this.notification;
   }
 
 }

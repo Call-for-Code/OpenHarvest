@@ -6,6 +6,8 @@
         <h3 ibmModalHeaderHeading>Register</h3>
     </ibm-modal-header>
     <section ibmModalContent hasForm="true">
+        <ibm-notification [notificationObj]="notification" *ngIf="showNotification()">
+        </ibm-notification>
         <form [formGroup]="registrationForm">
             <div class="bx--text-input__field-wrapper">
                 <ibm-label>

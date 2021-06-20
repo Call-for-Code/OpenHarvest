@@ -22,7 +22,8 @@ import {
 	ButtonModule,
 	InputModule,
 	TableModule,
-	ComboBoxModule
+	ComboBoxModule,
+	NotificationModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -99,7 +100,8 @@ import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
 		TableModule,
 		ReactiveFormsModule,
 		ChartsModule,
-		ComboBoxModule
+		ComboBoxModule,
+		NotificationModule,
 	],
 	bootstrap: [AppComponent]
 })

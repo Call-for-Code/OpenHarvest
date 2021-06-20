@@ -1,41 +1,53 @@
-const client = require("./../db/cloudant");
+const { CloudantV1 } = require("@ibm-cloud/cloudant");
+const client = CloudantV1.newInstance({});
 
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;
 
-class Auth {
+class AuthService {
 
     constructor() {
     }
 
     async login(name, password) {
-        const farmers = await client.postPartitionFind({
+        const user = await client.getDocument({
             db,
-            includeDocs: true,
-            partitionKey: "farmer",
-            selector: {
-                name: name,
-            },
+            docId: "farmer:" + name,
+        }).catch(() => {
+            return {result: {}};
         });
 
-        console.log(farmers.result);
-
-        return true;
+        return user.result.password === password;
     }
 
     async register(name, password, mobileNumber) {
+        const userDoc = {
+            _id: "farmer:" + name,
+            type: "farmer",
+            name: name,
+            password: password,
+            mobileNumber: mobileNumber,
+        };
+
         const response = await client.postDocument({
             db,
-            document: {
-                name: name,
-                password: password,
-                mobileNumber: mobileNumber,
-            },
+            document: userDoc,
         });
 
         return response.result;
     }
 
+    async isUserExists(name) {
+        const user = await client.getDocument({
+            db,
+            docId: "farmer:" + name,
+        }).catch(() => {
+            return null;
+        });
+
+        return user !== null;
+    }
+
 }
 
-module.exports = Auth;
+module.exports = AuthService;

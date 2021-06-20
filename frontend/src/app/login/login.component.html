@@ -7,6 +7,8 @@
     </ibm-modal-header>
     <section ibmModalContent hasForm="true">
         <form [formGroup]="loginForm">
+            <ibm-notification [notificationObj]="notification" *ngIf="showNotification()">
+            </ibm-notification>
             <div class="bx--text-input__field-wrapper">
                 <ibm-label>
                     User name: 

@@ -7,27 +7,31 @@ import { Login } from "./login";
 })
 export class LoginService {
     name = 'User Name';
-    loggedIn = true;
     constructor(private http: HttpClient) {}
 
     authenticate(login: Login) {
-        console.log('Authenticated!!!');
-
-        //Change URL here
-        this.http.post('/api/auth/login', login).subscribe((response: Login) => {
-            this.loggedIn = true;
-            this.name = response.name;
-        });
+        return this.http.post('/api/auth/login', login).toPromise();
     }
 
     logout() {
         this.http.post('/api/auth/logout', {}).subscribe((response) => {
-            this.loggedIn = false;
+            this.removeUserName();
         });
     }
 
     isAlreadyLoggedIn() {
-        //Add logic to validate whether user is already logged in or not
-        return this.loggedIn;
+        return this.getUserName();
+    }
+
+    setUserName(name) {
+        localStorage.setItem('name', name);
+    }
+
+    getUserName() {
+        return localStorage.getItem('name');
+    }
+
+    removeUserName() {
+        localStorage.removeItem('name');
     }
 }
