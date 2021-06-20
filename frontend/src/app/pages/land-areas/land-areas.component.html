@@ -1,0 +1,11 @@
+<h1>Land Areas using Virtual Grids</h1>
+
+<div 
+    style="height: 700px; width: 1800px;"
+    leaflet
+    [leafletOptions]="options"
+    [leafletLayersControl]="layersControl"
+    (leafletMapReady)="onMapReady($event)"
+    (leafletMapMoveEnd)="onMapMoved($event)"
+    (leafletMapZoomEnd)="onMapMoved($event)">
+</div>
