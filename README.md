@@ -55,10 +55,12 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 
 ## Getting started
 
-In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
+### Prerequisites
 
-- [sample-react-app](./sample-react-app/README.md)
-- [Explore other projects](https://github.com/upkarlidder/ibmhacks)
+* [node](https://nodejs.org/) and [npm](https://www.npmjs.com/) (Included with node)
+* [git](https://git-scm.com/)
+
+./build.sh
 
 ## Built with
 
