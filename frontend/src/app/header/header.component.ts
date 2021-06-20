@@ -79,6 +79,6 @@ export class HeaderComponent {
 	}
 
 	getLoggedInUserName() {
-		return this.loginService.name;
+		return this.loginService.getUserName();
 	}
 }
