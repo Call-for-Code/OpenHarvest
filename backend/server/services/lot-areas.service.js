@@ -1,11 +1,11 @@
-const {client, plantedCrops} = require("../db/cloudant");
+// const {client, plantedCrops} = require("../db/cloudant");
 // const { CloudantV1 } = require("@ibm-cloud/cloudant");
 // const client = CloudantV1.newInstance({});
 
 // const { plantedCrops, cropProductionForecast} = require("../db/cloudant");
-const {plantedCrops, plantedAreaView, cropProductionByMonthView, cropProductionForecast} = require("../db/cloudant");
-const { CloudantV1 } = require("@ibm-cloud/cloudant");
-const client = CloudantV1.newInstance({});
+const {client, plantedCrops, plantedAreaView, cropProductionByMonthView, cropProductionForecast} = require("../db/cloudant");
+// const { CloudantV1 } = require("@ibm-cloud/cloudant");
+// const client = CloudantV1.newInstance({});
 
 const LOT_DB = "lot-areas";
 const db = LOT_DB;
@@ -64,9 +64,9 @@ class LotAreas {
             nearest: false,
             bbox,
             relation: "intersects",
-            format: "geojson"
+            format: "geojson",
         });
-        
+
         if (response.status >= 400) {
             throw response;
         }
@@ -75,13 +75,13 @@ class LotAreas {
 
         let result = "";
 
-        stream.on('data', (data) => {
+        stream.on("data", (data) => {
             result += data.toString();
         });
 
-        return new Promise((resolve, reject) => {
-            stream.on('end', () => {
-                const parsed = JSON.parse(result); 
+        return new Promise((resolve) => {
+            stream.on("end", () => {
+                const parsed = JSON.parse(result);
                 console.log(parsed.features.length);
                 resolve(parsed);
             });
