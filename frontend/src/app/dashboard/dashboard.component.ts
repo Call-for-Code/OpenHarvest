@@ -23,6 +23,12 @@ export class DashboardComponent implements OnInit {
                 "label": "Land Area (kha)"
             }
         },
+        "legend": {
+            "alignment": "center"
+        },
+        "data": {
+            "loading": true
+        },
         "height": "500px"
     };
 
@@ -42,6 +48,12 @@ export class DashboardComponent implements OnInit {
                 "mapsTo": "date"
             }
         },
+        "legend": {
+            "alignment": "center"
+        },
+        "data": {
+            "loading": true
+        },
         "curve": "curveMonotoneX",
         "height": "500px"
     };
@@ -51,22 +63,32 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit(): void {
         this.dashboardService.getCropDistribution()
-            .then(value => this.data = value.map(value1 => {
-                return {
-                    group: value1.crop,
-                    value: value1.area / 1000
-                };
-            }).sort(this.sortByGroup))
+            .then(value => {
+                this.data = value.map(value1 => {
+                    return {
+                        group: value1.crop,
+                        value: value1.area / 1000
+                    };
+                }).sort(this.sortByGroup);
+                this.options.legend["order"] = this.data.map(value1 => value1.group).sort();
+                this.options.data.loading = false;
+                this.options = {...this.options};
+            })
             .catch(() => this.data = []);
 
         this.dashboardService.getCropProductionForecast()
-            .then(value => this.data2 = value.map(value1 => {
-                return {
-                    group: value1.crop,
-                    date: value1.date,
-                    value: value1.yield,
-                };
-            }).sort(this.sortByGroup))
+            .then(value => {
+                this.data2 = value.map(value1 => {
+                    return {
+                        group: value1.crop,
+                        date: value1.date,
+                        value: value1.yield,
+                    };
+                });
+                this.options2.legend["order"] = this.data2.map(value1 => value1.group).sort();
+                this.options2.data.loading = false;
+                this.options2 = {...this.options2};
+            })
             .catch(() => this.data2 = []);
     }
 
