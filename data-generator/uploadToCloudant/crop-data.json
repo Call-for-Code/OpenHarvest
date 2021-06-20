@@ -5,7 +5,8 @@
         "name": "Wheat",
         "planting_season": [3, 7],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 2400
     },
     {
         "_id": "crop:2",
@@ -13,7 +14,8 @@
         "name": "Barley",
         "planting_season": [3, 7],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 2350
     },
     {
         "_id": "crop:3",
@@ -21,7 +23,8 @@
         "name": "Canola",
         "planting_season": [3, 7],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 1500
     },
     {
         "_id": "crop:4",
@@ -29,7 +32,8 @@
         "name": "Grain",
         "planting_season": [9, 2],
         "is_ongoing": "false",
-        "time_to_harvest": 130
+        "time_to_harvest": 150,
+        "yield": 4000
     },
     {
         "_id": "crop:5",
@@ -37,7 +41,8 @@
         "name": "Cotton",
         "planting_season": [9, 2],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 2000
     },
     {
         "_id": "crop:6",
@@ -45,7 +50,8 @@
         "name": "Cottonseed",
         "planting_season": [9, 2],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 2830
     },
     {
         "_id": "crop:7",
@@ -53,6 +59,7 @@
         "name": "Rice",
         "planting_season": [9, 2],
         "is_ongoing": "false",
-        "time_to_harvest": 150
+        "time_to_harvest": 150,
+        "yield": 9980
     }
 ]

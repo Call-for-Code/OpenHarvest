@@ -14,6 +14,12 @@ function addDays(date, days) {
     return result;
 }
 
+function subtractDate(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
 function getRandomInt(min, max) {
     min = Math.ceil(min);
     max = Math.floor(max);
@@ -75,21 +81,24 @@ async function main() {
         delete data[i].properties.Crop;
         
         // get in season crops
-        const seasonCrops = crops.filter(it => {
-            const [start, end] = it.planting_season;
-            // If it rolls over the year
-            if (end < start) {
-                return (currMonth >= start || currMonth <= end)
-            }
-            else {
-                return currMonth >= start && currMonth <= end;
-            }
-        });
+        // const seasonCrops = crops.filter(it => {
+        //     const [start, end] = it.planting_season;
+        //     // If it rolls over the year
+        //     if (end < start) {
+        //         return (currMonth >= start || currMonth <= end)
+        //     }
+        //     else {
+        //         return currMonth >= start && currMonth <= end;
+        //     }
+        // });
 
-        const selectedCrop = randomCrop(seasonCrops);
+        const selectedCrop = randomCrop(crops);
 
-        const startPlantingDate = new Date(currDate.getFullYear(), selectedCrop.planting_season[0], 1);
-        const actualPlantedDate = addDays(startPlantingDate, getRandomInt(0, 45)); // Generate a random planted date
+        // const startPlantingDate = new Date(currDate.getFullYear(), selectedCrop.planting_season[0], 1);
+        // const actualPlantedDate = addDays(startPlantingDate, getRandomInt(0, 45)); // Generate a random planted date
+
+        const startPlanting = subtractDate(new Date(), selectedCrop.time_to_harvest);
+        const actualPlantedDate = addDays(startPlanting, getRandomInt(0, selectedCrop.time_to_harvest)); // Generate a random planted date
         
         // Calculate Centre
         const centre = centreOfMass(data[i]);
@@ -97,7 +106,7 @@ async function main() {
 
         data[i].properties.data = {
             Area_Ha: data[i].properties.Area_Ha,
-            centre: centre.geometry.coordinates,
+            centre: centre.geometry,
             crops_planted: [{
                 name: selectedCrop.name,
                 planted: actualPlantedDate,
