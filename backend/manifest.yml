@@ -6,6 +6,6 @@ applications:
   buildpack: nodejs_buildpack
   command: npm start
   disk_quota: 1G
-  memory: 256MB
+  memory: 128MB
   env:
     OPTIMIZE_MEMORY: true
