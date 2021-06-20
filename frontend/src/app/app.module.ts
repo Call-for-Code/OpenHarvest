@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
+import { LeafletModule } from "@asymmetrik/ngx-leaflet";
+
 // carbon-components-angular default imports
 import {
 	IconModule,
@@ -49,6 +51,7 @@ import { DeleteLotComponent } from './lot/delete-lot/delete-lot.component';
 import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
+import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
 
 @NgModule({
 	declarations: [
@@ -72,7 +75,8 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 		DeleteLotComponent,
 		SearchCropComponent,
 		SearchLotComponent,
-		RecommendationComponent
+		RecommendationComponent,
+		LandAreasComponent
 	],
 	imports: [
 		CommonModule,
@@ -81,6 +85,7 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 		FormsModule,
 		AppRoutingModule,
 		UIShellModule,
+		LeafletModule,
 		IconModule,
 		ModalModule,
 		PlaceholderModule,

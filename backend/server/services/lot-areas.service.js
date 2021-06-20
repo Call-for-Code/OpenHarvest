@@ -59,10 +59,11 @@ class LotAreas {
             db: this.db,
             ddoc: "newGeoIndexDoc",
             index: "newGeoIndex",
-            bbox,
             includeDocs: true,
-            nearest: true,
-            format: "geojson",
+            nearest: false,
+            bbox,
+            relation: "contains",
+            format: "geojson"
         });
         if (result.status >= 400) {
             throw result;
