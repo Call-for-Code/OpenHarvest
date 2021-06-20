@@ -1,5 +1,30 @@
 const axios = require("axios").default;
 const fs = require("fs");
+const centreOfMass = require("@turf/center-of-mass").default;
+
+const crops = JSON.parse(fs.readFileSync("crop-data.json", 'utf8'));
+
+function randomCrop(crops) {
+    return crops[Math.floor(Math.random()*crops.length)];
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
+
+function subtractDate(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() - days);
+    return result;
+}
+
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 async function getToken(apikey) {
     const params = {
@@ -46,13 +71,52 @@ async function main() {
     console.log("Reading File...");
     const data = JSON.parse(fs.readFileSync("./../output/features.json", 'utf8'));
 
+    const currDate = new Date();
+    const currMonth = currDate.getMonth();
+
     // set _id's for all records
     console.log("Matching _id and fid");
     for (let i = 0; i < data.length; i++) {
         data[i]._id = "" + data[i].properties.fid;
+        delete data[i].properties.Crop;
+        
+        // get in season crops
+        // const seasonCrops = crops.filter(it => {
+        //     const [start, end] = it.planting_season;
+        //     // If it rolls over the year
+        //     if (end < start) {
+        //         return (currMonth >= start || currMonth <= end)
+        //     }
+        //     else {
+        //         return currMonth >= start && currMonth <= end;
+        //     }
+        // });
+
+        const selectedCrop = randomCrop(crops);
+
+        // const startPlantingDate = new Date(currDate.getFullYear(), selectedCrop.planting_season[0], 1);
+        // const actualPlantedDate = addDays(startPlantingDate, getRandomInt(0, 45)); // Generate a random planted date
+
+        const startPlanting = subtractDate(new Date(), selectedCrop.time_to_harvest);
+        const actualPlantedDate = addDays(startPlanting, getRandomInt(0, selectedCrop.time_to_harvest)); // Generate a random planted date
+        
+        // Calculate Centre
+        const centre = centreOfMass(data[i]);
+        
+
         data[i].properties.data = {
-            crops_planted: []
+            Area_Ha: data[i].properties.Area_Ha,
+            centre: centre.geometry,
+            crops_planted: [{
+                name: selectedCrop.name,
+                planted: actualPlantedDate,
+                harvested: null,
+                crop: selectedCrop
+            }]
         }
+
+        // console.log(data[i].properties.data);
+        // process.exit();
     }
 
     const chunkSize = 1000;
