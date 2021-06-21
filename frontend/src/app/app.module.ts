@@ -53,6 +53,7 @@ import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
 import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
+import { TileComponentComponent } from './tile-component/tile-component.component';
 
 @NgModule({
 	declarations: [
@@ -77,7 +78,8 @@ import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
 		SearchCropComponent,
 		SearchLotComponent,
 		RecommendationComponent,
-		LandAreasComponent
+		LandAreasComponent,
+		TileComponentComponent
 	],
 	imports: [
 		CommonModule,
