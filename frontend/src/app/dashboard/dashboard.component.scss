@@ -1,3 +1,25 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .tiles {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    
+    ibm-tile {
+      margin-left: 5rem;
+      margin-right: 3rem;
+    }
+  }
+
+  .graphics {
+    display: flex;
+    width: 100%;
+  }
+}
+
 :host {
   display: flex;
   width: 100%;

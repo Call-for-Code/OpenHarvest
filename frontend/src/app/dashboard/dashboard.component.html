@@ -1,27 +1,30 @@
+<div class="dashboard">
+    <div class="tiles">
+        <ibm-tile >
+            Total farmers:
+        </ibm-tile>
+        <ibm-tile >
+            Total crops planted:
+        </ibm-tile>
+        <ibm-tile >
+            Total crops harvested:
+        </ibm-tile>
+        <ibm-tile >
+            Total lots:
+        </ibm-tile>
+        <ibm-tile >
+            Total area registered:
+        </ibm-tile>
+    </div>
 
-
-<div style="display: flex; flex-flow: row wrap; justify-content: space-around;">
-    <ibm-tile >
-        Total farmers:
-    </ibm-tile>
-    <ibm-tile >
-        Total crops planted:
-    </ibm-tile>
-    <ibm-tile >
-        Total crops harvested:
-    </ibm-tile>
-    <ibm-tile >
-        Total lots:
-    </ibm-tile>
-    
-    <ibm-tile >
-        Total area registered:
-    </ibm-tile>
+    <div class="graphics">
+        <div class="donut-chart">
+            <ibm-donut-chart [data]="data" [options]="options" ></ibm-donut-chart>
+        </div>
+        <div class="area-chart">
+            <ibm-stacked-area-chart [data]="data2" [options]="options2"></ibm-stacked-area-chart>
+        </div>
+    </div>
 </div>
 
-<div class="donut-chart">
-    <ibm-donut-chart [data]="data" [options]="options" ></ibm-donut-chart>
-</div>
-<div class="area-chart">
-    <ibm-stacked-area-chart [data]="data2" [options]="options2"></ibm-stacked-area-chart>
-</div>
+
