@@ -58,7 +58,11 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 * [node](https://nodejs.org/) and [npm](https://www.npmjs.com/) (Included with node)
 * [git](https://git-scm.com/)
 
+###Building app
 ./build.sh
+cd backend
+npm i
+npm start
 
 ## Built with
 
