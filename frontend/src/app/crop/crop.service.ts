@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 
 export interface Crop {
 	_id: string;
-	_rev: string;
+	_rev?: string;
 	type: string;
 	name: string;
 	planting_season: string[];
@@ -19,6 +19,10 @@ export class CropService {
 
   }
 
+  getCrop(id) {
+    return this.http.get<Crop>(`/api/crop/${id}`).toPromise();
+  }
+
   getAllCrops() {
     return this.http.get<Crop[]>("/api/crop").toPromise();
   }
@@ -29,5 +33,9 @@ export class CropService {
 
   updateCrop(crop: Crop) {
     return this.http.put<Crop>("/api/crop", crop).toPromise();
+  }
+
+  deleteCrop(id) {
+    return this.http.delete<Crop>(`/api/crop/${id}`).toPromise();
   }
 }

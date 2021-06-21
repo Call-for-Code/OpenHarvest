@@ -10,6 +10,7 @@ import { CropService } from '../crop.service';
 })
 export class AddCropComponent implements OnInit {
   cropForm: FormGroup;
+  notification: Object;
 
   constructor(private http: HttpClient,
     private service: CropService) { }
@@ -28,9 +29,10 @@ export class AddCropComponent implements OnInit {
   }
 
   addCrop() {
+    this.unsetNotification();
+
     const crop = {
-      _id: '',
-      _rev: '',
+      _id: 'crop:' + this.cropForm.get("cropName").value,
       type: 'crop',
       name: this.cropForm.get("cropName").value + '',
       planting_season: [this.cropForm.get("plantingSeasonFrom").value + '', this.cropForm.get("plantingSeasonTo").value + ''],
@@ -38,8 +40,29 @@ export class AddCropComponent implements OnInit {
     };
 
     this.service.addCrop(crop).then(res => {
-      console.log('Added crop', res);
+      this.setNotification('success', 'Added crop successfully!');
+    }).catch((e) => {
+      this.setNotification('error', e.error);
     });
   }
 
+  showNotification() {
+    return this.notification;
+  }
+
+  setNotification(type, message) {
+    this.notification = {
+      type: type,
+      title: '',
+      message: message,
+      showClose: false,
+      lowContrast: true
+    };
+
+    setTimeout(this.unsetNotification.bind(this), 5000);
+  }
+
+  unsetNotification() {
+    this.notification = undefined;
+  }
 }
