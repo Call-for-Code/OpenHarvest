@@ -4,6 +4,10 @@ form {
 
     .form-item {
         margin: 1rem;
+    
+        ibm-combo-box {
+            width: 25rem;
+        }
 
         button {
             margin: 0.2rem;

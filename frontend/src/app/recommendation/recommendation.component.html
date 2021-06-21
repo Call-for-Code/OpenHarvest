@@ -10,7 +10,7 @@
         <div ibmRow class="form-item">
             <ibm-combo-box [items]="crops" appendInline="true" 
                 label="Crop" placeholder="Select Crop" [(ngModel)]="selectedCrop" 
-                name="crops" (selected)="onSelectedCrop($event)">
+                name="crops" (selected)="onSelectedCrop($event)" type="multi">
                 <ibm-dropdown-list></ibm-dropdown-list>
         </ibm-combo-box>
         </div>
