@@ -14,9 +14,7 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   selectedLot = [];
   selectedCrop = [];
 
-  constructor(@Inject("modalText") public modalText,
-				@Inject("size") public size,
-				protected modalService: ModalService) { 
+  constructor(protected modalService: ModalService) { 
 		super();
 	}
 
@@ -26,7 +24,6 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   }
 
   recommend() {
-
   }
 
   isFormInvalid() {

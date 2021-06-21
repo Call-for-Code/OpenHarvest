@@ -1,3 +1,12 @@
-.bx--modal-content {
-    height: 16rem;
+form {
+    width: 25rem;
+    height: 20rem;
+
+    .form-item {
+        margin: 1rem;
+
+        button {
+            margin: 0.2rem;
+        }
+    }
 }

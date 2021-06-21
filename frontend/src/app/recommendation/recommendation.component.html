@@ -1,30 +1,24 @@
-<ibm-modal
-    [size]="size"
-    [open]="open"
-    (overlaySelected)="closeModal()">
-    <ibm-modal-header (closeSelect)="closeModal()">
-        <h3 ibmModalHeaderHeading>Recommendation</h3>
-    </ibm-modal-header>
-    <section ibmModalContent hasForm="true">
-        <form>
-            <div class="bx--text-input__field-wrapper">
-                <ibm-combo-box [items]="lots" appendInline="true" 
+<form>
+    <div ibmGrid>
+        <div ibmRow class="form-item">
+            <ibm-combo-box [items]="lots" appendInline="true" 
                 label="Lot" placeholder="Select Lot" [(ngModel)]="selectedLot" 
                 name="lots" (selected)="onSelectedLot($event)">
-                    <ibm-dropdown-list></ibm-dropdown-list>
-                </ibm-combo-box>
-            </div>
-            <div class="bx--text-input__field-wrapper">
-                <ibm-combo-box [items]="crops" appendInline="true" 
+                <ibm-dropdown-list></ibm-dropdown-list>
+            </ibm-combo-box>
+        </div>
+        <div ibmRow class="form-item">
+            <ibm-combo-box [items]="crops" appendInline="true" 
                 label="Crop" placeholder="Select Crop" [(ngModel)]="selectedCrop" 
                 name="crops" (selected)="onSelectedCrop($event)">
-                    <ibm-dropdown-list></ibm-dropdown-list>
-                </ibm-combo-box>
-            </div>
-        </form>
-    </section>
-    <ibm-modal-footer>
-        <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="recommend()" [disabled] = "isFormInvalid()">Recomend</button>
-        <button class="bx--btn bx--btn--secondary" modal-primary-focus (click)="closeModal()">Close</button>
-    </ibm-modal-footer>
-</ibm-modal>
+                <ibm-dropdown-list></ibm-dropdown-list>
+        </ibm-combo-box>
+        </div>
+
+        <div ibmRow class="form-item action">
+            <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="recommend()" [disabled] = "isFormInvalid()">Recomend</button>
+            <button class="bx--btn bx--btn--secondary" modal-primary-focus (click)="closeModal()">Close</button>
+        </div>
+    </div>
+    
+</form>

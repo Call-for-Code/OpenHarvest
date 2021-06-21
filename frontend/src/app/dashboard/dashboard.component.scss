@@ -9,8 +9,15 @@
     justify-content: space-between;
     
     ibm-tile {
-      margin-left: 5rem;
-      margin-right: 3rem;
+      width: 21rem;
+      background-color: #dfecff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .title h5 {
+        text-transform: capitalize;
+      }
     }
   }
 
