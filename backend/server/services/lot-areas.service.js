@@ -80,6 +80,7 @@ class LotAreas {
             bbox,
             relation: "intersects",
             format: "geojson",
+            limit: 200
         });
 
         if (response.status >= 400) {

@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectangle, geoJSON, LatLng } from "leaflet";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectangle, geoJSON, LatLng, latLngBounds, LatLngBounds } from "leaflet";
+import squareGrid from "@turf/square-grid";
 
 // Import Leaflet Libraries
-import virtualGrid from 'leaflet-virtual-grid';
 import { LotAreaCacheService } from "./../../services/lot-area-cache.service";
+import { nswMask } from "./masks";
+import { Feature, Polygon } from "geojson";
 
 @Component({
   selector: 'app-land-areas',
@@ -13,16 +15,42 @@ import { LotAreaCacheService } from "./../../services/lot-area-cache.service";
 export class LandAreasComponent implements OnInit {
 
 
+  @Output() featureClick = new EventEmitter<Feature>();
+
   OSMBaseLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
   ESRISatelliteLayer = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community' });
 
+  bboxGridGeojson = squareGrid([140.822754, -37.579413, 153.830566, -28.091366], 50, {
+    mask: nswMask as Feature<Polygon>
+  });
+
+  bboxGridBounds = this.bboxGridGeojson.features.map(it => {
+    const sw = it.geometry.coordinates[0][0];
+    const ne = it.geometry.coordinates[0][2];
+    return latLngBounds({
+      lat: sw[1],
+      lng: sw[0]
+    }, {
+      lat: ne[1],
+      lng: ne[0]
+    })
+  });
+
+  // leafletGridGeoJSON = geoJSON(this.bboxGridGeojson, {
+  //   style: {
+  //     fillOpacity: 0.1
+  //   }
+  // });
+
+  exploredBounds: LatLngBounds;
+  savedLots: string[] = [];
+
   options: MapOptions = {
     layers: [
-      this.OSMBaseLayer,
-      this.ESRISatelliteLayer
+      this.OSMBaseLayer
     ],
     zoom: 14,
-    minZoom: 12,
+    minZoom: 10,
     center: latLng(-33.751244, 141.965266)
   };
 
@@ -33,6 +61,12 @@ export class LandAreasComponent implements OnInit {
     coordsToLatLng: (coords) => {
       // console.log(coords);
       return latLng(coords[1], coords[0]);
+    },
+    onEachFeature: (feature, layer) => {
+      layer.on('click', (e) => {
+        console.log(feature);
+        this.featureClick.emit(feature);
+      });
     }
   })
 
@@ -43,97 +77,87 @@ export class LandAreasComponent implements OnInit {
     },
     overlays: {
       'Land Areas': this.landAreas,
+      // 'Grid Areas': this.leafletGridGeoJSON
     }
   }
 
   map: Map;
 
-  // Virtual Grids
-  coordsToKey = (coords) => coords.x + ':' + coords.y + ':' + coords.z;
+  // Grid Handling Code
 
-  grid = new virtualGrid({
-    cellSize: 512
-  });
+  
 
-  rects = {};
-
-  constructor(private lotAreaCache: LotAreaCacheService) {
-    console.log("rects", this.rects);
-  }
+  constructor(private lotAreaCache: LotAreaCacheService) { }
 
   ngOnInit(): void {
   }
 
-  async onMapMoved(event: any) {
-    console.log("Moved", event);
+  async onMapMoved() {
+    // console.log("Moved", event);
     if (this.map == undefined) {
       return;
     }
 
+    const bounds = this.map.getBounds();
+
+    if (this.exploredBounds.contains(bounds)) {
+      return;
+    }
+
+    this.exploredBounds.extend(bounds);
+
+    const intersectingGrids = this.bboxGridBounds.filter(it => bounds.intersects(it));
+    // console.log(intersectingGrids);
+
     // console.log(this.map.getBounds());
     // return;
 
+    
+
     try {
-        const areas = await this.lotAreaCache.getAreas(this.map.getBounds());
-        console.log(areas);
+      const promises = intersectingGrids.map(it => this.lotAreaCache.getAreas(it));
+      const areas = await Promise.all(promises);
+      // console.log(areas);
 
-        if (areas.features.length != 0) {
-          this.landAreas.addData(areas);
+      for (const area of areas) {
+        if (area.features.length !== 0) {
+          // Filter out already rendered lots
+          area.features = area.features.filter(it => !this.savedLots.includes(it.properties.fid));
+          const newLots = area.features.map(it => it.properties.fid);
+          this.savedLots = this.savedLots.concat(newLots);
+
+          // console.log(newLots, this.savedLots);
+
+          this.landAreas.addData(area);
         }
+      }
 
-      }
-      catch (e) {
-        console.error("Failed to fetch Areas", e);
-        return;
-      }
+    }
+    catch (e) {
+      console.error("Failed to fetch Areas", e);
+      return;
+    }
   }
 
   onMapReady(map: Map) {
     this.map = map;
-
-
-    // when new cells come into view...
-    // this.grid.on('cellcreate', async (e) => {
-    //   console.log('cellcreate', e);
-
-
-    //   this.rects[this.coordsToKey(e.coords)] = rectangle(e.bounds, {
-    //     color: '#3ac1f0',
-    //     weight: 2,
-    //     opacity: 0.5,
-    //     fillOpacity: 0.25
-    //   }).addTo(map);
-
-    //   try {
-    //     const areas = await this.landAreasService.getAreasQueued(e.bounds);
-    //     console.log(areas);
-
-    //     this.landAreas.addData(areas);
-    //   }
-    //   catch (e) {
-    //     console.error("Failed to fetch Areas", e);
-    //     return;
-    //   }
-
-    // });
-
-    // this.grid.on('cellenter', (e) => {
-    //   console.log('cellenter', e);
-
-    //   var rect = this.rects[this.coordsToKey(e.coords)];
-    //   map.addLayer(rect);
-    // });
-
-    // this.grid.on('cellleave', (e) => {
-    //   console.log('cellleave', e);
-
-    //   var rect = this.rects[this.coordsToKey(e.coords)];
-    //   map.removeLayer(rect);
-    // });
-
-    // this.grid.addTo(map);
-
     this.landAreas.addTo(map);
+    this.exploredBounds = map.getBounds();
+
+
+    this.onMapMoved();
+
+
+    
+
+    // console.log(this.bboxGridGeojson.features);
+
+    // this.leafletGridGeoJSON.addTo(map);
+
+
+    
+
+    
   }
 
 }

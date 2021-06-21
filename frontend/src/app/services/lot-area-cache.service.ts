@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { FeatureCollection } from "geojson";
 import { LatLngBounds } from "leaflet";
 import { LandAreasService } from "./land-areas.service";
 
@@ -6,15 +7,26 @@ import { LandAreasService } from "./land-areas.service";
   providedIn: 'root'
 })
 export class LotAreaCacheService {
+
+  accessedBounds
+
   constructor(private lotAreas: LandAreasService) { }
 
   // string id array
-  cachedAreas: string[] = [];
+  cachedAreas: {
+    [key: string]: FeatureCollection
+  } = {};
 
   async getAreas(bounds: LatLngBounds) {
+    const boundsKey = bounds.toBBoxString();
+
+    if (boundsKey in this.cachedAreas) {
+      return this.cachedAreas[boundsKey];
+    }
+
     const areas = await this.lotAreas.getAreasQueued(bounds);
-    areas.features = areas.features.filter(it => !this.cachedAreas.includes((it as any)._id))
-    this.cachedAreas = this.cachedAreas.concat(areas.features.map(it => (it as any)._id));
+    this.cachedAreas[boundsKey] = areas;
+
     return areas;
   }
 }

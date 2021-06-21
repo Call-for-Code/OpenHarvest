@@ -24,9 +24,10 @@ export class LandAreasService {
 
   constructor(private http: HttpClient) { }
   
-
-  // Maintain a bounds of data already gathered and return that
-
+  // repeated requests return the same promise
+  requestPromiseMap: {
+    [key: string]: Promise<FeatureCollection>
+  } = {};
 
   requestQueue: RequestQueue[] = [];
   loopID = null;
@@ -78,6 +79,11 @@ export class LandAreasService {
    * @param bounds the bounds of the request
    */
   getAreasQueued(bounds: LatLngBounds) {
+
+    const boundsKey = bounds.toBBoxString();
+    if (boundsKey in this.requestPromiseMap) {
+      return this.requestPromiseMap[boundsKey];
+    }
     
     const completion = new Promise<FeatureCollection>((resolve, reject) => {
       this.requestQueue.push({ promise: {resolve, reject}, bounds });
@@ -92,6 +98,8 @@ export class LandAreasService {
       this.startLoop();
       this.timeoutID = null;
     }, 200);
+
+    this.requestPromiseMap[boundsKey] = completion;
 
     return completion;
   }
