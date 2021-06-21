@@ -4,7 +4,22 @@ var router = express.Router();
 const LotAreaService = require("./../services/lot-areas.service");
 const lotAreas = new LotAreaService();
 
-router.get("/:id", async(req, res) => {
+router.get("/", getAllLots);
+router.get("/:id", getLot);
+router.get("/inBbox/:bboxString", getAreaInBox);
+router.put("/", updateLot);
+
+async function getAllLots(req, res) {
+    try {
+        const response = await lotAreas.getAllLots();
+        res.json(response);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json(e);
+    }
+}
+
+async function getLot(req, res) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -17,9 +32,9 @@ router.get("/:id", async(req, res) => {
         console.error(e);
         res.status(500).json(e);
     }
-});
+}
 
-router.put("/", async(req, res) => {
+async function updateLot(req, res) {
     const lot = req.body;
     if (!lot) {
         res.sendStatus(400).end();
@@ -32,32 +47,29 @@ router.put("/", async(req, res) => {
         console.error(e);
         res.status(500).json(e);
     }
-});
+}
 
-router.get("/inBbox/:bboxString", async(req, res) => {
+async function getAreaInBox(res, req) {
     const bboxStr = req.params["bboxString"];
-    console.log(bboxStr);
     const elems = bboxStr.split(",");
     const bbox = {
         lowerLeft: {
             lat: elems[0],
-            lng: elems[1]
+            lng: elems[1],
         },
         upperRight: {
             lat: elems[2],
-            lng: elems[3]
+            lng: elems[3],
         },
-    }
+    };
+
     try {
         const response = await lotAreas.getAreasInBbox(bbox);
-        // console.log(response);
         res.json(response);
-    }
-    catch (e) {
+    } catch (e) {
         console.error(e);
         res.status(500).json(e);
     }
-
-});
+}
 
 module.exports = router;

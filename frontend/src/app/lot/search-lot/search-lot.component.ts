@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angular';
+import { Lot, LotService } from '../lot.service';
 
 @Component({
   selector: 'app-search-lot',
@@ -9,18 +10,31 @@ import { TableHeaderItem, TableItem, TableModel } from 'carbon-components-angula
 export class SearchLotComponent implements OnInit {
   searchLotModel = new TableModel();
 
-  constructor() { }
+  constructor(private lotService: LotService) { }
 
-  ngOnInit(): void {
-    this.populateModel();
-  }
-
-  populateModel() {
+  async ngOnInit() {
     this.searchLotModel.header = [
       new TableHeaderItem({data: "ID"}),
       new TableHeaderItem({data: 'Name'})
     ];
 
+    const lots = await this.lotService.getAllLots();
+    this.updateModel(lots);
+  }
+
+  updateModel(lots: Lot[]) {
+    const dataArr = []
+    for (const lot of lots) {
+      dataArr.push([
+        new TableItem({ data: lot._id }),
+        new TableItem({ data: lot.name }),
+      ]);
+    }
+    this.searchLotModel.data = dataArr;
+  }
+
+  populateModel() {
+    this.searchLotModel.data = [];
     this.searchLotModel.data = [
       [
         new TableItem({data: "1"}), 

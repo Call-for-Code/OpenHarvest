@@ -14,8 +14,6 @@ export class SearchCropComponent implements OnInit {
   constructor(private cropService: CropService) { }
 
   async ngOnInit() {
-    // this.populateModelWithTestData();
-
     this.searchCropModel.header = [
       new TableHeaderItem({ data: "ID" }),
       new TableHeaderItem({ data: 'Name' }),
@@ -38,37 +36,5 @@ export class SearchCropComponent implements OnInit {
       ]);
     }
     this.searchCropModel.data = dataArr;
-    console.log(this.searchCropModel.data);
   }
- 
-  populateModelWithTestData() {
-    this.searchCropModel.header = [
-      new TableHeaderItem({data: "ID"}),
-      new TableHeaderItem({data: 'Name'}),
-      new TableHeaderItem({data: 'Planted Season'}),
-      new TableHeaderItem({data: 'Harvest Time'})
-    ];
-
-    this.searchCropModel.data = [
-      [
-        new TableItem({data: "1"}), 
-        new TableItem({data: "Sugar"}), 
-        new TableItem({data: "June"}), 
-        new TableItem({data: "Oct"})
-      ],
-      [
-        new TableItem({data: "2"}), 
-        new TableItem({data: "Cotton"}), 
-        new TableItem({data: "June"}), 
-        new TableItem({data: "Oct"})
-      ],
-      [
-        new TableItem({data: "3"}), 
-        new TableItem({data: "Onion"}), 
-        new TableItem({data: "June"}), 
-        new TableItem({data: "Oct"})
-      ]
-    ];
-  }
-
-}
+ }

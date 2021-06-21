@@ -50,8 +50,21 @@ class LotAreas {
         if (response.status >= 400) {
             throw new Error(response);
         }
-        // console.log(response.result.results[0]);
         return response.result.results[0].rows.map(it => it.doc);
+    }
+
+    async getAllLots() {
+        const response = await client.postAllDocs({
+            db,
+            include_docs: true,
+            limit: 10,
+        });
+
+        if (response.status >= 400) {
+            throw new Error(response);
+        }
+
+        return response.result.rows;
     }
 
     async getAreasInBbox(box) {
