@@ -1,22 +1,31 @@
-const { CloudantV1 } = require("@ibm-cloud/cloudant");
-const client = CloudantV1.newInstance({});
+const {client} = require("../db/cloudant");
+const {cropDetailsView} = require("../db/cloudant");
+const {cropDetailsDdoc} = require("../db/cloudant");
 
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;
 
+const LOT_DB = "lot-areas";
+let cropDetails;
 class CropService {
 
     constructor() {
     }
 
     async getAllCrops() {
-        const response = await client.postPartitionAllDocs({
-            db,
-            includeDocs: true,
-            partitionKey: "crop",
+        if (cropDetails) {
+            return cropDetails;
+        }
+
+        const response = await client.postView({
+            db: LOT_DB,
+            ddoc: cropDetailsDdoc,
+            view: cropDetailsView,
+            group: true,
         });
 
-        return response.result;
+        cropDetails = response.result.rows;
+        return cropDetails;
     }
 
     async saveOrUpdate(crop) {

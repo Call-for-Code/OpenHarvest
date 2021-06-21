@@ -115,7 +115,8 @@ function createCropProductionForecastView() {
             "        if (plantedCrop) {\n" +
             "            var d = new Date(plantedCrop.planted); d.setHours(0,0,0,0); " +
             "            d.setDate(d.getDate() + plantedCrop.crop.time_to_harvest);" +
-            "            emit([new Date(d.getFullYear(), d.getMonth(), 1), plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+            // "            emit([new Date(d.getFullYear(), d.getMonth(), 1), plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+            "            emit([d, plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
             "        }\n" +
             "    }" +
             "}",
@@ -131,12 +132,74 @@ function createCropProductionForecastView() {
         designDocument: designDoc,
         ddoc: cropProductionForecast,
     }).then(response => {
-        console.log(plantedCrops + " view is created: ", response.result);
+        console.log(cropProductionForecast + " view is created: ", response.result);
         // client.postView({
         //     db: LOT_DB,
         //     ddoc: cropProductionForecast,
         //     view: "cropProductionByMonth",
         //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+const cropDetailsDdoc = "cropDetails";
+const cropDetailsView = "cropDetailsView";
+
+client.headDesignDocument({
+    db: LOT_DB,
+    ddoc: cropDetailsDdoc,
+}).then((response) => {
+    console.log(cropDetailsDdoc + " view already exists: ", response.status);
+    // const rev = response.headers["etag"].replace("\"", "").replace("\"", "");
+    // client.deleteDesignDocument({
+    //     db: LOT_DB,
+    //     ddoc: cropDetails,
+    //     rev: rev,
+    // }).then(response => {
+    //     createCropDetailsView();
+    // }).catch(reason => console.log(reason));
+}).catch(e => {
+    if (e.status === 404) {
+        createCropDetailsView();
+    } else {
+        console.log(e);
+    }
+});
+
+function createCropDetailsView() {
+    const cropMap = {
+        map: "function(doc) {" +
+            "    if (doc.properties && doc.properties.data && doc.properties.data.crops_planted) {\n" +
+            "        var len = doc.properties.data.crops_planted.length; " +
+            "        for(var i=0; i < len; i++) { " +
+            "            var plantedCrop = doc.properties.data.crops_planted[i];" +
+            "            emit(plantedCrop.crop.name, plantedCrop.crop);" +
+            "        }\n" +
+            "    }\n" +
+            "}",
+        reduce: "function(keys, values) {\n" +
+            "  return values[0];\n" +
+            "}",
+    };
+
+    const designDoc = {
+        views: {cropDetailsView: cropMap},
+        // indexes: {cropPlantedArea: cropIndex},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: cropDetailsDdoc,
+    }).then(response => {
+        console.log(cropDetailsDdoc + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: cropDetails,
+        //     view: cropDetailsView,
+        //     group: true,
         // }).then(response => {
         //     console.log(response.result.rows);
         // }).catch(e => console.log(e));
@@ -149,4 +212,6 @@ module.exports = {
     cropProductionForecast,
     plantedAreaView,
     cropProductionByMonthView,
+    cropDetailsDdoc,
+    cropDetailsView,
 };
