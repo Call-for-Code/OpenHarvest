@@ -2,6 +2,7 @@
 
 import { Component, Inject, OnInit } from '@angular/core';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { Crop, CropService } from '../crop/crop.service';
 
 @Component({
   selector: 'app-recommendation',
@@ -14,13 +15,14 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   selectedLot = [];
   selectedCrop = [];
 
-  constructor(protected modalService: ModalService) { 
+  constructor(protected modalService: ModalService,
+    private cropService: CropService) { 
 		super();
 	}
 
   ngOnInit(): void {
     this.lots = this.getLots();
-    this.crops = this.getCrops();
+    this.setCrops();
   }
 
   recommend() {
@@ -37,10 +39,15 @@ export class RecommendationComponent extends BaseModal implements OnInit {
     return [{content: 'Lot 1', selected: false}, {content: 'Lot 2', selected: false}, {content: 'Lot 3', selected: false}];
   }
 
-  getCrops() {
-    //Make http call to get crops
+  setCrops() {
+    this.cropService.getAllCrops().then((crops: Crop[]) => {
+      const data = [];
+      crops.forEach(crop => {
+        data.push({content: crop.name, selected: false, value: crop});
+      });
 
-    return [{content: 'Sugarcane', selected: false}, {content: 'Rice', selected: false}, {content: 'Wheat', selected: false}];
+      this.crops = data;
+    });
   }
 
   onSelectedLot(event) {

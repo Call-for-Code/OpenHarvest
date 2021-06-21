@@ -32,23 +32,4 @@ export class SearchLotComponent implements OnInit {
     }
     this.searchLotModel.data = dataArr;
   }
-
-  populateModel() {
-    this.searchLotModel.data = [];
-    this.searchLotModel.data = [
-      [
-        new TableItem({data: "1"}), 
-        new TableItem({data: "Lot 1"})
-      ],
-      [
-        new TableItem({data: "2"}), 
-        new TableItem({data: "Lot 2"})
-      ],
-      [
-        new TableItem({data: "3"}), 
-        new TableItem({data: "Lot 3"})
-      ]
-    ];
-  }
-
 }

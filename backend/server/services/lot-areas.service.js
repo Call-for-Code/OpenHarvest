@@ -57,14 +57,16 @@ class LotAreas {
         const response = await client.postAllDocs({
             db,
             include_docs: true,
-            limit: 10,
+            limit: 50,
         });
 
         if (response.status >= 400) {
             throw new Error(response);
         }
 
-        return response.result.rows;
+        return response.result.rows.map((row) => {
+            return {_id: row.id, name: row.name };
+        });
     }
 
     async getAreasInBbox(box) {
