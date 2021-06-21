@@ -32,10 +32,6 @@ import Notification20 from '@carbon/icons/es/notification/20';
 import UserAvatar20 from '@carbon/icons/es/user--avatar/20';
 import AppSwitcher20 from '@carbon/icons/es/app-switcher/20';
 import { HeaderComponent } from './header/header.component';
-import { CatalogComponent } from './pages/catalog/catalog.component';
-import { DocsComponent } from './pages/docs/docs.component';
-import { SupportComponent } from './pages/support/support.component';
-import { Link1Component } from './pages/link1/link1.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
 import { FooterComponent } from './footer/footer.component';
@@ -59,10 +55,6 @@ import { TileComponentComponent } from './tile-component/tile-component.componen
 	declarations: [
 		AppComponent,
 		HeaderComponent,
-		CatalogComponent,
-		DocsComponent,
-		SupportComponent,
-		Link1Component,
 		DashboardComponent,
 		LoginComponent,
 		FooterComponent,
