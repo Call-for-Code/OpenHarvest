@@ -7,7 +7,8 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 const routes: Routes = [
 	{
 		path: '',
-		component: DashboardComponent
+		redirectTo: '/dashboard',
+		pathMatch: 'full'
 	},
 	{
 		path: 'dashboard',

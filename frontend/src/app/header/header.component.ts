@@ -63,7 +63,7 @@ export class HeaderComponent {
   	lotDialog() {
 		this.modalService.create({
 			component: LotComponent,
-      inputs: {
+      		inputs: {
 				modalText: this.modalText,
 				size: 'small'
 			}
