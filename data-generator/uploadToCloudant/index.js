@@ -4,9 +4,9 @@ const centreOfMass = require("@turf/center-of-mass").default;
 
 const crops = JSON.parse(fs.readFileSync("crop-data.json", 'utf8'));
 
-function randomCrop(crops) {
-    return crops[Math.floor(Math.random()*crops.length)];
-}
+// function randomCrop(crops) {
+//     return crops[Math.floor(Math.random()*crops.length)];
+// }
 
 function addDays(date, days) {
     var result = new Date(date);
@@ -25,6 +25,56 @@ function getRandomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+// Calculate weight ratios using production (kt)
+const production = {
+    "Wheat": 8880,
+    "Barley": 2115,
+    "Canola": 1050,
+    "Grain": 520,
+    "Cotton": 385,
+    "Cottonseed": 545,
+    "Rice": 450
+};
+
+const totalProduction = Object.values(production).reduce((accum, curr) => accum + curr);
+
+const weights = {};
+
+Object.entries(production).forEach(val => {
+    const crop = val[0];
+    const production = val[1];
+    weights[crop] = production / totalProduction;
+});
+
+function weightedRand(spec) {
+    var i, j, table=[];
+    for (i in spec) {
+        // The constant 10 below should be computed based on the
+        // weights in the spec for a correct and optimal table size.
+        // E.g. the spec {0:0.999, 1:0.001} will break this impl.
+        for (j=0; j<spec[i]*10; j++) {
+        table.push(i);
+        }
+    }
+    return function() {
+        return table[Math.floor(Math.random() * table.length)];
+    }
+}
+
+const randomCropWeighted = weightedRand(weights);
+
+const randomCrop = () => {
+    const cropStr = randomCropWeighted();
+    // console.log(cropStr, crops.find(it => it.name == cropStr));
+    return crops.find(it => it.name == cropStr);
+}
+
+
+
+// console.log(totalProduction, weights);
+// process.exit();
+
 
 async function getToken(apikey) {
     const params = {
@@ -99,7 +149,7 @@ async function main() {
 
         const startPlanting = subtractDate(new Date(), selectedCrop.time_to_harvest);
         const actualPlantedDate = addDays(startPlanting, getRandomInt(0, selectedCrop.time_to_harvest)); // Generate a random planted date
-        
+
         // Previously harvested crops
         const historicalDate = new Date();
         historicalDate.setFullYear(historicalDate.getFullYear() - 1);
@@ -108,7 +158,9 @@ async function main() {
         const historicalActualPlantedDate = addDays(historicalStartPlanting, getRandomInt(0, historicalCrop.time_to_harvest));
         const harvestedDate = addDays(historicalActualPlantedDate, historicalCrop.time_to_harvest);
 
-        // Calculate Centre
+        // console.log(selectedCrop, startPlanting, historicalDate);
+
+        // Calculate Centre 
         const centre = centreOfMass(data[i]);
         
 
