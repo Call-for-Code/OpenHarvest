@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { BaseModal, ModalService } from 'carbon-components-angular';
+import { Login } from '../login/login';
 import { LoginService } from '../login/login.service';
 import { RegistrationService } from './registration.service';
 
@@ -34,8 +35,11 @@ export class RegistrationComponent extends BaseModal implements OnInit {
     const registration = this.registrationForm.value;
     this.registrationService.register(registration).then(response => {
       console.log('Response ', response);
-      this.loginService.authenticate({name: registration.name, password: registration.password});
-      this.closeModal();
+      this.loginService.authenticate({name: registration.name, password: registration.password}).then((res: Login) => {
+        this.loginService.setUserName(res.name);
+        this.closeModal();
+      });
+      
     }).catch(e => {
       this.notification = {
         type: 'error',
