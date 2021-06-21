@@ -42,12 +42,10 @@ Ultimately we will balance farming production.
 [More detail are available here](./DESCRIPTION.md)
 
 ## Project roadmap
-
-The project currently does the following things.
-
-- Feature 1
-- Feature 2
-- Feature 3
+Current Features:
+- Feature 1:Dashboard UI displaying land and crop statistics
+- Feature 2: Farmer, crop, and lot registration
+- Feature 3:Connected to NoSQL DB 
 
 See below for our proposed schedule on next steps after Call for Code 2021 submission.
 
@@ -55,10 +53,12 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 
 ## Getting started
 
-In this section you add the instructions to run your project on your local machine for development and testing purposes. You can also add instructions on how to deploy the project in production.
+### Prerequisites
 
-- [sample-react-app](./sample-react-app/README.md)
-- [Explore other projects](https://github.com/upkarlidder/ibmhacks)
+* [node](https://nodejs.org/) and [npm](https://www.npmjs.com/) (Included with node)
+* [git](https://git-scm.com/)
+
+./build.sh
 
 ## Built with
 
