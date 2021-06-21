@@ -1,27 +1,22 @@
-// initialize Cloudant
-const {client} = require("./../db/cloudant");
-// const { CloudantV1 } = require("@ibm-cloud/cloudant");
-// const client = CloudantV1.newInstance({});
-
-
-const APPLICATION_DB = "application-db";
-const db = APPLICATION_DB;
-
 var express = require("express");
+const CropService = require("../services/crop.service");
 var router = express.Router();
+const cropService = new CropService();
 
-// const LotAreaService = require("./../services/lot-areas.service");
-// const lotAreas = new LotAreaService();
+router.get("/", getAllCrops);
 
-router.get("/", async(req, res) => {
-    const crops = await client.postPartitionAllDocs({
-        db,
-        includeDocs: true,
-        partitionKey: "crop",
-    });
-    // console.log(crops);
-    res.json(crops.result.rows.map(it => it.doc));
-});
+router.post("/", createOrUpdateCrop);
+
+router.put("/", createOrUpdateCrop);
+
+router.get("/:id", getCrop);
+
+router.delete("/:id", deleteCrop);
+
+async function getAllCrops(req, res) {
+    const crops = await cropService.getAllCrops();
+    res.json(crops.rows.map(it => it.doc));
+}
 
 async function createOrUpdateCrop(req, res) {
     const crop = req.body;
@@ -29,57 +24,43 @@ async function createOrUpdateCrop(req, res) {
         res.sendStatus(400).end();
         return;
     }
+
     try {
-        const response = await client.postDocument({
-            db,
-            document: crop,
-        });
-        res.json(response.result);
+        const response = await cropService.saveOrUpdate(crop);
+        res.json(response);
     } catch (e) {
-        console.error(e);
         res.status(500).json(e);
     }
 }
 
-router.post("/", createOrUpdateCrop);
-
-router.put("/", createOrUpdateCrop);
-
-router.get("/:id", async(req, res) => {
+async function getCrop(req, res) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
         return;
     }
+
     try {
-        const crop = await client.getDocument({
-            db,
-            docId: `crop:${id}`,
-        });
-        res.json(crop.result);
+        const crop = await cropService.getCrop(id);
+        res.json(crop);
     } catch (e) {
-        console.error(e);
         res.status(500).json(e);
     }
-});
+}
 
-// Delete Crop
-router.delete("/:id", async(req, res) => {
+async function deleteCrop(req, res) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
         return;
     }
+
     try {
-        const response = await client.deleteDocument({
-            db,
-            docId: id,
-        });
-        res.json(response.result);
+        const crop = await cropService.deleteCrop(id);
+        res.json(crop);
     } catch (e) {
-        console.error(e);
         res.status(500).json(e);
     }
-});
+}
 
 module.exports = router;

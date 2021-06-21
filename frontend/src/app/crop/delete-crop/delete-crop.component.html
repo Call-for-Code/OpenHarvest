@@ -16,6 +16,10 @@
                 <button ibmButton [disabled]="isSearchFormInvalid()" sm (click)="findCrop()">Search</button>
             </div>
         </div>
+        <div ibmRow class="form-item">
+            <ibm-notification [notificationObj]="searchNotification" *ngIf="showSearchNotification()">
+            </ibm-notification>
+        </div>
     </div>
 </form>
 
@@ -27,5 +31,10 @@
         </ibm-table-container>
         <div class="form-item action">
             <button ibmButton="danger" [disabled]="isItemNotSelected()" sm (click)="deleteCrop()">Delete</button>
+        </div>
+
+        <div ibmRow class="form-item">
+            <ibm-notification [notificationObj]="deleteNotification" *ngIf="showDeleteNotification()">
+            </ibm-notification>
         </div>
 </form>

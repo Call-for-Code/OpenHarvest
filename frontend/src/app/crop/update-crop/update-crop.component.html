@@ -16,6 +16,10 @@
                 <button ibmButton [disabled]="isSearchFormInvalid()" sm (click)="findCrop()">Search</button>
             </div>
         </div>
+        <div ibmRow class="form-item">
+            <ibm-notification [notificationObj]="searchNotification" *ngIf="showSearchNotification()">
+            </ibm-notification>
+        </div>
     </div>
 </form>
 <form *ngIf="hasCrop()" [formGroup]="updateForm">
@@ -36,14 +40,14 @@
                 Planting Season: 
                 <input
                     ibmText
-                    placeholder="Planting Season From"
+                    placeholder="From Month"
                     [autocomplete]="false"
                     formControlName="plantingSeasonFrom"
                     name="plantingSeasonFrom"
                     class="season-from">
                 <input
                     ibmText
-                    placeholder="Planting Season To"
+                    placeholder="To Month"
                     [autocomplete]="false"
                     formControlName="plantingSeasonTo"
                     name="plantingSeasonTo">
@@ -54,7 +58,7 @@
                 Harvest time: 
                 <input
                     ibmText
-                    placeholder="Harvest Time"
+                    placeholder="Harvest Time (in days)"
                     [autocomplete]="false"
                     formControlName="harvestTime"
                     name="harvestTime">
@@ -62,6 +66,11 @@
         </div>
         <div ibmRow class="form-item action">
             <button ibmButton [disabled]="isFormInvalid()" (click)="updateCrop()">Update</button>
+        </div>
+
+        <div ibmRow class="form-item">
+            <ibm-notification [notificationObj]="updateNotification" *ngIf="showUpdateNotification()">
+            </ibm-notification>
         </div>
     </div>
 </form>
