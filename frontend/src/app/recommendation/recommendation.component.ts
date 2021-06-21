@@ -3,6 +3,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { BaseModal, ModalService } from 'carbon-components-angular';
 import { Crop, CropService } from '../crop/crop.service';
+import { RecommendationService } from './recommendation.service';
 
 @Component({
   selector: 'app-recommendation',
@@ -16,7 +17,8 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   selectedCrop = [];
 
   constructor(protected modalService: ModalService,
-    private cropService: CropService) { 
+    private cropService: CropService,
+    private service: RecommendationService) { 
 		super();
 	}
 
@@ -26,6 +28,12 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   }
 
   recommend() {
+    const requestData = {
+      lotId: this.selectedLot["value"]._id,
+      cropIds: this.selectedCrop.map(val => val.value._id)
+    }
+
+    this.service.recommend(requestData);
   }
 
   isFormInvalid() {
@@ -36,7 +44,9 @@ export class RecommendationComponent extends BaseModal implements OnInit {
   getLots() {
     //Make http call to get lots
 
-    return [{content: 'Lot 1', selected: false}, {content: 'Lot 2', selected: false}, {content: 'Lot 3', selected: false}];
+    return [{content: 'Lot 1', selected: false, value: {_id: 1}}, 
+            {content: 'Lot 2', selected: false, value: {_id: 1}}, 
+            {content: 'Lot 3', selected: false, value: {_id: 1}}];
   }
 
   setCrops() {
