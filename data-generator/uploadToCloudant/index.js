@@ -100,6 +100,14 @@ async function main() {
         const startPlanting = subtractDate(new Date(), selectedCrop.time_to_harvest);
         const actualPlantedDate = addDays(startPlanting, getRandomInt(0, selectedCrop.time_to_harvest)); // Generate a random planted date
         
+        // Previously harvested crops
+        const historicalDate = new Date();
+        historicalDate.setFullYear(historicalDate.getFullYear() - 1);
+        const historicalCrop = randomCrop(crops);
+        const historicalStartPlanting = subtractDate(historicalDate, historicalCrop.time_to_harvest);
+        const historicalActualPlantedDate = addDays(historicalStartPlanting, getRandomInt(0, historicalCrop.time_to_harvest));
+        const harvestedDate = addDays(historicalActualPlantedDate, historicalCrop.time_to_harvest);
+
         // Calculate Centre
         const centre = centreOfMass(data[i]);
         
@@ -112,8 +120,13 @@ async function main() {
                 planted: actualPlantedDate,
                 harvested: null,
                 crop: selectedCrop
+            }, {
+                name: historicalCrop.name,
+                planted: historicalActualPlantedDate,
+                harvested: harvestedDate,
+                crop: historicalCrop
             }]
-        }
+        };
 
         // console.log(data[i].properties.data);
         // process.exit();
