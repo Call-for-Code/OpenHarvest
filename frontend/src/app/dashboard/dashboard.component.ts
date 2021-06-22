@@ -84,7 +84,7 @@ export class DashboardComponent implements OnInit {
         "height": "500px"
     };
 
-    tileData: TileData
+    tileData: TileData = {};
 
     constructor(protected modalService: ModalService, private dashboardService: DashboardService) { }
 
@@ -119,7 +119,6 @@ export class DashboardComponent implements OnInit {
             .catch(() => this.data2 = []);
 
         this.tileData = await this.dashboardService.getTileData();
-        // console.log(this.tileData);
     }
 
     sortByGroup(a, b) {

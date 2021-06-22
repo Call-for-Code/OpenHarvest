@@ -21,10 +21,10 @@ export interface CropProductionHistory {
 
 
 export interface TileData {
-	totalFarmers: number;
-	cropsPlanted: number;
-	cropsHarvested: number;
-	totalLots: number;
+	totalFarmers?: number;
+	cropsPlanted?: number;
+	cropsHarvested?: number;
+	totalLots?: number;
 }
 
 @Injectable({
