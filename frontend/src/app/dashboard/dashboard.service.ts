@@ -20,6 +20,13 @@ export interface CropProductionHistory {
 }
 
 
+export interface TileData {
+	totalFarmers: number;
+	cropsPlanted: number;
+	cropsHarvested: number;
+	totalLots: number;
+}
+
 @Injectable({
     providedIn: "root"
 })
@@ -35,5 +42,9 @@ export class DashboardService {
 
     getCropProductionForecast() {
         return this.http.get<CropProductionForecast[]>("/api/dashboard/crop-production-forecast").toPromise();
+    }
+
+    getTileData() {
+        return this.http.get<TileData>("/api/dashboard/tiles").toPromise();
     }
 }

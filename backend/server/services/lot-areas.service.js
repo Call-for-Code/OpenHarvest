@@ -3,11 +3,24 @@
 // const client = CloudantV1.newInstance({});
 
 // const { plantedCrops, cropProductionForecast} = require("../db/cloudant");
-const {client, plantedCrops, plantedAreaView, cropProductionByMonthView, cropProductionForecast} = require("../db/cloudant");
+const {
+    client,
+    plantedCrops,
+    plantedAreaView,
+    cropProductionByMonthView,
+    cropProductionForecast,
+    farmerCountDoc,
+    farmerCountView,
+    cropsPlantedDoc,
+    cropsPlantedView,
+    cropsHarvestedDoc,
+    cropsHarvestedView
+} = require("../db/cloudant");
 // const { CloudantV1 } = require("@ibm-cloud/cloudant");
 // const client = CloudantV1.newInstance({});
 
 const LOT_DB = "lot-areas";
+const APPLICATION_DB = "application-db";
 const db = LOT_DB;
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
@@ -149,6 +162,40 @@ class LotAreas {
                 };
             });
         }
+    }
+
+    async getViewValue(doc, view, database) {
+        const response = await client.postView({
+            db: database,
+            ddoc: doc,
+            view: view
+        });
+
+        if (response.status >= 400) {
+            throw response;
+        } else {
+            const rows = response.result.rows;
+            return rows[0].value;
+        }
+    }
+
+    async getTotalFarmers() {
+        return this.getViewValue(farmerCountDoc, farmerCountView, APPLICATION_DB);
+    }
+
+    async getCropsPlanted() {
+        return this.getViewValue(cropsPlantedDoc, cropsPlantedView, LOT_DB);
+    }
+
+    async getCropsHarvested() {
+        return this.getViewValue(cropsHarvestedDoc, cropsHarvestedView, LOT_DB);
+    }
+
+    async getTotalLots() {
+        const resp = await client.getDatabaseInformation({
+            db: LOT_DB
+        });
+        return resp.result.doc_count;
     }
 }
 

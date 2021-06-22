@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { ModalService } from "carbon-components-angular";
-import { DashboardService } from "./dashboard.service";
+import { DashboardService, TileData } from "./dashboard.service";
 
 interface DonutChartProps { group: string; value: number; }
 interface AreaChartProps { group: string; date: Date; value: number; }
@@ -84,9 +84,11 @@ export class DashboardComponent implements OnInit {
         "height": "500px"
     };
 
+    tileData: TileData
+
     constructor(protected modalService: ModalService, private dashboardService: DashboardService) { }
 
-    ngOnInit(): void {
+    async ngOnInit() {
         this.dashboardService.getCropDistribution()
             .then(value => {
                 this.data = value.map(value1 => {
@@ -115,6 +117,9 @@ export class DashboardComponent implements OnInit {
                 this.options2 = {...this.options2};
             })
             .catch(() => this.data2 = []);
+
+        this.tileData = await this.dashboardService.getTileData();
+        // console.log(this.tileData);
     }
 
     sortByGroup(a, b) {

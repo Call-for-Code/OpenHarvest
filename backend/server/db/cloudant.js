@@ -3,6 +3,7 @@ const client = CloudantV1.newInstance({});
 
 const plantedCrops = "plantedCrops";
 const cropProductionForecast = "cropProductionForecast";
+const APPLICATION_DB = "application-db";
 const LOT_DB = "lot-areas";
 //
 // client.postAllDocs({
@@ -206,36 +207,54 @@ function createCropDetailsView() {
     }).catch((e) => console.log(e));
 }
 
-function tileMap(){
- return "function(doc) {" +
- "    if (doc.properties && doc.properties.data && doc.properties.data.crops_planted) {\n" +
- "        var len = doc.properties.data.crops_planted.length; " +
- // "            emit([new Date(d.getFullYear(), d.getMonth(), 1), plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
- "            emit([d, plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
- "        }\n" +
- "    }" +
- "}";
-}
-
 //Tile Views
 
+const farmerCountDoc = "farmerCountDoc";
+const farmerCountView = "farmerCountView";
 
-function totalFarmersView() {
+client.headDesignDocument({
+    db: APPLICATION_DB,
+    ddoc: farmerCountDoc,
+}).then((response) => {
+    console.log(farmerCountDoc + " view already exists: ", response.status);
+    // const rev = response.headers["etag"].replace("\"", "").replace("\"", "");
+    // client.deleteDesignDocument({
+    //     db: LOT_DB,
+    //     ddoc: cropDetails,
+    //     rev: rev,
+    // }).then(response => {
+    //     createCropDetailsView();
+    // }).catch(reason => console.log(reason));
+}).catch(e => {
+    if (e.status === 404) {
+        createTotalFarmersView();
+    } else {
+        console.log(e);
+    }
+});
+
+const farmerMapView = function (doc) {
+    if (doc.type == "farmer") {
+        emit('count', 1);
+    }
+};
+
+function createTotalFarmersView() {
     const map = {
-        map: tileMap(),
-        reduce: "_sum",
+        map: farmerMapView.toString(),
+        reduce: "_count",
     };
 
     const designDoc = {
-        views: {totalFarmers: map},
+        views: { farmerCountView: map},
     };
 
     client.putDesignDocument({
-        db: LOT_DB,
+        db: APPLICATION_DB,
         designDocument: designDoc,
-        ddoc: totalFarmersTile,
+        ddoc: farmerCountDoc,
     }).then(response => {
-        console.log(totalFarmersTile + " view is created: ", response.result);
+        console.log(farmerCountView + " view is created: ", response.result);
         // client.postView({
         //     db: LOT_DB,
         //     ddoc: totalFarmersTile,
@@ -247,142 +266,91 @@ function totalFarmersView() {
     }).catch((e) => console.log(e));
 }
 
-
-
-function totalCropsPlantedView() {
-    const map = {
-        map: tileMap(),
-        reduce: "_sum",
-    };
-
-    const designDoc = {
-        views: {totalCropsPlanted: map},
-    };
-
-    client.putDesignDocument({
-        db: LOT_DB,
-        designDocument: designDoc,
-        ddoc: totalCropsPlantedTile,
-    }).then(response => {
-        console.log(totalCropsPlantedTile + " view is created: ", response.result);
-        // client.postView({
-        //     db: LOT_DB,
-        //     ddoc: totalCropsPlantedTile,
-        //     view: "totalCropsPlanted",
-        //     groupLevel: 2,
-        // }).then(response => {
-        //     console.log(response.result.rows);
-        // }).catch(e => console.log(e));
-    }).catch((e) => console.log(e));
-}
-
-function totalCropsHarvestedView() {
-    const map = {
-        map: tileMap(),
-        reduce: "_sum",
-    };
-
-    const designDoc = {
-        views: {totalCropsHarvested: map},
-    };
-
-    client.putDesignDocument({
-        db: LOT_DB,
-        designDocument: designDoc,
-        ddoc: totalCropsHarvestedTile,
-    }).then(response => {
-        console.log(totalCropsHarvestedTile + " view is created: ", response.result);
-        // client.postView({
-        //     db: LOT_DB,
-        //     ddoc: totalCropsHarvestedTile,
-        //     view: "totalCropsHarvested",
-        //     groupLevel: 2,
-        // }).then(response => {
-        //     console.log(response.result.rows);
-        // }).catch(e => console.log(e));
-    }).catch((e) => console.log(e));
-}
-
-
-function totalLotsView() {
-    const map = {
-        map: tileMap(),
-        reduce: "_sum",
-    };
-
-    const designDoc = {
-        views: {totalLots: map},
-    };
-
-    client.putDesignDocument({
-        db: LOT_DB,
-        designDocument: designDoc,
-        ddoc: totalLotsTile,
-    }).then(response => {
-        console.log(totalLotsTile + " view is created: ", response.result);
-        // client.postView({
-        //     db: LOT_DB,
-        //     ddoc: totalLotsTile,
-        //     view: "totalLots",
-        //     groupLevel: 2,
-        // }).then(response => {
-        //     console.log(response.result.rows);
-        // }).catch(e => console.log(e));
-    }).catch((e) => console.log(e));
-}
-
-function totalAreaRegisteredView() {
-    const map = {
-        map: tileMap(),
-        reduce: "_sum",
-    };
-
-    const designDoc = {
-        views: {totalArea: map},
-    };
-
-    client.putDesignDocument({
-        db: LOT_DB,
-        designDocument: designDoc,
-        ddoc: totalAreaTile,
-    }).then(response => {
-        console.log(totalAreaTile + " view is created: ", response.result);
-        // client.postView({
-        //     db: LOT_DB,
-        //     ddoc: totalAreaTile,
-        //     view: "totalArea",
-        //     groupLevel: 2,
-        // }).then(response => {
-        //     console.log(response.result.rows);
-        // }).catch(e => console.log(e));
-    }).catch((e) => console.log(e));
-}
-
-/*
-const cropDetailsDdoc = "cropDetails";
-const cropDetailsView = "cropDetailsView";
+const cropsPlantedDoc = "cropsPlantedDoc";
+const cropsPlantedView = "cropsPlantedView";
 
 client.headDesignDocument({
     db: LOT_DB,
-    ddoc: cropDetailsDdoc,
+    ddoc: cropsPlantedDoc,
 }).then((response) => {
-    console.log(cropDetailsDdoc + " view already exists: ", response.status);
-    // const rev = response.headers["etag"].replace("\"", "").replace("\"", "");
-    // client.deleteDesignDocument({
-    //     db: LOT_DB,
-    //     ddoc: cropDetails,
-    //     rev: rev,
-    // }).then(response => {
-    //     createCropDetailsView();
-    // }).catch(reason => console.log(reason));
+    console.log(cropsPlantedDoc + " view already exists: ", response.status);
 }).catch(e => {
     if (e.status === 404) {
-        createCropDetailsView();
+        createCropsPlantedView();
     } else {
         console.log(e);
     }
 });
-*/
+
+const cropsPlantedViewFunc = function (doc) {
+    var len = doc.properties.data.crops_planted.length;
+    emit("Length", len);
+}
+
+function createCropsPlantedView() {
+    const map = {
+        map: cropsPlantedViewFunc.toString(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: { cropsPlantedView: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: cropsPlantedDoc,
+    }).then(response => {
+        console.log(cropsPlantedView + " view is created: ", response.result);
+    }).catch((e) => console.log(cropsPlantedView, e));
+}
+
+const cropsHarvestedDoc = "cropsHarvestedDoc";
+const cropsHarvestedView = "cropsHarvestedView";
+
+client.headDesignDocument({
+    db: LOT_DB,
+    ddoc: cropsHarvestedDoc,
+}).then((response) => {
+    console.log(cropsHarvestedView + " view already exists: ", response.status);
+}).catch(e => {
+    if (e.status === 404) {
+        totalCropsHarvestedView();
+    } else {
+        console.log(e);
+    }
+});
+
+const cropsHarvestedViewFunc = function (doc) {
+    var crops = doc.properties.data.crops_planted;
+    var count = 0;
+    for (var i = 0; i < crops.length; i++) {
+        if (crops[i].harvested != null) {
+            count = count + 1;
+        }
+    }
+    emit("harvested", count);
+}
+
+function totalCropsHarvestedView() {
+    const map = {
+        map: cropsHarvestedViewFunc.toString(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: { cropsHarvestedView: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: cropsHarvestedDoc,
+    }).then(response => {
+        console.log(cropsHarvestedDoc + " view is created: ", response.result);
+    }).catch((e) => console.log(cropsHarvestedView, e));
+}
 
 
 module.exports = {
@@ -393,4 +361,10 @@ module.exports = {
     cropProductionByMonthView,
     cropDetailsDdoc,
     cropDetailsView,
+    farmerCountDoc,
+    farmerCountView,
+    cropsPlantedDoc,
+    cropsPlantedView,
+    cropsHarvestedDoc,
+    cropsHarvestedView
 };

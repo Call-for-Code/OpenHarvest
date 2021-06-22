@@ -2,24 +2,24 @@
     <div class="tiles">
         <ibm-tile>
             <div class="title"><h5>Total Farmers</h5></div>
-            <div class="content"><h6>100</h6></div>
+            <div class="content"><h6>{{tileData.totalFarmers || "Loading..."}}</h6></div>
         </ibm-tile>
         <ibm-tile>
             <div class="title"><h5>Total crops planted</h5></div>
-            <div class="content"><h6>10</h6></div>
+            <div class="content"><h6>{{tileData.cropsPlanted || "Loading..."}}</h6></div>
         </ibm-tile>
         <ibm-tile >
             <div class="title"><h5>Total crops harvested</h5></div>
-            <div class="content"><h6>50</h6></div>
+            <div class="content"><h6>{{tileData.cropsHarvested || "Loading..."}}</h6></div>
         </ibm-tile>
         <ibm-tile>
             <div class="title"><h5>Total lots</h5></div>
-            <div class="content"><h6>200</h6></div>
+            <div class="content"><h6>{{tileData.totalLots || "Loading..."}}</h6></div>
         </ibm-tile>
-        <ibm-tile>
+        <!-- <ibm-tile>
             <div class="title"><h5>Total area registered</h5></div>
             <div class="content"><h6>1000</h6></div>
-        </ibm-tile>
+        </ibm-tile> -->
     </div>
 
     <div class="graphics">
