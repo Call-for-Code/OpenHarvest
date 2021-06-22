@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit {
 
     data3: LineChartProps[] = [];
     options3 = {
-        "title": "Crop production - forecast",
+        "title": "Crop production - Historical Yield",
         "axes": {
             "left": {
                 "stacked": true,

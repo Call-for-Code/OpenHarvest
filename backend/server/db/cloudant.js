@@ -206,6 +206,185 @@ function createCropDetailsView() {
     }).catch((e) => console.log(e));
 }
 
+function tileMap(){
+ return "function(doc) {" +
+ "    if (doc.properties && doc.properties.data && doc.properties.data.crops_planted) {\n" +
+ "        var len = doc.properties.data.crops_planted.length; " +
+ // "            emit([new Date(d.getFullYear(), d.getMonth(), 1), plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+ "            emit([d, plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+ "        }\n" +
+ "    }" +
+ "}";
+}
+
+//Tile Views
+
+
+function totalFarmersView() {
+    const map = {
+        map: tileMap(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {totalFarmers: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: totalFarmersTile,
+    }).then(response => {
+        console.log(totalFarmersTile + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: totalFarmersTile,
+        //     view: "totalFarmers",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+
+
+function totalCropsPlantedView() {
+    const map = {
+        map: tileMap(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {totalCropsPlanted: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: totalCropsPlantedTile,
+    }).then(response => {
+        console.log(totalCropsPlantedTile + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: totalCropsPlantedTile,
+        //     view: "totalCropsPlanted",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+function totalCropsHarvestedView() {
+    const map = {
+        map: tileMap(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {totalCropsHarvested: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: totalCropsHarvestedTile,
+    }).then(response => {
+        console.log(totalCropsHarvestedTile + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: totalCropsHarvestedTile,
+        //     view: "totalCropsHarvested",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+
+function totalLotsView() {
+    const map = {
+        map: tileMap(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {totalLots: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: totalLotsTile,
+    }).then(response => {
+        console.log(totalLotsTile + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: totalLotsTile,
+        //     view: "totalLots",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+function totalAreaRegisteredView() {
+    const map = {
+        map: tileMap(),
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {totalArea: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: totalAreaTile,
+    }).then(response => {
+        console.log(totalAreaTile + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: totalAreaTile,
+        //     view: "totalArea",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+/*
+const cropDetailsDdoc = "cropDetails";
+const cropDetailsView = "cropDetailsView";
+
+client.headDesignDocument({
+    db: LOT_DB,
+    ddoc: cropDetailsDdoc,
+}).then((response) => {
+    console.log(cropDetailsDdoc + " view already exists: ", response.status);
+    // const rev = response.headers["etag"].replace("\"", "").replace("\"", "");
+    // client.deleteDesignDocument({
+    //     db: LOT_DB,
+    //     ddoc: cropDetails,
+    //     rev: rev,
+    // }).then(response => {
+    //     createCropDetailsView();
+    // }).catch(reason => console.log(reason));
+}).catch(e => {
+    if (e.status === 404) {
+        createCropDetailsView();
+    } else {
+        console.log(e);
+    }
+});
+*/
+
+
 module.exports = {
     client,
     plantedCrops,
