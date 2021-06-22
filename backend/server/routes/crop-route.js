@@ -15,7 +15,7 @@ router.delete("/:id", deleteCrop);
 
 async function getAllCrops(req, res) {
     const crops = await cropService.getAllCrops();
-    res.json(crops.rows.map(it => it.doc));
+    res.json(crops.map(it => it.doc));
 }
 
 async function createOrUpdateCrop(req, res) {

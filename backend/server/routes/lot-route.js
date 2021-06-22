@@ -49,7 +49,7 @@ async function updateLot(req, res) {
     }
 }
 
-async function getAreaInBox(res, req) {
+async function getAreaInBox(req, res) {
     const bboxStr = req.params["bboxString"];
     const elems = bboxStr.split(",");
     const bbox = {
