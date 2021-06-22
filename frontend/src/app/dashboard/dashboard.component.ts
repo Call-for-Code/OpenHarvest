@@ -4,7 +4,7 @@ import { DashboardService } from "./dashboard.service";
 
 interface DonutChartProps { group: string; value: number; }
 interface AreaChartProps { group: string; date: Date; value: number; }
-
+interface LineChartProps { group: string; date: Date; value: number; }
 
 @Component({
     selector: "app-dashboard",
@@ -58,6 +58,31 @@ export class DashboardComponent implements OnInit {
         "height": "500px"
     };
 
+    data3: LineChartProps[] = [];
+    options3 = {
+        "title": "Crop production - forecast",
+        "axes": {
+            "left": {
+                "stacked": true,
+                "scaleType": "linear",
+                "mapsTo": "value",
+                "title": "Yield (kt)",
+            },
+            "bottom": {
+                "title": "Time",
+                "scaleType": "time",
+                "mapsTo": "date"
+            }
+        },
+        "legend": {
+            "alignment": "center"
+        },
+        "data": {
+            "loading": true
+        },
+        "curve": "curveMonotoneX",
+        "height": "500px"
+    };
 
     constructor(protected modalService: ModalService, private dashboardService: DashboardService) { }
 

@@ -13,6 +13,12 @@ export interface CropProductionForecast {
     yield: number;
 }
 
+export interface CropProductionHistory {
+    crop: string;
+    date: Date;
+    yield: number;
+}
+
 
 @Injectable({
     providedIn: "root"
