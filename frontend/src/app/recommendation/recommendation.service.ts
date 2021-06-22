@@ -1,20 +1,28 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
 export interface Recommendation {
-  lotId?: string,
-  cropId?: string,
-  cropIds?: string[]
+  plantDate: Date;
+  crops: string[];
+}
+
+export interface CropRecommendationResult {
+  crop: string;
+  score: number;
+  shortlistScore: number;
+  inSeasonScore: number;
+  plantedAreaScore: number;
+  yieldForecastScore: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class RecommendationService {
 
   constructor(protected http: HttpClient) { }
 
   recommend(request: Recommendation) {
-    //Make http call here
+    return this.http.post<CropRecommendationResult[]>("/api/recommendations", request).toPromise();
   }
 }

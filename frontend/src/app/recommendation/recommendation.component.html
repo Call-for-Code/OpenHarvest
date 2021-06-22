@@ -1,24 +1,26 @@
 <form>
     <div ibmGrid>
         <div ibmRow class="form-item">
-            <ibm-combo-box [items]="lots" appendInline="true" 
-                label="Lot" placeholder="Select Lot" [(ngModel)]="selectedLot" 
-                name="lots" (selected)="onSelectedLot($event)">
+            <ibm-combo-box [items]="crops" appendInline="true"
+                           label="Shortlist crops for recommendation" placeholder="Select Crops" [(ngModel)]="selectedCrop"
+                           name="crops" type="multi">
                 <ibm-dropdown-list></ibm-dropdown-list>
             </ibm-combo-box>
         </div>
+
         <div ibmRow class="form-item">
-            <ibm-combo-box [items]="crops" appendInline="true" 
-                label="Crop" placeholder="Select Crop" [(ngModel)]="selectedCrop" 
-                name="crops" (selected)="onSelectedCrop($event)" type="multi">
-                <ibm-dropdown-list></ibm-dropdown-list>
-        </ibm-combo-box>
+            <ibm-date-picker label="Plant date" name="plantDate" [(value)]="plantDate" [(ngModel)]="plantDate"></ibm-date-picker>
         </div>
 
         <div ibmRow class="form-item action">
-            <button class="bx--btn bx--btn--primary" modal-primary-focus (click)="recommend()" [disabled] = "isFormInvalid()">Recomend</button>
-            <button class="bx--btn bx--btn--secondary" modal-primary-focus (click)="closeModal()">Close</button>
+            <button class="bx--btn bx--btn--primary" (click)="recommend()" [disabled] = "isFormInvalid()">Recommend</button>
         </div>
     </div>
-    
 </form>
+
+<h2>Crop recommendations</h2>
+<div class="crop-recom-gauge">
+    <div *ngFor="let cropRecom of cropRecomGauge" class="crop-gauge">
+        <ibm-gauge-chart [data]="cropRecom.data" [options]="cropRecom.options"></ibm-gauge-chart>
+    </div>
+</div>

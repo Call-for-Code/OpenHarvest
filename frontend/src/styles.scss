@@ -19,4 +19,5 @@ main.bx--content {
   height: calc(100% - 3rem);
   display: flex;
   justify-content: center;
+  overflow: auto;
 }

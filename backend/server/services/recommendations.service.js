@@ -26,12 +26,14 @@ class RecommendationsService {
         this.createOrUpdateShortlistForLot(request);
         const cropDetails = await this.cropService.getAllCrops();
 
+        console.log(cropDetails);
+
         const plantDate = new Date(request.plantDate);
         const plantMonth = plantDate.getMonth() + 1;
         const crops = {};
 
-        cropDetails.forEach(row => {
-            const crop = row.value;
+        cropDetails.forEach(crop => {
+            // const crop = row.value;
             crops[crop.name.toLowerCase()] = {
                 shortlist: 0,
                 area: 0,
@@ -43,8 +45,9 @@ class RecommendationsService {
             };
         });
 
+        console.log(request);
         request.crops.forEach(crop => {
-            crops[crop.name.toLowerCase()].shortlist = 100;
+            crops[crop.toLowerCase()].shortlist = 100;
         });
 
         const overallCropDistribution = await this.lotAreaService.getOverallCropDistribution();
@@ -62,12 +65,11 @@ class RecommendationsService {
                 crop.yield += dist.yield;
             }
         });
-        const minYield = Math.min(...cropDetails.map(row => crops[row.value.name.toLowerCase()].yield));
+        const minYield = Math.min(...cropDetails.map(crop => crops[crop.name.toLowerCase()].yield));
 
         const cropScores = [];
 
-        cropDetails.forEach((row) => {
-            const cropDetail = row.value;
+        cropDetails.forEach((cropDetail) => {
             const crop = crops[cropDetail.name.toLowerCase()];
             const cropScore = {};
             cropScore.crop = cropDetail.name;
@@ -75,10 +77,10 @@ class RecommendationsService {
             cropScore.inSeasonScore = crop.inSeason / 100 * weights.inSeason;
             cropScore.plantedAreaScore = crop.area === 0 ? 0 : (minArea / crop.area * weights.lowPlantedArea);
             cropScore.yieldForecastScore = crop.yield === 0 ? 0 : (minYield / crop.yield * weights.lowYieldForecast);
-            cropScore.score = cropScore.shortlistScore +
+            cropScore.score = 10 * (cropScore.shortlistScore +
                 cropScore.inSeasonScore +
                 cropScore.plantedAreaScore +
-                cropScore.yieldForecastScore;
+                cropScore.yieldForecastScore);
             cropScores.push(cropScore);
         });
 
