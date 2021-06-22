@@ -23,7 +23,9 @@ import {
 	InputModule,
 	TableModule,
 	ComboBoxModule,
-	NotificationModule
+	NotificationModule,
+	Loading,
+	LoadingModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -96,6 +98,7 @@ import { TileComponentComponent } from './tile-component/tile-component.componen
 		ChartsModule,
 		ComboBoxModule,
 		NotificationModule,
+		LoadingModule
 	],
 	bootstrap: [AppComponent]
 })

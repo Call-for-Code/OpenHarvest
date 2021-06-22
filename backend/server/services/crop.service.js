@@ -7,6 +7,7 @@ const db = APPLICATION_DB;
 
 const LOT_DB = "lot-areas";
 let cropDetails;
+
 class CropService {
 
     constructor() {
@@ -24,7 +25,8 @@ class CropService {
             group: true,
         });
 
-        cropDetails = response.result.rows;
+        cropDetails = response.result.rows.map(v => v.value);
+
         return cropDetails;
     }
 
