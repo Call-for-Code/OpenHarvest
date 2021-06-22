@@ -59,11 +59,18 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 * [git](https://git-scm.com/)
 
 ### Building app
-./build.sh
-cd backend
-npm i
-npm start
-
+#### backend
+- chmod +x build.sh
+- ./build.sh
+- cd backend
+- npm i
+- vi localdev-config.json
+- generate a cloud key and include it in your file:{ "cloudant_apikey": , "cloudant_url":  }
+- npm start
+#### frontend
+- cd frontend
+- npm install
+- npm start
 ## Built with
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
