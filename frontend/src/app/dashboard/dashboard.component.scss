@@ -37,6 +37,12 @@
   .donut-chart {
     margin: 1rem;
   }
+  .line-chart {
+    margin: 1rem;
+    float: footer;
+    flex: auto;
+  }
+
 
   ibm-donut-chart {
     height: 500px;
