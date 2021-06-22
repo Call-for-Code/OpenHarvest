@@ -8,6 +8,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 
+import { AngularSplitModule } from 'angular-split';
+
 // carbon-components-angular default imports
 import {
     IconModule,
@@ -26,7 +28,8 @@ import {
     NotificationModule,
     Loading,
     LoadingModule,
-    DatePickerModule
+    DatePickerModule,
+	AccordionModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -53,6 +56,7 @@ import { SearchLotComponent } from './lot/search-lot/search-lot.component';
 import { RecommendationComponent } from './recommendation/recommendation.component';
 import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
 import { TileComponentComponent } from './tile-component/tile-component.component';
+import { LotAssignmentComponent } from './lot/lot-assignment/lot-assignment.component';
 
 @NgModule({
 	declarations: [
@@ -74,7 +78,8 @@ import { TileComponentComponent } from './tile-component/tile-component.componen
 		SearchLotComponent,
 		RecommendationComponent,
 		LandAreasComponent,
-		TileComponentComponent
+		TileComponentComponent,
+		LotAssignmentComponent,
 	],
     imports: [
         CommonModule,
@@ -100,7 +105,8 @@ import { TileComponentComponent } from './tile-component/tile-component.componen
         ComboBoxModule,
         NotificationModule,
         LoadingModule,
-        DatePickerModule
+        DatePickerModule,
+		AccordionModule
     ],
 	bootstrap: [AppComponent]
 })

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
 import { circle, latLng, layerGroup, MapOptions, polygon, tileLayer, Map, rectangle, geoJSON, LatLng, latLngBounds, LatLngBounds } from "leaflet";
 import squareGrid from "@turf/square-grid";
 
@@ -6,6 +6,10 @@ import squareGrid from "@turf/square-grid";
 import { LotAreaCacheService } from "./../../services/lot-area-cache.service";
 import { nswMask } from "./masks";
 import { Feature, Polygon } from "geojson";
+
+export type Lot = Feature & {
+  _id: string
+}
 
 @Component({
   selector: 'app-land-areas',
@@ -15,7 +19,7 @@ import { Feature, Polygon } from "geojson";
 export class LandAreasComponent implements OnInit {
 
 
-  @Output() featureClick = new EventEmitter<Feature>();
+  @Output() featureClick = new EventEmitter<Lot>();
 
   OSMBaseLayer = tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors' });
   ESRISatelliteLayer = tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', { maxZoom: 18, attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community' });
@@ -64,8 +68,10 @@ export class LandAreasComponent implements OnInit {
     },
     onEachFeature: (feature, layer) => {
       layer.on('click', (e) => {
-        console.log(feature);
-        this.featureClick.emit(feature);
+        // console.log(feature);
+        this.zone.run(() => {
+          this.featureClick.emit(feature as any);
+        })
       });
     }
   })
@@ -87,7 +93,7 @@ export class LandAreasComponent implements OnInit {
 
   
 
-  constructor(private lotAreaCache: LotAreaCacheService) { }
+  constructor(private lotAreaCache: LotAreaCacheService, private zone: NgZone) { }
 
   ngOnInit(): void {
   }

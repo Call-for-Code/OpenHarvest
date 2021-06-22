@@ -1,0 +1,19 @@
+<div style="width: 100vw; height: 90vh">
+    <as-split direction="horizontal">
+        <as-split-area [size]="60">
+            <app-land-areas (featureClick)=lotClicked($event)></app-land-areas>
+        </as-split-area>
+        <as-split-area [size]="40">
+            <h3 align="center">Lot Assignment</h3>
+            <p>Click a lot on the map to assign it to you.</p>
+            <h4>Lots Assigned to you</h4>
+            <!-- {{this.storedLotKeys | json}} -->
+
+            <ibm-accordion align="start">
+                <ibm-accordion-item [title]="lot._id" *ngFor="let lot of storedLots" (selected)="lotSelected($event)">
+                    <!-- <app-add-crop></app-add-crop> -->
+                </ibm-accordion-item>
+            </ibm-accordion>
+        </as-split-area>
+    </as-split>
+</div>
