@@ -21,3 +21,26 @@ main.bx--content {
   justify-content: center;
   overflow: auto;
 }
+
+// Remove right 25% padding on accordian items
+ibm-accordion-item.nopadding {
+  div {
+    padding-right: 0%;
+  }
+}
+
+// .bx--content {
+//   padding: 0 !important;
+// }
+
+// CSS highlight without JS errors...
+a.active::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    border-bottom: 3px solid #4589ff;
+    content: "";
+}

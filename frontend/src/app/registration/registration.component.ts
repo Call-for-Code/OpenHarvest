@@ -36,7 +36,6 @@ export class RegistrationComponent extends BaseModal implements OnInit {
     this.registrationService.register(registration).then(response => {
       console.log('Response ', response);
       this.loginService.authenticate({name: registration.name, password: registration.password}).then((res: Login) => {
-        this.loginService.setUserName(res.name);
         this.closeModal();
       });
       

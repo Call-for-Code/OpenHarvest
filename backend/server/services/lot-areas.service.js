@@ -24,7 +24,7 @@ class LotAreas {
         if (response.status >= 400) {
             throw new Error(response);
         }
-        return response.result;
+        return response;
     }
 
     async getLot(id) {

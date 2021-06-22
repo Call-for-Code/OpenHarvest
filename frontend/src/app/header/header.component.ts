@@ -17,9 +17,13 @@ export class HeaderComponent {
 	@HostBinding('class.bx--header') headerClass = true;
 	@Input() modalText = "Hello, World";
 
+	username: string;
+
 	constructor(protected modalService: ModalService,
 				protected loginService: LoginService) {
-
+		this.loginService.userInfo$.subscribe(user => {
+			this.username = user.username;
+		})
 	}
 	
 	loginDialog() {
@@ -78,7 +82,8 @@ export class HeaderComponent {
 		this.loginService.logout();
 	}
 
-	getLoggedInUserName() {
-		return this.loginService.getUserName();
-	}
+	// getLoggedInUserName() {
+	// 	username = this.loginService.getUserName();
+	// 	return 
+	// }
 }

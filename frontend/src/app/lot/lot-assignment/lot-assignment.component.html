@@ -1,4 +1,4 @@
-<div style="width: 100vw; height: 90vh">
+<div style="width: calc(100vw - 5rem); height: calc(100vh - 5rem)">
     <as-split direction="horizontal">
         <as-split-area [size]="60">
             <app-land-areas (featureClick)=lotClicked($event)></app-land-areas>
@@ -9,11 +9,27 @@
             <h4>Lots Assigned to you</h4>
             <!-- {{this.storedLotKeys | json}} -->
 
-            <ibm-accordion align="start">
-                <ibm-accordion-item [title]="lot._id" *ngFor="let lot of storedLots" (selected)="lotSelected($event)">
-                    <!-- <app-add-crop></app-add-crop> -->
-                </ibm-accordion-item>
-            </ibm-accordion>
+            <div fxLayout="column" fxLayoutAlign="space-between center" style="height: calc(86vh - 100px);">
+                <div fxFill style="overflow: auto;">
+                    <ibm-accordion align="start">
+                        <ibm-accordion-item class="nopadding" [title]="lot._id" *ngFor="let lot of storedLots" (selected)="lotSelected($event)">
+                            <app-lot-crop-form [lot]=lot [crops]="crops"></app-lot-crop-form>
+                            <div fxLayout="row" fxLayoutAlign="end center" style="padding-top: 10px;">
+                                <button ibmButton="primary" (click)="deleteLot(lot)">
+                                    Delete Lot
+                                    <ibm-icon-delete size="16" class="bx--btn__icon"></ibm-icon-delete>
+                                </button>
+                            </div>
+                        </ibm-accordion-item>
+                    </ibm-accordion>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="end center" style="height: 100px; width: 100%;">
+                    <button ibmButton="primary" (click)="save()">
+                        Save
+                        <ibm-icon-save size="16" class="bx--btn__icon"></ibm-icon-save>
+                    </button>
+                </div>
+            </div>
         </as-split-area>
     </as-split>
 </div>

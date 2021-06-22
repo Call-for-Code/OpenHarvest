@@ -1,8 +1,21 @@
 const { CloudantV1 } = require("@ibm-cloud/cloudant");
 const client = CloudantV1.newInstance({});
 
+const LotAreaService = require("./lot-areas.service");
+const lotAreas = new LotAreaService();
+
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;
+
+async function getFarmer(id) {
+    const response = await client.getDocument({
+        db,
+        docId: `farmer:${id}`,
+    });
+    const farmer = response.result;
+    farmer.lots = await lotAreas.getLots(farmer.lot_ids);
+    return farmer;
+}
 
 class AuthService {
 
@@ -10,14 +23,14 @@ class AuthService {
     }
 
     async login(name, password) {
-        const user = await client.getDocument({
-            db,
-            docId: "farmer:" + name,
-        }).catch(() => {
-            return {result: {}};
-        });
+        const user = await getFarmer(name);
 
-        return user.result.password === password;
+        if (user && user.password === password) {
+            return user;
+        }
+        else {
+            return null;
+        }
     }
 
     async register(name, password, mobileNumber) {
@@ -27,6 +40,7 @@ class AuthService {
             name: name,
             password: password,
             mobileNumber: mobileNumber,
+            lot_ids: []
         };
 
         const response = await client.postDocument({

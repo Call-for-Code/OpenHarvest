@@ -9,6 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
 
 import { AngularSplitModule } from 'angular-split';
+import { FlexLayoutModule } from "@angular/flex-layout";
 
 // carbon-components-angular default imports
 import {
@@ -29,7 +30,8 @@ import {
     Loading,
     LoadingModule,
     DatePickerModule,
-	AccordionModule
+	AccordionModule,
+    StructuredListModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -37,6 +39,11 @@ import { ChartsModule } from '@carbon/charts-angular'
 import Notification20 from '@carbon/icons/es/notification/20';
 import UserAvatar20 from '@carbon/icons/es/user--avatar/20';
 import AppSwitcher20 from '@carbon/icons/es/app-switcher/20';
+import Download20 from '@carbon/icons/es/download/20';
+import Add20 from '@carbon/icons/es/add/20';
+
+import { DeleteModule, AddModule, SproutModule, CornModule, SaveModule } from "@carbon/icons-angular";
+
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
@@ -57,6 +64,11 @@ import { RecommendationComponent } from './recommendation/recommendation.compone
 import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
 import { TileComponentComponent } from './tile-component/tile-component.component';
 import { LotAssignmentComponent } from './lot/lot-assignment/lot-assignment.component';
+import { LotCropFormComponent } from './lot/lot-crop-form/lot-crop-form.component';
+import { CropDetailsComponent } from './crop/crop-details/crop-details.component';
+import { LotCropEditModalComponent } from './lot/lot-crop-edit-modal/lot-crop-edit-modal.component';
+import { LotCropHarvestDateModalComponent } from './lot/lot-crop-harvest-date-modal/lot-crop-harvest-date-modal.component';
+
 
 @NgModule({
 	declarations: [
@@ -80,6 +92,10 @@ import { LotAssignmentComponent } from './lot/lot-assignment/lot-assignment.comp
 		LandAreasComponent,
 		TileComponentComponent,
 		LotAssignmentComponent,
+		LotCropFormComponent,
+		CropDetailsComponent,
+		LotCropEditModalComponent,
+		LotCropHarvestDateModalComponent,
 	],
     imports: [
         CommonModule,
@@ -89,7 +105,13 @@ import { LotAssignmentComponent } from './lot/lot-assignment/lot-assignment.comp
         AppRoutingModule,
         UIShellModule,
         LeafletModule,
+        FlexLayoutModule,
         IconModule,
+        DeleteModule,
+        AddModule,
+        SproutModule,
+        CornModule,
+        SaveModule,
         ModalModule,
         PlaceholderModule,
         GridModule,
@@ -106,7 +128,9 @@ import { LotAssignmentComponent } from './lot/lot-assignment/lot-assignment.comp
         NotificationModule,
         LoadingModule,
         DatePickerModule,
-		AccordionModule
+		AccordionModule,
+        StructuredListModule,
+		AngularSplitModule
     ],
 	bootstrap: [AppComponent]
 })
@@ -115,7 +139,9 @@ export class AppModule {
 		iconService.registerAll([
 			Notification20,
 			UserAvatar20,
-			AppSwitcher20
+			AppSwitcher20,
+            Download20,
+            Add20
 		]);
 	}
 }

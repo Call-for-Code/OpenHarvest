@@ -12,12 +12,12 @@ router.use(cors());
 router.post("/login", async(req, res) => {
 
     const {name, password} = req.body;
-    const loginSuccess = await authService.login(name, password);
+    const user = await authService.login(name, password);
 
-    if (loginSuccess) {
+    if (user) {
         req.session.loggedIn = true;
         req.session.name = name;
-        res.json({name: name});
+        res.json({name: name, user});
     } else {
         res.status(401).send("Invalid name/password!");
     }

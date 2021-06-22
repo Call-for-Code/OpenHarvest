@@ -6,10 +6,7 @@ import squareGrid from "@turf/square-grid";
 import { LotAreaCacheService } from "./../../services/lot-area-cache.service";
 import { nswMask } from "./masks";
 import { Feature, Polygon } from "geojson";
-
-export type Lot = Feature & {
-  _id: string
-}
+import { Lot } from "./../../lot/lot.service";
 
 @Component({
   selector: 'app-land-areas',

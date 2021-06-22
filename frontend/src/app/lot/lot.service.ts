@@ -1,10 +1,50 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Feature } from "geojson";
 
-export interface Lot {
+export interface Centre {
+	type: "Point";
+  /**
+   * lng, lat format
+   */
+	coordinates: [number, number];
+}
+
+export interface Crop {
+	type: string;
+	name: string;
+  /**
+   * The start and end months
+   */
+	planting_season: [number, number];
+	is_ongoing: string;
+	time_to_harvest: number;
+  /**
+   * yield in kg's per Ha
+   */
+	yield: number;
+}
+
+export interface Crops_planted {
+	name: string;
+	planted: Date;
+	harvested?: any;
+	crop: Crop;
+}
+
+export type Lot = Feature & {
   _id?: string;
   _rev?: string;
   name: string;
+  properties: {
+    fid: string;
+    Area_Ha: number;
+    data: {
+      Area_Ha: number;
+      centre: Centre;
+      crops_planted: Crops_planted[];
+    }
+  }
 }
 
 @Injectable({

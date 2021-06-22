@@ -49,23 +49,29 @@ async function createOrUpdateFarmer(req, res) {
 
 }
 
+async function getFarmer(id) {
+    const response = await client.getDocument({
+        db,
+        docId: `farmer:${id}`,
+    });
+    const farmer = response.result;
+    farmer.lots = await lotAreas.getLots(farmer.lot_ids);
+    return farmer;  
+}
+
 router.post("/", createOrUpdateFarmer);
 
 router.put("/", createOrUpdateFarmer);
 
-router.get("/:id", async(req, res) => {
+router.get("/:id", async (req, res) => {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
         return;
     }
+
     try {
-        const response = await client.getDocument({
-            db,
-            docId: `farmer:${id}`,
-        });
-        const farmer = response.result;
-        farmer.lots = await lotAreas.getLots(farmer.lot_ids);
+        const farmer = getFarmer(id);
         res.json(farmer);
     } catch (e) {
         if (e.status === 404) {
@@ -98,9 +104,11 @@ router.delete("/:id", async(req, res) => {
 });
 
 // Link Lot
-router.post(":id/lot", async(req, res) => {
+router.post("/:id/lot", async(req, res) => {
     const id = req.params["id"];
     const lot = req.body; // Lot Details with crops
+
+    console.log(id, lot);
 
     if (!id || !lot) {
         res.sendStatus(400).end();
@@ -109,23 +117,38 @@ router.post(":id/lot", async(req, res) => {
 
     try {
         // Save the Lot information
-        const createdLotResult = await lotAreas.updateLot(lot);
+        let createdLotResult;
+        try {
+            createdLotResult = await lotAreas.updateLot(lot);
+        }
+        catch (e) {
+            // if (e.status != 409) {
+                res.status(e.status).json(e);
+                return;
+            // }
+        }
         console.log(createdLotResult);
 
-        const farmer = await client.getDocument({
+        const farmerResp = await client.getDocument({
             db,
             docId: `farmer:${id}`,
         });
+        const farmer = farmerResp.result;
+        console.log(farmer);
 
-        farmer.lot_ids.append(lot._id); // Convert to int
-
-        const newFarmer = await client.putDocument({
-            db,
-            docId: farmer._id,
-            document: farmer,
-        });
-
-        res.json(newFarmer.result);
+        if (!farmer.lot_ids.includes(lot._id)) {
+            farmer.lot_ids.push(lot._id); // Convert to int
+            const result = await client.putDocument({
+                db,
+                docId: farmer._id,
+                document: farmer,
+            });
+            
+        }
+        
+        const filledFarmer = await getFarmer(id);
+        res.json(filledFarmer);
+        
     } catch (e) {
         console.error(e);
         res.status(500).json(e);

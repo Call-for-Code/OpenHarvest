@@ -31,7 +31,6 @@ export class LoginComponent extends BaseModal implements OnInit {
   login() {
     //Login here and close when login is successful.
     this.loginService.authenticate(this.loginForm.value).then((res: Registration) => {
-      this.loginService.setUserName(res.name);
       this.closeModal();
     }).catch(e => {
       this.notification = {
