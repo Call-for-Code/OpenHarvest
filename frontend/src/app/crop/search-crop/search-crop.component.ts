@@ -10,6 +10,7 @@ import { Crop, CropService } from "../crop.service";
 export class SearchCropComponent implements OnInit {
 
   searchCropModel = new TableModel();
+  loading: boolean = true;
   monthNames: Array<String> = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
@@ -17,6 +18,7 @@ export class SearchCropComponent implements OnInit {
   constructor(private cropService: CropService) { }
 
   async ngOnInit() {
+    
     this.searchCropModel.header = [
       new TableHeaderItem({ data: 'Name' }),
       new TableHeaderItem({ data: 'Planting Season' }),
@@ -26,6 +28,7 @@ export class SearchCropComponent implements OnInit {
 
     const crops = await this.cropService.getAllCrops();
     this.updateModel(crops);
+    this.loading = false;
   }
 
   updateModel(crops: Crop[]) {

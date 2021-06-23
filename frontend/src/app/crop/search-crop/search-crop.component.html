@@ -5,3 +5,6 @@
         [model]="searchCropModel">
     </ibm-table>
 </ibm-table-container>
+<div class="loading skeleton-text">
+    <ibm-skeleton-text [lines]="1" *ngIf="loading"></ibm-skeleton-text>
+</div>
