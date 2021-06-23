@@ -1,25 +1,29 @@
-.dashboard {
+:host {
   display: flex;
-  flex-direction: column;
   width: 100%;
 
-  .tiles {
+  .dashboard {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    
-    ibm-tile {
-      width: 21rem;
-      height: 5rem;
+    flex-direction: column;
+    width: 100%;
+
+    .tiles {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
 
-      .title h5 {
-        text-transform: capitalize;
-      }
+      ibm-tile {
+        width: 21rem;
+        height: 5rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-      .content {
+        .title h5 {
+          text-transform: capitalize;
+        }
+
+    .content {
         height: 1rem;
       }
 
@@ -32,15 +36,11 @@
     }
   }
 
-  .graphics {
-    display: flex;
-    width: 100%;
+    .graphics {
+      display: flex;
+      width: 100%;
+    }
   }
-}
-
-:host {
-  display: flex;
-  width: 100%;
   .area-chart {
     margin: 1rem;
     flex: auto;
@@ -48,12 +48,6 @@
   .donut-chart {
     margin: 1rem;
   }
-  .line-chart {
-    margin: 1rem;
-    float: footer;
-    flex: auto;
-  }
-
 
   ibm-donut-chart {
     height: 500px;

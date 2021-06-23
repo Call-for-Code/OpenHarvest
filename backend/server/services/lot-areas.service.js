@@ -9,6 +9,7 @@ const {
     plantedAreaView,
     cropProductionByMonthView,
     cropProductionForecast,
+    cropProductionHistory,
     farmerCountDoc,
     farmerCountView,
     cropsPlantedDoc,
@@ -161,6 +162,29 @@ class LotAreas {
                     yield: row.value,
                 };
             });
+        }
+    }
+
+    async getCropProductionHistory() {
+        const response = await client.postView({
+            db: LOT_DB,
+            ddoc: cropProductionHistory,
+            view: "cropProductionHistoryByMonth",
+            group: true,
+            groupLevel: 2,
+        });
+
+        if (response.status >= 400) {
+            throw response;
+        } else {
+            const rows = response.result.rows;
+            return rows.map(row => {
+                return {
+                    date: row.key[0],
+                    crop: row.key[1],
+                    yield: row.value,
+                };
+            }).filter(data => new Date(data.date) <= new Date());
         }
     }
 

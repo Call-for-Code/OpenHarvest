@@ -3,6 +3,7 @@ const client = CloudantV1.newInstance({});
 
 const plantedCrops = "plantedCrops";
 const cropProductionForecast = "cropProductionForecast";
+const cropProductionHistory = "cropProductionHistory";
 const APPLICATION_DB = "application-db";
 const LOT_DB = "lot-areas";
 //
@@ -353,10 +354,75 @@ function totalCropsHarvestedView() {
 }
 
 
+client.headDesignDocument({
+    db: LOT_DB,
+    ddoc: cropProductionHistory,
+}).then((response) => {
+    console.log(cropProductionHistory + " view already exists: ", response.status);
+    // const rev = response.headers["etag"].replace("\"", "").replace("\"", "");
+    // client.deleteDesignDocument({
+    //     db: LOT_DB,
+    //     ddoc: cropProductionHistory,
+    //     rev: rev,
+    // }).then(response => {
+    //     // getOverallCropDistribution();
+    //     createCropProductionForecastView();
+    // }).catch(reason => console.log(reason));
+}).catch(e => {
+    if (e.status === 404) {
+        createCropProductionHistoryView();
+    } else {
+        console.log(e);
+    }
+});
+
+function createCropProductionHistoryView() {
+    const map = {
+        map: "function(doc) {" +
+            "    if (doc.properties && doc.properties.data && doc.properties.data.crops_planted) {\n" +
+            "        var len = doc.properties.data.crops_planted.length; " +
+            "        var plantedCrop; " +
+            "        for(var i=0; i < len; i++) { " +
+            "            if (doc.properties.data.crops_planted[i].harvested != null) { " +
+            "                plantedCrop = doc.properties.data.crops_planted[i];  " +
+            "                var d = new Date(plantedCrop.planted); d.setHours(0,0,0,0); " +
+            "                d.setDate(d.getDate() + plantedCrop.crop.time_to_harvest);" +
+            // "             emit([new Date(d.getFullYear(), d.getMonth(), 1), plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+            "                emit([d, plantedCrop.crop.name], doc.properties.Area_Ha * plantedCrop.crop.yield /10000);\n" +
+            "            }\n" +
+            "        }\n" +
+            "    }" +
+            "}",
+        reduce: "_sum",
+    };
+
+    const designDoc = {
+        views: {cropProductionHistoryByMonth: map},
+    };
+
+    client.putDesignDocument({
+        db: LOT_DB,
+        designDocument: designDoc,
+        ddoc: cropProductionHistory,
+    }).then(response => {
+        console.log(cropProductionHistory + " view is created: ", response.result);
+        // client.postView({
+        //     db: LOT_DB,
+        //     ddoc: cropProductionHistory,
+        //     view: "cropProductionHistoryByMonth",
+        //     groupLevel: 2,
+        // }).then(response => {
+        //     console.log(response.result.rows);
+        // }).catch(e => console.log(e));
+    }).catch((e) => console.log(e));
+}
+
+
 module.exports = {
     client,
     plantedCrops,
     cropProductionForecast,
+    cropProductionHistory,
     plantedAreaView,
     cropProductionByMonthView,
     cropDetailsDdoc,
@@ -366,5 +432,5 @@ module.exports = {
     cropsPlantedDoc,
     cropsPlantedView,
     cropsHarvestedDoc,
-    cropsHarvestedView
+    cropsHarvestedView,
 };

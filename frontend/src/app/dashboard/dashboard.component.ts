@@ -58,9 +58,9 @@ export class DashboardComponent implements OnInit {
         "height": "500px"
     };
 
-    data3: LineChartProps[] = [];
-    options3 = {
-        "title": "Crop production - Historical Yield",
+    yieldHistoryData: AreaChartProps[] = [];
+    yieldHistoryChartOptions = {
+        "title": "Crop production - history",
         "axes": {
             "left": {
                 "stacked": true,
@@ -117,6 +117,21 @@ export class DashboardComponent implements OnInit {
                 this.options2 = {...this.options2};
             })
             .catch(() => this.data2 = []);
+
+        this.dashboardService.getCropProductionHistory()
+            .then(value => {
+                this.yieldHistoryData = value.map(value1 => {
+                    return {
+                        group: value1.crop,
+                        date: value1.date,
+                        value: value1.yield,
+                    };
+                });
+                this.yieldHistoryChartOptions.legend["order"] = this.data2.map(value1 => value1.group).sort();
+                this.yieldHistoryChartOptions.data.loading = false;
+                this.yieldHistoryChartOptions = {...this.yieldHistoryChartOptions};
+            })
+            .catch(() => this.yieldHistoryData = []);
 
         this.tileData = await this.dashboardService.getTileData();
     }

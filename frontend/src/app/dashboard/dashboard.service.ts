@@ -44,6 +44,10 @@ export class DashboardService {
         return this.http.get<CropProductionForecast[]>("/api/dashboard/crop-production-forecast").toPromise();
     }
 
+    getCropProductionHistory() {
+        return this.http.get<CropProductionForecast[]>("/api/dashboard/crop-production-history").toPromise();
+    }
+
     getTileData() {
         return this.http.get<TileData>("/api/dashboard/tiles").toPromise();
     }

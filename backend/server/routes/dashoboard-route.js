@@ -24,6 +24,16 @@ router.get("/crop-production-forecast", async(req, res) => {
     }
 });
 
+router.get("/crop-production-history", async(req, res) => {
+    try {
+        const cropProductionHistory = await lotAreas.getCropProductionHistory();
+        res.json(cropProductionHistory);
+    } catch (e) {
+        console.error(e);
+        res.status(500).json(e);
+    }
+});
+
 router.get("/tiles", async (req, res) => {
     try {
         const resObj = {};
