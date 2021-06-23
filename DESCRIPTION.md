@@ -21,4 +21,4 @@ There would be difficulty in providing incentive for farmers to publicly share t
 
 ## The Future OF Open-Harvest
 
-The goal of Open-Harvest is to stabilise the production of crops. Every year there is a consistent volume of crops produced to feed the people of India. Open-Harvest is best fit for governing bodies across the globe to assist in planning for the future fo their country.
+The goal of Open-Harvest is to stabilize the production of crops. Every year there is a consistent volume of crops produced to feed the people of India. Open-Harvest is best fit for governing bodies across the globe to assist in planning for the future fo their country.
