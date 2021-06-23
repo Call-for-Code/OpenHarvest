@@ -5,12 +5,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-
+​
 import { LeafletModule } from "@asymmetrik/ngx-leaflet";
-
+​
 import { AngularSplitModule } from 'angular-split';
 import { FlexLayoutModule } from "@angular/flex-layout";
-
+​
 // carbon-components-angular default imports
 import {
     IconModule,
@@ -30,22 +30,23 @@ import {
     Loading,
     LoadingModule,
     DatePickerModule,
-	AccordionModule,
+    AccordionModule,
     StructuredListModule,
     SkeletonPlaceholder,
-    SkeletonModule
+    SkeletonModule, 
+    CheckboxModule
 } from 'carbon-components-angular';
-
+​
 import { ChartsModule } from '@carbon/charts-angular'
-
+​
 import Notification20 from '@carbon/icons/es/notification/20';
 import UserAvatar20 from '@carbon/icons/es/user--avatar/20';
 import AppSwitcher20 from '@carbon/icons/es/app-switcher/20';
 import Download20 from '@carbon/icons/es/download/20';
 import Add20 from '@carbon/icons/es/add/20';
-
+​
 import { DeleteModule, AddModule, SproutModule, CornModule, SaveModule } from "@carbon/icons-angular";
-
+​
 import { HeaderComponent } from './header/header.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LoginComponent } from './login/login.component';
@@ -70,8 +71,8 @@ import { LotCropFormComponent } from './lot/lot-crop-form/lot-crop-form.componen
 import { CropDetailsComponent } from './crop/crop-details/crop-details.component';
 import { LotCropEditModalComponent } from './lot/lot-crop-edit-modal/lot-crop-edit-modal.component';
 import { LotCropHarvestDateModalComponent } from './lot/lot-crop-harvest-date-modal/lot-crop-harvest-date-modal.component';
-
-
+​
+​
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -130,10 +131,11 @@ import { LotCropHarvestDateModalComponent } from './lot/lot-crop-harvest-date-mo
         NotificationModule,
         LoadingModule,
         DatePickerModule,
-		AccordionModule,
+        AccordionModule,
         StructuredListModule,
-		AngularSplitModule,
-        SkeletonModule
+        AngularSplitModule,
+        SkeletonModule,
+        CheckboxModule
     ],
 	bootstrap: [AppComponent]
 })

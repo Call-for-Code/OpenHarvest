@@ -2,38 +2,52 @@ import { Component, OnInit } from "@angular/core";
 import { BaseModal, ModalService } from "carbon-components-angular";
 import { Crop, CropService } from "../crop/crop.service";
 import { CropRecommendationResult, RecommendationService } from "./recommendation.service";
-
+import { FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from "@angular/forms";
+​
 @Component({
   selector: "app-recommendation",
   templateUrl: "./recommendation.component.html",
   styleUrls: ["./recommendation.component.scss"]
 })
+​
 export class RecommendationComponent extends BaseModal implements OnInit {
+  form: FormGroup;
   lots: Array<Object>;
-  crops: Array<Object>;
-  plantDate = new Date();
+  cropsData: Array<Crop>;
   selectedCrop = [];
   cropRecomGauge = [];
-
+  loadingCrops = true;
+  loadingRecom: boolean = false;
+​
   constructor(protected modalService: ModalService,
               private cropService: CropService,
-              private service: RecommendationService) {
+              private service: RecommendationService,
+              private formBuilder: FormBuilder) {
     super();
-
-  }
-
+    
+    this.form = this.formBuilder.group({
+      crops: this.formBuilder.group({}),
+      plantDate: new FormControl(new Date(), Validators.required)
+    });
+​  }
+​
+​
   ngOnInit(): void {
     this.setCrops();
   }
-
+​
   recommend() {
+    this.loadingRecom = true;
+    const values = this.form.get('crops').value;
+    const selectedCrops = Object.keys(values).filter(value => values[value]); //Filter selected keys
     const requestData = {
-      plantDate: this.plantDate,
-      crops: this.selectedCrop.map(val => val.value.name)
+      plantDate: this.getPlantDate(),
+      crops: selectedCrops
     };
-
+​
     this.service.recommend(requestData)
         .then(value =>  this.cropRecomGauge = value.map(recom => {
+          this.loadingRecom = false;
           return {
             crop: recom.crop,
             data: this.getGaugeData(recom),
@@ -41,23 +55,29 @@ export class RecommendationComponent extends BaseModal implements OnInit {
           };
         }));
   }
-
+​
   isFormInvalid() {
-    return !this.selectedCrop || this.selectedCrop.length === 0 ||
-           !this.plantDate;
+    return this.form.invalid || this.noCropSelected();
   }
 
-  setCrops() {
-    this.cropService.getAllCrops().then((crops: Crop[]) => {
-      const data = [];
-      crops.forEach(crop => {
-        data.push({content: crop.name, selected: false, value: crop});
-      });
+  noCropSelected() {
+    const values = this.form.get('crops').value;
+    const selectedCrops = Object.keys(values).filter(value => values[value]);
 
-      this.crops = data;
+    return selectedCrops.length === 0;
+  }
+​
+  setCrops() {
+    this.loadingCrops = true;
+    this.cropService.getAllCrops().then((crops: Crop[]) => {
+      const cropsCheckBoxGroup = <FormGroup> this.form.get('crops');
+      this.cropsData = crops;
+      crops.forEach((crop) => cropsCheckBoxGroup.addControl(crop.name, new FormControl(false)));
+    
+      this.loadingCrops = false;
     });
   }
-
+​
   getGaugeData(cropRecom: CropRecommendationResult) {
     return [{
       group: "value",
@@ -81,7 +101,7 @@ export class RecommendationComponent extends BaseModal implements OnInit {
       // },
     ];
   }
-
+​
   getGaugeOptions(cropRecom: CropRecommendationResult) {
     return {
       "title": cropRecom.crop,
@@ -98,5 +118,9 @@ export class RecommendationComponent extends BaseModal implements OnInit {
         }
       }
     };
+  }
+
+  getPlantDate() {
+    return this.form.get('plantDate').value[0];
   }
 }
