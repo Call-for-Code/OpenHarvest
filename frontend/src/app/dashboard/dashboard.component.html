@@ -2,19 +2,31 @@
     <div class="tiles">
         <ibm-tile>
             <div class="title"><h5>Total Farmers</h5></div>
-            <div class="content"><h6>{{tileData.totalFarmers || "Loading..."}}</h6></div>
+            <div class="content skeleton-text">
+                <ibm-skeleton-text [lines]="1" *ngIf="tileData.totalFarmers === undefined"></ibm-skeleton-text>
+                <h6 *ngIf="tileData.totalFarmers !== undefined">{{tileData.totalFarmers}}</h6>
+			</div>
         </ibm-tile>
         <ibm-tile>
             <div class="title"><h5>Total crops planted</h5></div>
-            <div class="content"><h6>{{tileData.cropsPlanted || "Loading..."}}</h6></div>
+            <div class="content skeleton-text">
+                <ibm-skeleton-text [lines]="1" *ngIf="tileData.cropsPlanted === undefined"></ibm-skeleton-text>
+                <h6 *ngIf="tileData.cropsPlanted !== undefined">{{tileData.cropsPlanted}}</h6>
+            </div>
         </ibm-tile>
         <ibm-tile >
             <div class="title"><h5>Total crops harvested</h5></div>
-            <div class="content"><h6>{{tileData.cropsHarvested || "Loading..."}}</h6></div>
+            <div class="content skeleton-text">
+                <ibm-skeleton-text [lines]="1" *ngIf="tileData.cropsHarvested === undefined"></ibm-skeleton-text>
+                <h6 *ngIf="tileData.cropsHarvested !== undefined">{{tileData.cropsHarvested}}</h6>
+            </div>
         </ibm-tile>
         <ibm-tile>
             <div class="title"><h5>Total lots</h5></div>
-            <div class="content"><h6>{{tileData.totalLots || "Loading..."}}</h6></div>
+            <div class="content skeleton-text">
+                <ibm-skeleton-text [lines]="1" *ngIf="tileData.totalLots === undefined"></ibm-skeleton-text>
+                <h6 *ngIf="tileData.totalLots !== undefined">{{tileData.totalLots}}</h6>
+            </div>
         </ibm-tile>
         <!-- <ibm-tile>
             <div class="title"><h5>Total area registered</h5></div>

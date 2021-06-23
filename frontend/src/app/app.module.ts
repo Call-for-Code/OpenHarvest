@@ -31,7 +31,9 @@ import {
     LoadingModule,
     DatePickerModule,
 	AccordionModule,
-    StructuredListModule
+    StructuredListModule,
+    SkeletonPlaceholder,
+    SkeletonModule
 } from 'carbon-components-angular';
 
 import { ChartsModule } from '@carbon/charts-angular'
@@ -130,7 +132,8 @@ import { LotCropHarvestDateModalComponent } from './lot/lot-crop-harvest-date-mo
         DatePickerModule,
 		AccordionModule,
         StructuredListModule,
-		AngularSplitModule
+		AngularSplitModule,
+        SkeletonModule
     ],
 	bootstrap: [AppComponent]
 })

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { SearchCropComponent } from './crop/search-crop/search-crop.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { LotAssignmentComponent } from "./lot/lot-assignment/lot-assignment.component";
 import { LandAreasComponent } from "./pages/land-areas/land-areas.component";
@@ -26,6 +27,10 @@ const routes: Routes = [
 	{
 		path: 'land-areas',
 		component: LandAreasComponent
+	},
+	{
+		path: 'crop',
+		component: SearchCropComponent
 	}
 ];
 

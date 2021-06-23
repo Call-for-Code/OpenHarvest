@@ -8,6 +8,7 @@ export interface Crop {
 	name: string;
 	planting_season: string[];
 	time_to_harvest: number;
+  yield?: number;
 }
 
 @Injectable({

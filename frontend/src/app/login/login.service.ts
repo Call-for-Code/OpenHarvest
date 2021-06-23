@@ -69,7 +69,7 @@ export class LoginService {
     }
 
     removeUserName() {
-        localStorage.removeItem('name');
+        localStorage.removeItem('OH-User');
         this.userInfoSubject.next({
             username: null,
             user: null

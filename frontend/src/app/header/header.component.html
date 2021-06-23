@@ -2,8 +2,8 @@
 	<ibm-header-navigation>
 		<ibm-header-item [route]="['/dashboard']" [useRouter] ="true" [activeLinkClass]="'active'">Dashboard</ibm-header-item>
 		<ibm-header-item *ngIf = "isUserLoggedIn()" [route]="['/recommendation']" [useRouter] ="true" [activeLinkClass]="'active'">Recommendation</ibm-header-item>
-		<ibm-header-item *ngIf = "isUserLoggedIn()" (click) = "lotDialog()">Lot</ibm-header-item>
-		<ibm-header-item *ngIf = "isUserLoggedIn()" (click) = "cropDialog()">Crop</ibm-header-item>
+		<!-- <ibm-header-item *ngIf = "isUserLoggedIn()" (click) = "lotDialog()">Lot</ibm-header-item> -->
+		<ibm-header-item [route]="['/crop']" [useRouter] ="true" [activeLinkClass]="'active'">Crops</ibm-header-item>
 		<ibm-header-item *ngIf = "isUserLoggedIn()" [route]="['/lot-assignment']" [useRouter] ="true" [activeLinkClass]="'active'">Lot Assignment</ibm-header-item>
 	</ibm-header-navigation>
 	<ibm-header-global>
