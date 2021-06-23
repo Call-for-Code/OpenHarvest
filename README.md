@@ -78,7 +78,7 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 - IBM Cloud Foundry
 ## Authors
 
-![THETEAM](./images/THE TEAM.PNG)
+![THETEAM](./images/THE_TEAM.PNG)
 - Tyler Philips
 - Ravi Nain
 - Ryan Pereira
