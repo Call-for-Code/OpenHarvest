@@ -2,8 +2,13 @@ const IBMCloudEnv = require("ibm-cloud-env");
 IBMCloudEnv.init("/config/mappings.json");
 
 // Setup env for ibm cloud cloudant sdk
-process.env["CLOUDANT_URL"] = IBMCloudEnv.getString("cloudant_url");
-process.env["CLOUDANT_APIKEY"] = IBMCloudEnv.getString("cloudant_apikey");
+const cloudEnvUrl = IBMCloudEnv.getString("cloudant_url");
+const cloudEnvApiKey = IBMCloudEnv.getString("cloudant_apikey");
+
+if (cloudEnvUrl && cloudEnvApiKey) {
+    process.env["CLOUDANT_URL"] = cloudEnvUrl;
+    process.env["CLOUDANT_APIKEY"] = cloudEnvApiKey;
+}
 
 // import dependencies and initialize express
 const express = require("express");
