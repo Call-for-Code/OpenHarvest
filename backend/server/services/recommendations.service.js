@@ -26,26 +26,31 @@ class RecommendationsService {
         this.createOrUpdateShortlistForLot(request);
         const cropDetails = await this.cropService.getAllCrops();
 
-        console.log(cropDetails);
-
         const plantDate = new Date(request.plantDate);
         const plantMonth = plantDate.getMonth() + 1;
         const crops = {};
 
         cropDetails.forEach(crop => {
             // const crop = row.value;
+            const seasonStartMonth = crop.planting_season[0];
+            let inSeason = false;
+            let seasonEndMonth = crop.planting_season[1];
+            if (seasonStartMonth > seasonEndMonth) {
+                inSeason = (plantMonth >= seasonStartMonth && plantMonth <= 12) || (plantMonth >= 1 && plantMonth <= seasonEndMonth);
+            } else {
+                inSeason = plantMonth >= seasonStartMonth && plantMonth <= seasonEndMonth;
+            }
             crops[crop.name.toLowerCase()] = {
                 shortlist: 0,
                 area: 0,
                 yield: 0,
                 season: crop.planting_season,
-                inSeason: plantMonth >= crop.planting_season[0] && plantMonth <= crop.planting_season[1] ? 100 : 0,
+                inSeason: inSeason ? 100 : 0,
                 harvestStart: new Date(plantDate.getDate() + crop.time_to_harvest - 30),
                 harvestEnd: new Date(plantDate.getDate() + crop.time_to_harvest + 30),
             };
         });
 
-        console.log(request);
         request.crops.forEach(crop => {
             crops[crop.toLowerCase()].shortlist = 100;
         });
