@@ -5,10 +5,11 @@ IBMCloudEnv.init("/config/mappings.json");
 const cloudEnvUrl = IBMCloudEnv.getString("cloudant_url");
 const cloudEnvApiKey = IBMCloudEnv.getString("cloudant_apikey");
 
-if (cloudEnvUrl && cloudEnvApiKey) {
+if (cloudEnvUrl && cloudEnvApiKey && (process.env["USE_CLOUDANT_ENV"] == undefined || process.env["USE_CLOUDANT_ENV"] === "false")) {
     process.env["CLOUDANT_URL"] = cloudEnvUrl;
     process.env["CLOUDANT_APIKEY"] = cloudEnvApiKey;
 }
+
 
 // import dependencies and initialize express
 const express = require("express");
