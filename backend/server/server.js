@@ -10,6 +10,10 @@ if (cloudEnvUrl && cloudEnvApiKey && (process.env["USE_CLOUDANT_ENV"] == undefin
     process.env["CLOUDANT_APIKEY"] = cloudEnvApiKey;
 }
 
+console.log("CLOUDANT_URL", process.env["CLOUDANT_URL"]);
+console.log("CLOUDANT_APIKEY", process.env["CLOUDANT_APIKEY"]);
+
+
 
 // import dependencies and initialize express
 const express = require("express");
