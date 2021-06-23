@@ -77,6 +77,8 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 - [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
 - IBM Cloud Foundry
 ## Authors
+
+![THE TEAM](./images/THE TEAM.PNG)
 - Tyler Philips
 - Ravi Nain
 - Ryan Pereira
