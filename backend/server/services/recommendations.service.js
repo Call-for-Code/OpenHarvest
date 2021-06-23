@@ -54,7 +54,9 @@ class RecommendationsService {
         const minArea = Math.min(...overallCropDistribution.map(dist => dist.area));
 
         overallCropDistribution.forEach((dist) => {
-            crops[dist.crop.toLowerCase()].area = dist.area;
+            if (crops[dist.crop.toLowerCase()]) {
+                crops[dist.crop.toLowerCase()].area = dist.area;
+            }
         });
 
         const cropProductionForecast = await this.lotAreaService.getCropProductionForecast();
