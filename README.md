@@ -32,7 +32,7 @@ Open-Harvest is a technology designed for the government of India. Farmers will 
 Ultimately we will balance farming production.
 
 ## Demo video
-[![Watch the video](https://github.com/Open-Harvest/CallForCode2021/blob/main/images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=D6_C6Ji29zc)
+[![Watch the video](https://github.com/Open-Harvest/CallForCode2021/blob/main/images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=6gZagLno-v8&t=10s)
 
 ## The architecture
 
