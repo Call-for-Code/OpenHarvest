@@ -2,7 +2,9 @@
 
 [![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) 
 
-Open-Harvest Is a group submission for [Call for Code](https://developer.ibm.com/callforcode/) 
+
+
+Open-Harvest Is a group submission and Second Place Winner for Global Challenge [Call for Code](https://developer.ibm.com/callforcode/) 
 
 
 ## Contents
@@ -79,7 +81,7 @@ See below for our proposed schedule on next steps after Call for Code 2021 submi
 ## Authors
 
 ![THETEAM](./images/THE_TEAM.PNG)
-- Tyler Philips
+- Team Lead: Tyler Philips
 - Ravi Nain
 - Ryan Pereira
 - Vikas Jagtap
