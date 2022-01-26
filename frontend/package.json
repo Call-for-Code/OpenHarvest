@@ -34,7 +34,7 @@
     "@types/geojson": "^7946.0.7",
     "angular-split": "^5.0.0",
     "carbon-components": "^10.24.0",
-    "carbon-components-angular": "^4.42.0",
+    "carbon-components-angular": "^4.57.6",
     "core-js": "^3.9.1",
     "cors": "^2.8.5",
     "d3": "^5.14.2",
