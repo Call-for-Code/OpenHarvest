@@ -27,7 +27,7 @@
     "@angular/platform-browser-dynamic": "^12.2.15",
     "@angular/router": "^12.2.15",
     "@asymmetrik/ngx-leaflet": "^8.1.0",
-    "@carbon/charts-angular": "^0.41.68",
+    "@carbon/charts-angular": "^0.41.103",
     "@carbon/icons": "^10.27.0",
     "@carbon/icons-angular": "^11.2.2",
     "@turf/square-grid": "^6.4.0",
