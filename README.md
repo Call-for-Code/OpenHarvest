@@ -6,18 +6,27 @@
 
 Open-Harvest Is a group submission and Second Place Winner for Global Challenge [Call for Code](https://developer.ibm.com/callforcode/) 
 
+# Schedule
+![Schedule](./images/Schedule.png)
 
 ## Contents
 
 
-1. [Demo video](#demo-video)
-1. [The architecture](#the-architecture)
-1. [Long description](#long-description)
-1. [Getting started](#getting-started)
-1. [Built with](#built-with)
-1. [Authors](#authors)
-1. [License](#license)
-1. [Acknowledgments](#acknowledgments)
+- [OpenHarvest](#openharvest)
+- [Schedule](#schedule)
+  - [Contents](#contents)
+  - [Demo video](#demo-video)
+  - [The architecture](#the-architecture)
+  - [Long description](#long-description)
+  - [Getting started](#getting-started)
+    - [Prerequisites](#prerequisites)
+    - [Building app](#building-app)
+      - [backend](#backend)
+      - [frontend](#frontend)
+  - [Built with](#built-with)
+  - [Authors](#authors)
+  - [License](#license)
+  - [Acknowledgments](#acknowledgments)
 
 
 ## Demo video
