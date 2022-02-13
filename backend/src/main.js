@@ -1,2 +1,6 @@
-require("./db/mongodb");
+import { mongoInit } from "./db/mongodb";
+
+mongoInit();
+
+
 

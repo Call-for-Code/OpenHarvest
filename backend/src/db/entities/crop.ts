@@ -1,9 +1,9 @@
 
 import { Schema, Model, ObjectId } from 'mongoose';
 
-const ObjectId = Schema.ObjectId;
+const ObjectId = Schema.Types.ObjectId;
 
-const CropSchema = new Schema({
+export const CropSchema = new Schema({
   _id: ObjectId,
   type: String,
   name: String,
