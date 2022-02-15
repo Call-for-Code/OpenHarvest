@@ -1,5 +1,5 @@
-import { LotAreaService } from "./lot-areas.service";
-const lotAreas = new LotAreaService();
+import { LandAreasService } from "./land-areas.service";
+const lotAreas = new LandAreasService();
 
 const APPLICATION_DB = "application-db";
 const db = APPLICATION_DB;

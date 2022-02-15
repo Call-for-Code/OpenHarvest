@@ -1,17 +1,31 @@
 // Using Node.js `require()`
-import { Schema, Model } from 'mongoose';
-import { CropSchema } from "./crop";
-import { FarmerSchema } from './farmer';
+import { Schema, Model, model, Types } from 'mongoose';
+import { CropSchema, Crop } from "./crop";
+import { FarmerSchema, Farmer } from './farmer';
 
 const ObjectId = Schema.Types.ObjectId;
 
-export const FarmerCropSchema = new Schema({
+export interface FarmerCrop {
+    _id?: Types.ObjectId,
+    farmer: Farmer,
+    crop: Crop
+}
+
+export const FarmerCropSchema = new Schema<FarmerCrop>({
     _id: ObjectId,
     farmer: FarmerSchema,
     crop: CropSchema
 });
 
-export const LandSchema = new Schema({
+export interface Land {
+    _id?: Types.ObjectId,
+    type: string,
+    fid: number,
+    name: string,
+    crops: FarmerCrop[]
+}
+
+export const LandSchema = new Schema<Land>({
     _id: ObjectId,
     type: String,
     fid: Number,
@@ -19,4 +33,4 @@ export const LandSchema = new Schema({
     crops: [FarmerCropSchema]
 });
 
-export const LandModel = new Model("land", LandSchema);
+export const LandModel = model<Land>("land", LandSchema);

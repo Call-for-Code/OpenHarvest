@@ -1,12 +1,12 @@
 import { FarmerModel } from "../db/entities/farmer";
 
 import { Router } from "express";
-var router = Router();
-
-import { LotAreaService } from "../services/lot-areas.service";
+import { LandAreasService } from "../services/land-areas.service";
 
 // const LotAreaService = require("./../services/lot-areas.service");
-const lotAreas = new LotAreaService();
+const lotAreas = new LandAreasService();
+
+const router = Router();
 
 router.get("/", async(req, res) => {
     try {
@@ -178,4 +178,5 @@ router.delete(":id/lot/:lot_id", async(req, res) => {
 
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

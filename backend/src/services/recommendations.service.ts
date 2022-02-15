@@ -3,8 +3,8 @@
 // const client = CloudantV1.newInstance({});
 
 // const { plantedCrops, cropProductionForecast} = require("../db/cloudant");
-const LotAreaService = require("./lot-areas.service");
-const CropService = require("./crop.service");
+import LandAreasService from "./land-areas.service";
+import CropService from "./crop.service";
 
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
@@ -16,9 +16,9 @@ const weights = {
     // notOnOthersShortlist: 0.30,
 };
 
-class RecommendationsService {
+export class RecommendationsService {
     constructor() {
-        this.lotAreaService = new LotAreaService();
+        this.lotAreaService = new LandAreasService();
         this.cropService = new CropService();
     }
 

@@ -1,8 +1,8 @@
 import { Router } from "express";
 var router = Router();
 
-import LotAreaService from "../services/lot-areas.service";
-const lotAreas = new LotAreaService();
+import LandAreasService from "../services/land-areas.service";
+const lotAreas = new LandAreasService();
 
 router.get("/crop-distribution", async(req, res) => {
     try {
