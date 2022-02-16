@@ -1,63 +1,39 @@
-const {client} = require("../db/cloudant");
-const {cropDetailsView} = require("../db/cloudant");
-const {cropDetailsDdoc} = require("../db/cloudant");
+// const {client} = require("../db/cloudant");
+// const {cropDetailsView} = require("../db/cloudant");
+// const {cropDetailsDdoc} = require("../db/cloudant");
 
-const APPLICATION_DB = "application-db";
-const db = APPLICATION_DB;
+import { CropModel, Crop } from "./../db/entities/crop";
 
-const LOT_DB = "lot-areas";
+// const APPLICATION_DB = "application-db";
+// const db = APPLICATION_DB;
+
+// const LOT_DB = "lot-areas";
 let cropDetails;
 
-class CropService {
+export default class CropService {
 
     constructor() {
     }
 
-    async getAllCrops() {
-        if (cropDetails) {
-            return cropDetails;
-        }
-
-        const response = await client.postView({
-            db: LOT_DB,
-            ddoc: cropDetailsDdoc,
-            view: cropDetailsView,
-            group: true,
-        });
-
-        cropDetails = response.result.rows.map(v => v.value);
-
-        return cropDetails;
+    getAllCrops() {
+        return CropModel.find();
     }
 
-    async saveOrUpdate(crop) {
-        const response = await client.postDocument({
-            db,
-            document: crop,
-        });
+    async saveOrUpdate(crop: Crop) {
+        const cropModel = new CropModel(crop);
 
-        return response.result;
+        const savedDoc = await cropModel.save();
+        return savedDoc;
     }
 
-    async getCrop(id) {
-        const response = await client.getDocument({
-            db,
-            docId: `${id}`,
-        });
-
-        return response.result;
+    getCrop(id: string) {
+        return CropModel.findById(id);
     }
 
-    async deleteCrop(id) {
-        const doc = await this.getCrop(id);
-
-        const response = await client.deleteDocument({
-            db,
-            docId: `${doc._id}`,
-        });
-
-        return response.result;
+    async deleteCrop(id: string) {
+        const result = await CropModel.deleteOne({_id: id}).exec();
+        return result;
     }
 }
 
-module.exports = CropService;
+// module.exports = CropService;

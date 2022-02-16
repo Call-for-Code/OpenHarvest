@@ -1,12 +1,12 @@
 import { Land, LandModel } from "../db/entities/land";
 import { Types } from 'mongoose';
-import { FarmerModel } from "src/db/entities/farmer";
+import { FarmerModel } from "./../db/entities/farmer";
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
 
 export interface LatLng {
-    lat: number,
-    lng: number
+    lat: number | string,
+    lng: number | string
 }
 
 export interface BoundingBox {
@@ -36,7 +36,7 @@ export default class LandAreasService {
         return LandModel.find();
     }
 
-    async getAreasInBbox(box: BoundingBox) {
+    getAreasInBbox(box: BoundingBox) {
         // const bbox = `${box.lowerLeft.lng},${box.lowerLeft.lat},${box.upperRight.lng},${box.upperRight.lat}`;
         // const response = await client.getGeoAsStream({
         //     db,
@@ -73,7 +73,7 @@ export default class LandAreasService {
 
     }
 
-    async getOverallCropDistribution() {
+    getOverallCropDistribution() {
         // const params = {
         //     db: LOT_DB,
         //     ddoc: plantedCrops,
@@ -97,30 +97,31 @@ export default class LandAreasService {
         return [];
     }
 
-    async getCropProductionForecast() {
-        const response = await client.postView({
-            db: LOT_DB,
-            ddoc: cropProductionForecast,
-            view: cropProductionByMonthView,
-            group: true,
-            groupLevel: 2,
-        });
+    getCropProductionForecast() {
+        // const response = await client.postView({
+        //     db: LOT_DB,
+        //     ddoc: cropProductionForecast,
+        //     view: cropProductionByMonthView,
+        //     group: true,
+        //     groupLevel: 2,
+        // });
 
-        if (response.status >= 400) {
-            throw response;
-        } else {
-            const rows = response.result.rows;
-            return rows.map(row => {
-                return {
-                    date: row.key[0],
-                    crop: row.key[1],
-                    yield: row.value,
-                };
-            });
-        }
+        // if (response.status >= 400) {
+        //     throw response;
+        // } else {
+        //     const rows = response.result.rows;
+        //     return rows.map(row => {
+        //         return {
+        //             date: row.key[0],
+        //             crop: row.key[1],
+        //             yield: row.value,
+        //         };
+        //     });
+        // }
+        return [];
     }
 
-    async getCropProductionHistory() {
+    getCropProductionHistory() {
         // const response = await client.postView({
         //     db: LOT_DB,
         //     ddoc: cropProductionHistory,
@@ -144,7 +145,8 @@ export default class LandAreasService {
         return [];
     }
 
-    async getViewValue(doc, view, database) {
+    // async getViewValue(doc, view, database) {
+    getViewValue() {
         // const response = await client.postView({
         //     db: database,
         //     ddoc: doc,
@@ -165,14 +167,14 @@ export default class LandAreasService {
         return FarmerModel.count().exec();
     }
 
-    async getCropsPlanted() {
+    getCropsPlanted() {
         // return this.getViewValue(cropsPlantedDoc, cropsPlantedView, LOT_DB);
         
         // Aggregate of crops planted
         return 0;
     }
 
-    async getCropsHarvested() {
+    getCropsHarvested() {
         // return this.getViewValue(cropsHarvestedDoc, cropsHarvestedView, LOT_DB);
 
         // Aggregate of crops harvested

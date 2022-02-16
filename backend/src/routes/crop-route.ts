@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import CropService from "../services/crop.service";
 var router = Router();
 const cropService = new CropService();
@@ -13,12 +13,12 @@ router.get("/:id", getCrop);
 
 router.delete("/:id", deleteCrop);
 
-async function getAllCrops(req, res) {
+async function getAllCrops(req: Request, res: Response) {
     const crops = await cropService.getAllCrops();
     res.json(crops);
 }
 
-async function createOrUpdateCrop(req, res) {
+async function createOrUpdateCrop(req: Request, res: Response) {
     const crop = req.body;
     if (!crop) {
         res.sendStatus(400).end();
@@ -33,7 +33,7 @@ async function createOrUpdateCrop(req, res) {
     }
 }
 
-async function getCrop(req, res) {
+async function getCrop(req: Request, res: Response) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -48,7 +48,7 @@ async function getCrop(req, res) {
     }
 }
 
-async function deleteCrop(req, res) {
+async function deleteCrop(req: Request, res: Response) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();

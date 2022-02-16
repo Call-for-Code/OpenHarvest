@@ -8,6 +8,7 @@ export interface Crop {
     type: string,
     name: string,
     planting_season: Date[],
+    time_to_harvest: number,
     is_ongoing: boolean
 }
 
@@ -16,6 +17,7 @@ export const CropSchema = new Schema({
     type: String,
     name: String,
     planting_season: [Date],
+    time_to_harvest: Number,
     is_ongoing: Boolean
 });
 

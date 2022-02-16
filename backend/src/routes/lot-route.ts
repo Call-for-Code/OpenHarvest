@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 var router = Router();
 
 import LandAreasService from "../services/land-areas.service";
@@ -9,7 +9,7 @@ router.get("/:id", getLot);
 router.get("/inBbox/:bboxString", getAreaInBox);
 router.put("/", updateLot);
 
-async function getAllLots(req, res) {
+async function getAllLots(req: Request, res: Response) {
     try {
         const response = await lotAreas.getAllLots();
         res.json(response);
@@ -19,7 +19,7 @@ async function getAllLots(req, res) {
     }
 }
 
-async function getLot(req, res) {
+async function getLot(req: Request, res: Response) {
     const id = req.params["id"];
     if (!id) {
         res.sendStatus(400).end();
@@ -34,7 +34,7 @@ async function getLot(req, res) {
     }
 }
 
-async function updateLot(req, res) {
+async function updateLot(req: Request, res: Response) {
     const lot = req.body;
     if (!lot) {
         res.sendStatus(400).end();
@@ -49,7 +49,7 @@ async function updateLot(req, res) {
     }
 }
 
-async function getAreaInBox(req, res) {
+async function getAreaInBox(req: Request, res: Response) {
     const bboxStr = req.params["bboxString"];
     const elems = bboxStr.split(",");
     const bbox = {

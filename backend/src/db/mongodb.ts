@@ -2,7 +2,8 @@
 import { connect } from 'mongoose';
 
 export async function mongoInit() {
-    connect('mongodb://localhost/open-harvest');
+    await connect('mongodb://localhost/open-harvest');
+    console.log("Connected to DB");
 }
 
 

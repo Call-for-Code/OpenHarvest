@@ -36,7 +36,7 @@ router.get("/crop-production-history", async(req, res) => {
 
 router.get("/tiles", async (req, res) => {
     try {
-        const resObj = {};
+        const resObj: any = {};
         resObj.totalFarmers = await lotAreas.getTotalFarmers();
         resObj.cropsPlanted = await lotAreas.getCropsPlanted();
         resObj.cropsHarvested = await lotAreas.getCropsHarvested();

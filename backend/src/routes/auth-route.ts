@@ -14,7 +14,9 @@ router.post("/login", async(req, res) => {
     const user = await authService.login(name, password);
 
     if (user) {
+        // @ts-ignore
         req.session.loggedIn = true;
+        // @ts-ignore
         req.session.name = name;
         res.json({name: name, user});
     } else {
@@ -23,7 +25,9 @@ router.post("/login", async(req, res) => {
 });
 
 router.post("/logout", async(req, res) => {
+    // @ts-ignore
     req.session.loggedIn = false;
+    // @ts-ignore
     req.session.name = undefined;
 
     res.json({session: req.session});

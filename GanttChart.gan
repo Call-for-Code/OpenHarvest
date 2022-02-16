@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-01-23" view-index="0" gantt-divider-location="800" resource-divider-location="289" version="3.1.3103" locale="en_AU">
+    <description/>
+    <view zooming-state="default:4" id="gantt-chart">
+        <field id="tpd10" name="ID" width="46" order="0"/>
+        <field id="tpd3" name="Name" width="327" order="1"/>
+        <field id="tpd4" name="Begin date" width="84" order="2"/>
+        <field id="tpd5" name="End date" width="90" order="3"/>
+        <field id="tpd6" name="Duration" width="67" order="4"/>
+        <field id="tpd1" name="Priority" width="68" order="5"/>
+        <field id="tpd7" name="Completion" width="66" order="6"/>
+        <field id="tpd14" name="Task color" width="46" order="7"/>
+        <timeline>
+            <![CDATA[156]]>
+        </timeline>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="201" order="0"/>
+        <field id="1" name="Default role" width="82" order="1"/>
+    </view>
+    <!-- -->
+    <calendars base-id="au.nsw">
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <default-week id="1" name="default" sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+            <only-show-weekends value="false"/>
+            <overriden-day-types/>
+            <days/>
+        </day-types>
+        <date year="" month="1" date="1" type="HOLIDAY">
+            <![CDATA[New Year's Day]]>
+        </date>
+        <date year="" month="1" date="26" type="HOLIDAY">
+            <![CDATA[Australia Day]]>
+        </date>
+        <date year="" month="4" date="25" type="HOLIDAY">
+            <![CDATA[Anzac Day]]>
+        </date>
+        <date year="" month="12" date="25" type="HOLIDAY">
+            <![CDATA[Christmas]]>
+        </date>
+        <date year="" month="12" date="26" type="HOLIDAY">
+            <![CDATA[Boxing Day]]>
+        </date>
+        <date year="2021" month="4" date="2" type="HOLIDAY">
+            <![CDATA[Good Friday]]>
+        </date>
+        <date year="2021" month="4" date="3" type="HOLIDAY">
+            <![CDATA[Easter Saturday]]>
+        </date>
+        <date year="2021" month="4" date="4" type="HOLIDAY">
+            <![CDATA[Easter Sunday]]>
+        </date>
+        <date year="2021" month="4" date="5" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2021" month="6" date="14" type="HOLIDAY">
+            <![CDATA[Queen's Birthday]]>
+        </date>
+        <date year="2021" month="10" date="4" type="HOLIDAY">
+            <![CDATA[Labour Day]]>
+        </date>
+        <date year="2021" month="12" date="27" type="HOLIDAY">
+            <![CDATA[Christmas Day (in lieu)]]>
+        </date>
+        <date year="2021" month="12" date="28" type="HOLIDAY">
+            <![CDATA[Boxing Day (in lieu)]]>
+        </date>
+        <date year="2020" month="1" date="27" type="HOLIDAY">
+            <![CDATA[Australia Day (in lieu)]]>
+        </date>
+        <date year="2020" month="4" date="10" type="HOLIDAY">
+            <![CDATA[Good Friday]]>
+        </date>
+        <date year="2020" month="4" date="11" type="HOLIDAY">
+            <![CDATA[Easter Saturday]]>
+        </date>
+        <date year="2020" month="4" date="12" type="HOLIDAY">
+            <![CDATA[Easter Sunday]]>
+        </date>
+        <date year="2020" month="4" date="13" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2020" month="6" date="8" type="HOLIDAY">
+            <![CDATA[Queen's Birthday]]>
+        </date>
+        <date year="2020" month="10" date="5" type="HOLIDAY">
+            <![CDATA[Labour Day]]>
+        </date>
+        <date year="2020" month="12" date="28" type="HOLIDAY">
+            <![CDATA[Boxing Day Holiday]]>
+        </date>
+        <date year="2019" month="1" date="28" type="HOLIDAY">
+            <![CDATA[Australia Day (in lieu)]]>
+        </date>
+        <date year="2019" month="4" date="19" type="HOLIDAY">
+            <![CDATA[Good Friday]]>
+        </date>
+        <date year="2019" month="4" date="20" type="HOLIDAY">
+            <![CDATA[Easter Saturday]]>
+        </date>
+        <date year="2019" month="4" date="21" type="HOLIDAY">
+            <![CDATA[Easter Sunday]]>
+        </date>
+        <date year="2019" month="4" date="22" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2019" month="6" date="10" type="HOLIDAY">
+            <![CDATA[Queen's Birthday]]>
+        </date>
+        <date year="2019" month="10" date="7" type="HOLIDAY">
+            <![CDATA[Labour Day]]>
+        </date>
+        <date year="2018" month="3" date="30" type="HOLIDAY">
+            <![CDATA[Good Friday]]>
+        </date>
+        <date year="2018" month="3" date="31" type="HOLIDAY">
+            <![CDATA[Easter Saturday]]>
+        </date>
+        <date year="2018" month="4" date="1" type="HOLIDAY">
+            <![CDATA[Easter Sunday]]>
+        </date>
+        <date year="2018" month="4" date="2" type="HOLIDAY">
+            <![CDATA[Easter Monday]]>
+        </date>
+        <date year="2018" month="6" date="11" type="HOLIDAY">
+            <![CDATA[Queen's Birthday]]>
+        </date>
+        <date year="2018" month="10" date="1" type="HOLIDAY">
+            <![CDATA[Labour Day]]>
+        </date>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="10" name="Q1 Release" color="#000000" meeting="false" start="2022-01-31" duration="43" complete="8" thirdDate="2022-02-16" thirdDate-constraint="0" expand="true">
+            <task id="112" name="Project Support Tasks (Required)" meeting="false" start="2022-01-31" duration="12" complete="100" expand="false">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+                <depend id="3" type="2" difference="0" hardness="Strong"/>
+                <depend id="4" type="2" difference="0" hardness="Strong"/>
+                <depend id="5" type="2" difference="0" hardness="Strong"/>
+                <depend id="6" type="2" difference="0" hardness="Strong"/>
+                <depend id="7" type="2" difference="0" hardness="Strong"/>
+                <depend id="8" type="2" difference="0" hardness="Strong"/>
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+                <task id="111" name="Update Frameworks and Libraries" color="#8cb6ce" meeting="false" start="2022-01-31" duration="5" complete="100" thirdDate="2022-01-27" thirdDate-constraint="0" expand="true">
+                    <depend id="13" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="13" name="Re-Architecture for portable tech" color="#8cb6ce" meeting="false" start="2022-02-07" duration="7" complete="100" thirdDate="2022-02-16" thirdDate-constraint="0" expand="true">
+                    <notes>
+                        <![CDATA[We were thinking of swapping out some of the IBM cloud components with some tools that are easier to use.
+Database
+
+Move from Cloudant to MongoDB.
+
+    Cloudant is a key value NoSQL database, it's not a general database and they way of using it differs to a normal document store (aggregates vs Map reduce for example). Mongodb is a document storage with support for usual database operations.
+
+Deployment Platform
+
+Move from CloudFoundry to Code Engine
+Cloud Foundry is a good tool but an aging one which runs one server forever with scripts to deploy the app. Code Engine moves to using a docker container of our app and running it on demand. Docker containers are a standard way of deploying apps and mean it can run on any container runtime, giving flexibility for Heifer and other users.]]>
+                    </notes>
+                </task>
+            </task>
+            <task id="9" name="Project Support Tasks" color="#000000" meeting="false" start="2022-02-16" duration="5" complete="16" thirdDate="2022-02-16" thirdDate-constraint="0" expand="false">
+                <task id="15" name="Dev / Prod - Cloud CI/CD Pipeline" color="#8cb6ce" meeting="false" start="2022-02-16" duration="5" complete="0" thirdDate="2022-02-16" thirdDate-constraint="0" expand="true">
+                    <notes>
+                        <![CDATA[Deploy on the Cloud after we get an account.]]>
+                    </notes>
+                </task>
+                <task id="25" name="Angular Translation" color="#8cb6ce" meeting="false" start="2022-02-16" duration="1" complete="100" thirdDate="2022-01-31" thirdDate-constraint="0" priority="0" expand="true"/>
+            </task>
+            <task id="4" name="Web Application - Coop Flow" color="#8cb6ce" meeting="false" start="2022-02-16" duration="14" complete="0" thirdDate="2022-02-16" thirdDate-constraint="0" expand="false">
+                <notes>
+                    <![CDATA[
+    Assign Land via the Map
+    Set up the phone numbers and contact details of themselves and the farmers
+    coop manager view of their managed farmers
+
+Time Estimation: 2 Weeks]]>
+                </notes>
+                <depend id="7" type="2" difference="0" hardness="Strong"/>
+                <task id="33" name="Implementation" color="#8cb6ce" meeting="false" start="2022-02-16" duration="12" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="35" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="35" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-04" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="5" name="Integration with EIS" color="#000000" meeting="false" start="2022-02-16" duration="7" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="4" expand="false">
+                <depend id="6" type="2" difference="0" hardness="Strong"/>
+                <task id="37" name="Implementation" color="#8cb6ce" meeting="false" start="2022-02-16" duration="5" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="39" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="39" name="Testing" color="#8cb6ce" meeting="false" start="2022-02-23" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="3" name="Weather Forecast and Warnings" color="#8cb6ce" meeting="false" start="2022-02-16" duration="14" complete="0" thirdDate="2022-02-16" thirdDate-constraint="0" expand="false">
+                <notes>
+                    <![CDATA[Weather Information from EIS (Apparently?)
+
+Time Estimation: 2 Weeks
+
+Krish is the contact for EIS
+---
+We need more info in terms of the API documentation and an API Key
+---
+We have an API key, it's up to us to integrate it now]]>
+                </notes>
+                <depend id="8" type="2" difference="0" hardness="Strong"/>
+                <task id="29" name="Implementation" color="#8cb6ce" meeting="false" start="2022-02-16" duration="12" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="31" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="31" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-04" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="6" name="Farming Recommendations" color="#000000" meeting="false" start="2022-02-25" duration="21" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="4" expand="false">
+                <task id="41" name="Implementation" color="#8cb6ce" meeting="false" start="2022-02-25" duration="19" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="43" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="43" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-24" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="7" name="Farming Inventory" color="#000000" meeting="false" start="2022-03-08" duration="17" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="4" expand="false">
+                <task id="45" name="Implementation" color="#8cb6ce" meeting="false" start="2022-03-08" duration="15" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="47" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="47" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-29" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="8" name="SMS / USSD Interaction System" color="#000000" meeting="false" start="2022-03-08" duration="14" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="2" expand="false">
+                <depend id="2" type="2" difference="0" hardness="Strong"/>
+                <task id="49" name="Implementation" color="#8cb6ce" meeting="false" start="2022-03-08" duration="12" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true">
+                    <depend id="51" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="51" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-24" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" expand="true"/>
+            </task>
+            <task id="2" name="Map Component" color="#8cb6ce" meeting="false" start="2022-03-28" duration="3" complete="0" thirdDate="2022-02-16" thirdDate-constraint="0" priority="0" expand="false">
+                <notes>
+                    <![CDATA[Work on the map component to display plots of land and select / create a new plot]]>
+                </notes>
+                <task id="27" name="Implementation" color="#8cb6ce" meeting="false" start="2022-03-28" duration="2" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="0" expand="true">
+                    <depend id="26" type="2" difference="0" hardness="Strong"/>
+                </task>
+                <task id="26" name="Testing" color="#8cb6ce" meeting="false" start="2022-03-30" duration="1" complete="0" thirdDate="2022-01-31" thirdDate-constraint="0" priority="0" expand="true"/>
+            </task>
+            <task id="61" name="Food Trust Integration" color="#8cb6ce" meeting="false" start="2022-01-31" duration="43" complete="0" thirdDate="2022-01-25" thirdDate-constraint="0" expand="true"/>
+        </task>
+        <task id="156" name="Q1 Release Milestone" color="#8cb6ce" meeting="true" start="2022-04-01" duration="0" complete="0" thirdDate="2022-02-28" thirdDate-constraint="0" priority="4" expand="true"/>
+    </tasks>
+    <resources>
+        <resource id="0" name="Ravi" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="1" name="Ryan" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="2" name="Tyler" function="SoftwareDevelopment:2" contacts="" phone=""/>
+        <resource id="3" name="Vikas" function="SoftwareDevelopment:2" contacts="" phone=""/>
+    </resources>
+    <allocations/>
+    <vacations/>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+</project>

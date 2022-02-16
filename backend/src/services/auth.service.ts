@@ -1,16 +1,24 @@
-import { LandAreasService } from "./land-areas.service";
+import { Farmer, FarmerModel } from "./../db/entities/farmer";
+import LandAreasService from "./land-areas.service";
 const lotAreas = new LandAreasService();
 
-const APPLICATION_DB = "application-db";
-const db = APPLICATION_DB;
+// const APPLICATION_DB = "application-db";
+// const db = APPLICATION_DB;
 
 async function getFarmer(id: string) {
-    const response = await client.getDocument({
-        db,
-        docId: `farmer:${id}`,
-    });
-    const farmer = response.result;
-    farmer.lots = await lotAreas.getLots(farmer.lot_ids);
+    // const response = await client.getDocument({
+    //     db,
+    //     docId: `farmer:${id}`,
+    // });
+    // const farmer = response.result;
+    // farmer.lots = await lotAreas.getLots(farmer.lot_ids);
+
+    // Aggregate with land areas eventually
+    const farmer = await FarmerModel.findById(id).exec();
+    if (farmer == null) {
+        return null;
+    }
+    farmer.lands = await lotAreas.getLots(farmer.land_ids);
     return farmer;
 }
 
@@ -31,32 +39,30 @@ export class AuthService {
     }
 
     async register(name, password, mobileNumber) {
-        const userDoc = {
-            _id: "farmer:" + name,
+        const userDoc: Farmer = {
             type: "farmer",
             name: name,
             password: password,
-            mobileNumber: mobileNumber,
-            lot_ids: []
+            mobile: mobileNumber,
+            land_ids: []
         };
 
-        const response = await client.postDocument({
-            db,
-            document: userDoc,
-        });
+        const farmerDoc = FarmerModel.create(userDoc);
 
-        return response.result;
+        return farmerDoc;
     }
 
     async isUserExists(name) {
-        const user = await client.getDocument({
-            db,
-            docId: "farmer:" + name,
-        }).catch(() => {
-            return null;
-        });
+        // const user = await client.getDocument({
+        //     db,
+        //     docId: "farmer:" + name,
+        // }).catch(() => {
+        //     return null;
+        // });
 
-        return user !== null;
+        // return user !== null;
+        const docs = await FarmerModel.find({name}).exec();
+        return docs.length > 0;
     }
 
 }

@@ -16,25 +16,35 @@ const weights = {
     // notOnOthersShortlist: 0.30,
 };
 
-export class RecommendationsService {
+export interface RecommendationsRequest {
+    plantDate: string
+    crops: string[]
+}
+
+export default class RecommendationsService {
+    lotAreaService: LandAreasService;
+    cropService: CropService;
+    
     constructor() {
         this.lotAreaService = new LandAreasService();
         this.cropService = new CropService();
     }
 
-    async getRecommendations(request) {
+    async getRecommendations(request: RecommendationsRequest) {
         this.createOrUpdateShortlistForLot(request);
         const cropDetails = await this.cropService.getAllCrops();
 
         const plantDate = new Date(request.plantDate);
         const plantMonth = plantDate.getMonth() + 1;
-        const crops = {};
+        const crops: any = {};
 
         cropDetails.forEach(crop => {
             // const crop = row.value;
-            const seasonStartMonth = crop.planting_season[0];
+            // const seasonStartMonth = crop.planting_season[0];
+            const seasonStartMonth = crop.planting_season[0].getMonth() + 1;
+            // let seasonEndMonth = crop.planting_season[1];
+            let seasonEndMonth = crop.planting_season[1].getMonth() + 1;
             let inSeason = false;
-            let seasonEndMonth = crop.planting_season[1];
             if (seasonStartMonth > seasonEndMonth) {
                 inSeason = (plantMonth >= seasonStartMonth && plantMonth <= 12) || (plantMonth >= 1 && plantMonth <= seasonEndMonth);
             } else {
@@ -55,7 +65,7 @@ export class RecommendationsService {
             crops[crop.toLowerCase()].shortlist = 100;
         });
 
-        const overallCropDistribution = await this.lotAreaService.getOverallCropDistribution();
+        const overallCropDistribution: any = await this.lotAreaService.getOverallCropDistribution();
         const minArea = Math.min(...overallCropDistribution.map(dist => dist.area));
 
         overallCropDistribution.forEach((dist) => {
@@ -64,7 +74,7 @@ export class RecommendationsService {
             }
         });
 
-        const cropProductionForecast = await this.lotAreaService.getCropProductionForecast();
+        const cropProductionForecast: any = await this.lotAreaService.getCropProductionForecast();
         cropProductionForecast.forEach((dist) => {
             const harvestDate = new Date(dist.date);
             const crop = crops[dist.crop.toLowerCase()];
@@ -74,11 +84,11 @@ export class RecommendationsService {
         });
         const minYield = Math.min(...cropDetails.map(crop => crops[crop.name.toLowerCase()].yield));
 
-        const cropScores = [];
+        const cropScores: any = [];
 
         cropDetails.forEach((cropDetail) => {
             const crop = crops[cropDetail.name.toLowerCase()];
-            const cropScore = {};
+            const cropScore: any = {};
             cropScore.crop = cropDetail.name;
             cropScore.shortlistScore = crop.shortlist / 100 * weights.onShortlist;
             cropScore.inSeasonScore = crop.inSeason / 100 * weights.inSeason;
@@ -94,9 +104,9 @@ export class RecommendationsService {
         return cropScores.sort((a, b) => b.score - a.score);
     }
 
-    createOrUpdateShortlistForLot(request) {
+    createOrUpdateShortlistForLot(request: RecommendationsRequest) {
         // TODO save or update to lot
     }
 }
 
-module.exports = RecommendationsService;
+// module.exports = RecommendationsService;
