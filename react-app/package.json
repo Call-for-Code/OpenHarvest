@@ -1,0 +1,286 @@
+{
+  "name": "react-app",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:3000",
+  "dependencies": {
+    "@carbon/icons-react": "^10.46.0",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.3",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/carbon-components-react": "^7.49.0",
+    "@types/carbon__colors": "0.0.1",
+    "@types/carbon__icons-react": "^10.31.2",
+    "@types/jest": "^27.4.0",
+    "@types/node": "^16.11.25",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "@types/react-router": "^5.1.18",
+    "@types/react-router-dom": "^5.3.3",
+    "carbon-addons-iot-react": "^2.149.0-next.5",
+    "carbon-components-react": "^7.53.0",
+    "d3": "^7.3.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0",
+    "react-scripts": "5.0.0",
+    "typescript": "^4.5.5",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.10.2",
+    "@typescript-eslint/parser": "^5.10.2",
+    "eslint-plugin-prefer-arrow": "^1.2.3",
+    "eslint-plugin-react": "^7.28.0",
+    "sass": "^1.49.0"
+  },
+  "scripts": {
+    "start": "GENERATE_SOURCEMAP=false react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "rules": {
+      "jsx-a11y/anchor-is-valid": 0
+    },
+    "overrides": [
+      {
+        "files": [
+          "**/*.ts?(x)"
+        ],
+        "extends": [
+          "plugin:react/recommended"
+        ],
+        "plugins": [
+          "eslint-plugin-prefer-arrow",
+          "eslint-plugin-react",
+          "@typescript-eslint"
+        ],
+        "rules": {
+          "@typescript-eslint/adjacent-overload-signatures": "warn",
+          "@typescript-eslint/array-type": [
+            "warn",
+            {
+              "default": "array"
+            }
+          ],
+          "@typescript-eslint/ban-types": [
+            "warn",
+            {
+              "types": {
+                "Object": {
+                  "message": "Avoid using the `Object` type. Did you mean `object`?"
+                },
+                "Function": {
+                  "message": "Avoid using the `Function` type. Prefer a specific function type, like `() => void`."
+                },
+                "Boolean": {
+                  "message": "Avoid using the `Boolean` type. Did you mean `boolean`?"
+                },
+                "Number": {
+                  "message": "Avoid using the `Number` type. Did you mean `number`?"
+                },
+                "String": {
+                  "message": "Avoid using the `String` type. Did you mean `string`?"
+                },
+                "Symbol": {
+                  "message": "Avoid using the `Symbol` type. Did you mean `symbol`?"
+                }
+              }
+            }
+          ],
+          "@typescript-eslint/consistent-type-assertions": "warn",
+          "@typescript-eslint/dot-notation": "off",
+          "@typescript-eslint/explicit-function-return-type": "warn",
+          "@typescript-eslint/explicit-member-accessibility": [
+            "off",
+            {
+              "accessibility": "explicit"
+            }
+          ],
+          "@typescript-eslint/indent": "warn",
+          "@typescript-eslint/member-delimiter-style": [
+            "warn",
+            {
+              "multiline": {
+                "delimiter": "semi",
+                "requireLast": true
+              },
+              "singleline": {
+                "delimiter": "semi",
+                "requireLast": false
+              }
+            }
+          ],
+          "@typescript-eslint/member-ordering": "warn",
+          "@typescript-eslint/naming-convention": "off",
+          "@typescript-eslint/no-empty-function": "off",
+          "@typescript-eslint/no-empty-interface": "warn",
+          "@typescript-eslint/no-explicit-any": "off",
+          "@typescript-eslint/no-inferrable-types": [
+            "warn",
+            {
+              "ignoreParameters": true
+            }
+          ],
+          "@typescript-eslint/no-misused-new": "warn",
+          "@typescript-eslint/no-namespace": "warn",
+          "@typescript-eslint/no-parameter-properties": "off",
+          "@typescript-eslint/no-shadow": [
+            "warn",
+            {
+              "hoist": "all"
+            }
+          ],
+          "@typescript-eslint/no-unused-expressions": "warn",
+          "@typescript-eslint/no-use-before-define": "off",
+          "@typescript-eslint/no-var-requires": "warn",
+          "@typescript-eslint/prefer-for-of": "warn",
+          "@typescript-eslint/prefer-function-type": "warn",
+          "@typescript-eslint/prefer-namespace-keyword": "warn",
+          "@typescript-eslint/quotes": [
+            "warn",
+            "double"
+          ],
+          "@typescript-eslint/semi": [
+            "warn",
+            "always"
+          ],
+          "@typescript-eslint/triple-slash-reference": [
+            "warn",
+            {
+              "path": "always",
+              "types": "prefer-import",
+              "lib": "always"
+            }
+          ],
+          "@typescript-eslint/type-annotation-spacing": "warn",
+          "@typescript-eslint/unified-signatures": "warn",
+          "brace-style": [
+            "warn",
+            "1tbs"
+          ],
+          "complexity": "off",
+          "constructor-super": "warn",
+          "curly": "warn",
+          "eol-last": "warn",
+          "eqeqeq": [
+            "warn",
+            "smart"
+          ],
+          "guard-for-in": "warn",
+          "id-blacklist": [
+            "warn",
+            "any",
+            "Number",
+            "number",
+            "String",
+            "string",
+            "Boolean",
+            "boolean",
+            "Undefined",
+            "undefined"
+          ],
+          "id-match": "warn",
+          "indent": "off",
+          "max-classes-per-file": [
+            "warn",
+            1
+          ],
+          "max-len": [
+            "warn",
+            {
+              "code": 200
+            }
+          ],
+          "new-parens": "warn",
+          "no-bitwise": "warn",
+          "no-caller": "warn",
+          "no-cond-assign": "warn",
+          "no-console": [
+            "warn",
+            {
+              "allow": [
+                "log",
+                "warn",
+                "dir",
+                "timeLog",
+                "assert",
+                "clear",
+                "count",
+                "countReset",
+                "group",
+                "groupEnd",
+                "table",
+                "dirxml",
+                "error",
+                "groupCollapsed",
+                "Console",
+                "profile",
+                "profileEnd",
+                "timeStamp",
+                "context"
+              ]
+            }
+          ],
+          "no-debugger": "warn",
+          "no-empty": "off",
+          "no-eval": "warn",
+          "no-fallthrough": "warn",
+          "no-invalid-this": "off",
+          "no-new-wrappers": "warn",
+          "no-redeclare": "warn",
+          "no-restricted-imports": "warn",
+          "no-throw-literal": "warn",
+          "no-trailing-spaces": "warn",
+          "no-undef-init": "warn",
+          "no-underscore-dangle": "off",
+          "no-unsafe-finally": "warn",
+          "no-unused-labels": "warn",
+          "no-var": "warn",
+          "object-shorthand": "warn",
+          "one-var": [
+            "warn",
+            "never"
+          ],
+          "prefer-arrow/prefer-arrow-functions": "warn",
+          "prefer-const": "warn",
+          "radix": "warn",
+          "react/jsx-boolean-value": "warn",
+          "react/jsx-key": "warn",
+          "react/jsx-no-bind": "warn",
+          "react/self-closing-comp": "warn",
+          "spaced-comment": [
+            "warn",
+            "always",
+            {
+              "markers": [
+                "/"
+              ]
+            }
+          ],
+          "use-isnan": "warn",
+          "valid-typeof": "off",
+          "react/display-name": "warn"
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

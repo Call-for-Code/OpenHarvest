@@ -8,8 +8,8 @@ import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
 
-import farmerRoutes from "./routes/farmer-route.js";
-import authRoutes from "./routes/auth-route.js";
+import farmerRoutes from "./routes/farmer-route";
+import authRoutes from "./routes/auth-route";
 import lotRoutes from "./routes/lot-route";
 import cropRoutes from "./routes/crop-route";
 import dashboardRoutes from "./routes/dashoboard-route";
