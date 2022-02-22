@@ -5,9 +5,9 @@ export class WeatherAPI {
     APIBase = "/api/weather/"
 
     async farmerForecast() {
-        // const response = await fetch(this.APIBase + "farmerForecast");
-        // const forecast = await response.json();
-        // return forecast;
-        return testForecastData;
+        const response = await fetch(this.APIBase + "farmerForecast");
+        const forecast = await response.json();
+        return forecast;
+        // return testForecastData;
     }
 }
