@@ -1,19 +1,22 @@
-import { mongoInit } from "./db/mongodb";
-
-mongoInit();
-
 import express from "express";
 import session from "express-session";
 import path from "path";
 import cors from "cors";
 import bodyParser from "body-parser";
+import 'dotenv/config';
+
+import { mongoInit } from "./db/mongodb";
 
 import farmerRoutes from "./routes/farmer-route";
 import authRoutes from "./routes/auth-route";
 import lotRoutes from "./routes/lot-route";
 import cropRoutes from "./routes/crop-route";
-import dashboardRoutes from "./routes/dashoboard-route";
+import dashboardRoutes from "./routes/dashboard-route";
 import recommendationsRoutes from "./routes/recommendations-route";
+
+import weatherRoutes from "./routes/weather-route";
+
+mongoInit();
 
 const app = express();
 
@@ -42,8 +45,10 @@ app.use("/api/crop", cropRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/recommendations", recommendationsRoutes);
 
+app.use("/api/weather", weatherRoutes);
+
 // start node server
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
     console.log(`App UI available http://localhost:${port}`);
 });
