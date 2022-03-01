@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Header, HeaderGlobalAction, HeaderGlobalBar, HeaderMenuItem, HeaderName, HeaderNavigation, HeaderPanel, SkipToContent } from "carbon-components-react";
 import { NavLink, NavLinkProps } from "react-router-dom";
-import { useKeycloak } from "@react-keycloak/web";
 import { Login32, Logout32, UserAvatar32 } from "@carbon/icons-react";
+import { useAuth } from "../../services/auth";
 
 export default function Nav() {
-    const { keycloak, initialized } = useKeycloak();
+    const auth = useAuth();
 
     const [expanded, setExpanded] = useState(false);
 
@@ -31,22 +31,22 @@ export default function Nav() {
             </HeaderNavigation>
 
             <HeaderGlobalBar>
-                {!keycloak.authenticated && (
-                    <HeaderGlobalAction aria-label="Login" onClick={() => keycloak.login()}>
+                {!auth.user && (
+                    <HeaderGlobalAction aria-label="Login" onClick={() => auth.login()}>
                         <Login32 />
                     </HeaderGlobalAction>
                 )}
 
-                {!!keycloak.authenticated && (
+                {!!auth.user && (
                     <>
                         <HeaderGlobalAction aria-label="Account" isActive={expanded} onClick={toggleRightPanel}>
                             <UserAvatar32 />
                         </HeaderGlobalAction>
-                        <HeaderGlobalAction aria-label="Logout" onClick={() => keycloak.logout()}>
+                        <HeaderGlobalAction aria-label="Logout" onClick={() => auth.signout()}>
                             <Logout32 />
                         </HeaderGlobalAction>
                         <HeaderPanel aria-label="Header Panel" expanded={expanded} >
-                            <h3>Hi {keycloak.tokenParsed!!.preferred_username}</h3>
+                            <h3>Hi {auth.user!!.displayName}</h3>
                         </HeaderPanel>
                         
                     </>

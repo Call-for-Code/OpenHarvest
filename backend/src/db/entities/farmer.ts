@@ -6,8 +6,6 @@ const ObjectId = Schema.Types.ObjectId;
 
 export interface Farmer {
     _id?: Types.ObjectId,
-    type: string,
-    password: string,
     name: string,
     mobile: string[],
     land_ids: string[]
@@ -15,9 +13,10 @@ export interface Farmer {
 }
 
 export const FarmerSchema = new Schema({
-    _id: ObjectId,
-    type: String,
-    password: String,
+    _id: {
+        type: ObjectId,
+        auto: true
+    },
     name: String,
     mobile: [String],
     land_ids: [ObjectId]

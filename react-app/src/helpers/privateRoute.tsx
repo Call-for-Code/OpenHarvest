@@ -1,14 +1,15 @@
-import { PropsWithChildren } from "react";
-import { useKeycloak } from "@react-keycloak/web";
+import React, { PropsWithChildren } from "react";
+import { Redirect } from "react-router-dom";
+import { useAuth } from "./../services/auth";
 
 const PrivateRoute = ({ children }: PropsWithChildren<any>) => {
- const { keycloak } = useKeycloak();
+ const authInfo = useAuth();
 
- const isLoggedIn = keycloak.authenticated;
+ const isLoggedIn = authInfo !== null;
 
  console.log("Accessing Private Route");
 
- return isLoggedIn ? children : null;
+ return isLoggedIn ? children : <Redirect to="/" />;
 };
 
 export default PrivateRoute;

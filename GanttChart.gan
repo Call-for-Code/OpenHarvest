@@ -1,14 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-01-23" view-index="0" gantt-divider-location="800" resource-divider-location="289" version="3.1.3103" locale="en_AU">
+<?xml version="1.0" encoding="UTF-8"?><project name="Untitled Gantt Project" company="" webLink="http://" view-date="2022-01-23" view-index="0" gantt-divider-location="768" resource-divider-location="289" version="3.1.3103" locale="en_AU">
     <description/>
     <view zooming-state="default:4" id="gantt-chart">
-        <field id="tpd10" name="ID" width="46" order="0"/>
-        <field id="tpd3" name="Name" width="327" order="1"/>
-        <field id="tpd4" name="Begin date" width="84" order="2"/>
-        <field id="tpd5" name="End date" width="90" order="3"/>
-        <field id="tpd6" name="Duration" width="67" order="4"/>
-        <field id="tpd1" name="Priority" width="68" order="5"/>
-        <field id="tpd7" name="Completion" width="66" order="6"/>
-        <field id="tpd14" name="Task color" width="46" order="7"/>
+        <field id="tpd10" name="ID" width="45" order="0"/>
+        <field id="tpd3" name="Name" width="312" order="1"/>
+        <field id="tpd4" name="Begin date" width="81" order="2"/>
+        <field id="tpd5" name="End date" width="86" order="3"/>
+        <field id="tpd6" name="Duration" width="64" order="4"/>
+        <field id="tpd1" name="Priority" width="66" order="5"/>
+        <field id="tpd7" name="Completion" width="64" order="6"/>
+        <field id="tpd14" name="Task color" width="44" order="7"/>
         <timeline>
             <![CDATA[156]]>
         </timeline>

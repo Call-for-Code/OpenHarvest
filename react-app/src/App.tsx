@@ -1,9 +1,5 @@
 import React, { Component, ReactElement } from "react";
-import { ReactKeycloakProvider } from "@react-keycloak/web";
-
 import "carbon-addons-iot-react/scss/styles.scss";
-
-import keycloak from "./keycloak"
 import PrivateRoute from "./helpers/privateRoute";
 
 import "./App.scss";
@@ -14,10 +10,13 @@ import Nav from "./components/Nav/Nav"
 import CoOpHome from "./components/CoOpHome/CoOpHome";
 import Farmers from "./components/Farmers/Farmers";
 import Crops from "./components/Crops/Crops";
+import { AuthContext, AuthProvider } from "./services/auth";
+import UserOnboarding from "./components/Onboarding/UserOnboarding";
 
 
 type AppProps = RouteComponentProps ;
 type AppState = {
+    // showOnBoardingWizard: boolean;
     showLogoutModal: boolean;
 };
 
@@ -27,35 +26,34 @@ class App extends Component<AppProps, AppState> {
         super(props);
         console.log(props.location);
         this.state = {
+            // showOnBoardingWizard: false,
             showLogoutModal: false
         };
         this.setShowLogoutModal = this.setShowLogoutModal.bind(this);
+
+        
+    }
+
+    async componentDidMount() {
+        // We need to detect if this is a new user and redirect them if they are.
+        const res = await fetch("/api/coopManager/hasBeenOnBoarded");
+        const result = await res.json();
+        if (result.exists == false) {
+            // this.state = {
+            //     // showOnBoardingWizard: true,
+            //     showLogoutModal: false
+            // };
+            this.props.history.push('/onboarding')
+        }
     }
 
     render(): ReactElement {
 
         return (
             <>
-                <ReactKeycloakProvider authClient={keycloak}>
+                <AuthProvider>
                     <HeaderContainer
-                        render={({ isSideNavExpanded, onClickSideNavExpand }) => (
-                            // <Header aria-label="IBM Platform Name">
-                            //     <SkipToContent />
-                            //     <HeaderName href="#" prefix="IBM">
-                            //         <span>Open Harvest</span>
-                            //         <div className={"iot--header__subtitle"}>
-                            //         Co-op
-                            //         </div>
-                            //     </HeaderName>
-
-                            //     <HeaderNavigation aria-label="IBM Open Harvest">
-                            //         <HeaderMenuItem<NavLinkProps> element={NavLink} to="/home">Home</HeaderMenuItem>
-                            //         <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
-                            //         <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
-                            //     </HeaderNavigation>
-
-                            // </Header>
-                            
+                        render={({ isSideNavExpanded, onClickSideNavExpand }) => (                            
                             <Nav />
                         )}
                     />
@@ -65,6 +63,12 @@ class App extends Component<AppProps, AppState> {
                             <Route exact path="/" >
                                 <Redirect to={"/home"}/>
                             </Route>
+                            <Route
+                                key={"onboarding"}
+                                path={"/onboarding"}
+                                exact
+                                render={() => <UserOnboarding />}
+                            />
                             <Route
                                 key={"home"}
                                 path={"/home"}
@@ -95,7 +99,7 @@ class App extends Component<AppProps, AppState> {
 
                         </Switch>
                     </Content>
-                </ReactKeycloakProvider>
+                </AuthProvider>
             </>
 
         );
