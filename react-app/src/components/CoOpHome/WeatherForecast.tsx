@@ -32,7 +32,7 @@ function getDetailsFromForecast(forecast: Forecast, index: number): WeatherDetai
     return {
         daypartName: dayParts.daypartName[index] as string,
         isDay: dayParts.dayOrNight[index] == "D",
-        textSummary: getSummaryFromNarrative(dayParts.narrative[0] as string),
+        textSummary: getSummaryFromNarrative(dayParts.narrative[index] as string),
         temp: dayParts.temperature[index] as number,
         tempMin: forecast.temperatureMin[dayIndex] as number,
         tempMax: forecast.temperatureMax[dayIndex] as number,
@@ -158,9 +158,9 @@ export function Weather7Day() {
                 // availableActions={{ expand: true, range: DATE_PICKER_OPTIONS.ICON_ONLY }}
             >
                 <div className="flex">
-                    {details.map((item) => {
+                    {details.map((item, i) => {
                         return (
-                        <div className="flex-1">
+                        <div className="flex-1" key={i}>
                             <div>
                                 {item.daypartName}
                             </div>

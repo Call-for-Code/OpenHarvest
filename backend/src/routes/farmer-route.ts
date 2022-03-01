@@ -12,7 +12,7 @@ const router = Router();
 
 router.get("/", async (req: Request, res: Response) => {
     try {
-        const docs = await FarmerModel.find({}).lean().exec();
+        const docs = await FarmerModel.find().lean().exec();
         res.json(docs);
     } catch (e) {
         console.error(e);

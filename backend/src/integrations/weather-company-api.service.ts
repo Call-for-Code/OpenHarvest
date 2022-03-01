@@ -53,12 +53,12 @@ export class WeatherCompanyAPI {
 
         this.apiHitCounter()
 
-        // const response = await axios.get(this.baseAPI + "v3/wx/forecast/daily/15day", {
-        //     params: queryOptions
-        // });
+        const response = await axios.get(this.baseAPI + "v3/wx/forecast/daily/15day", {
+            params: queryOptions
+        });
 
-        // return response.data;
+        return response.data;
 
-        return testForecastData;
+        // return testForecastData;
     }
 }
