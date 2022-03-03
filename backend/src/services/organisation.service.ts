@@ -24,24 +24,4 @@ export function createOrganisation(org: Organisation) {
     return OrganisationModel.create(org);
 }
 
-export async function addCoopManagerToOrganisation(coopManagerId: string, orgId: string) {
-    // Check if the Coop Manager exists
-    const coopManager = await CoopManagerModel.findById(coopManagerId);
-    if (coopManager == null) {
-        throw new Error("Coop Manager doesn't exist!");
-    }
-    const org = await OrganisationModel.findById(orgId);
-    if (org == null) {
-        throw new Error("Organisation doesn't exist!");
-    }
-    if (org.coopManagers.includes(coopManagerId)) {
-        return org;
-    }
-    else {
-        org.coopManagers.push(coopManagerId);
-        const newOrg = await org.save();
-        return newOrg;
-    }
-}
-
 // module.exports = CropService;

@@ -21,6 +21,8 @@ import recommendationsRoutes from "./routes/recommendations-route";
 import weatherRoutes from "./routes/weather-route";
 import coopManagerRoutes from "./routes/coopManager-route";
 import organisationRoutes from "./routes/organisation-route";
+import { doesUserExist, getCoopManager } from "./services/coopManager.service";
+import { CoopManager } from "db/entities/coopManager";
 
 mongoInit();
 
@@ -62,12 +64,26 @@ var Strategy = new OpenIDConnectStrategy({
     clientSecret: process.env.AUTH_client_secret,
     callbackURL: process.env.AUTH_callback_url,
     skipUserProfile: true},
+    // Add your own data here.
     function (iss, sub, profile, accessToken, refreshToken, params, done) {
-        process.nextTick(function () {
+        process.nextTick(async function () {
             profile.accessToken = accessToken;
             profile.refreshToken = refreshToken;
+            console.log(profile);
+            // Get the farmer coop details
+            const id = "IBMid:" + profile.id;
+            const doc = await getCoopManager(id);
+            if (doc) {
+                profile.isOnboarded = true;
+                profile.coopManager = doc.toObject();
+            }
+            else {
+                profile.isOnboarded = false;
+                profile.coopManager = null;
+            }
+
             done(null, profile);
-        })
+        });
     }
 )
 
@@ -143,6 +159,7 @@ export interface CoopManagerUser {
     exp: number;
     accessToken: string;
     refreshToken: string;
+    coopManager: CoopManager | null;
 }
 
 function formatUser(user: any): CoopManagerUser {
@@ -159,7 +176,8 @@ function formatUser(user: any): CoopManagerUser {
     iat: user._json.iat,
     exp: user._json.exp,
     accessToken: user.accessToken,
-    refreshToken: user.refreshToken
+    refreshToken: user.refreshToken,
+    coopManager: user.coopManager
   }
 }
 

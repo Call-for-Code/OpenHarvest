@@ -15,19 +15,41 @@ export async function doesUserExist(id: string) {
     return manager !== null;
 }
 
-export async function onBoardUser(oAuthSource: string, oAuthId: string, user: CoopManager, orgId: string) {
+export async function onBoardUser(oAuthSource: string, oAuthId: string, user: CoopManager) {
     // Check if the organisation exists
-    const org = await OrganisationModel.findById(orgId);
-    if (org == null) {
-        throw new Error("Organisation not found");
+    const orgs = await OrganisationModel.find({
+        _id: {
+            $in: [user.coopOrganisations]
+        }
+    });
+    if (orgs.length !== user.coopOrganisations.length) {
+        throw new Error("Organisation's given weren't found!");
     }
     const newID = `${oAuthSource}:${oAuthId}`
     user._id = newID;
     const userDoc = await CoopManagerModel.create(user);
-
-    org.coopManagers.push(newID);
-    const newOrg = await org.save();
     return userDoc;
+}
+
+export async function addCoopManagerToOrganisation(coopManagerId: string, orgId: string) {
+    // Check if the Coop Manager exists
+    const coopManager = await CoopManagerModel.findById(coopManagerId);
+    if (coopManager == null) {
+        throw new Error("Coop Manager doesn't exist!");
+    }
+    const org = await OrganisationModel.findById(orgId);
+    if (org == null) {
+        throw new Error("Organisation doesn't exist!");
+    }
+
+    if (coopManager.coopOrganisations.includes(coopManagerId)) {
+        return org;
+    }
+    else {
+        coopManager.coopOrganisations.push(orgId);
+        const newCoopManager = await coopManager.save();
+        return newCoopManager;
+    }
 }
 
 // module.exports = CropService;

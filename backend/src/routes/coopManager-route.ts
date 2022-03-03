@@ -1,6 +1,6 @@
 // import dependencies and initialize the express router
 import { Router } from "express";
-import { doesUserExist, getCoopManager, onBoardUser } from "./../services/coopManager.service";
+import { addCoopManagerToOrganisation, doesUserExist, getCoopManager, onBoardUser } from "./../services/coopManager.service";
 
 const router = Router();
 
@@ -39,12 +39,22 @@ router.post("/onboard", async (req, res) => {
     if (req.body.user === undefined) {
         return res.status(400).send("user (Coop Manager) is missing");
     }
-    if (req.body.orgId === undefined) {
-        return res.status(400).send("OrgId is missing");
-    }
 
-    const userDoc = await onBoardUser(req.body.oAuthSource, req.body.oAuthId, req.body.user, req.body.orgId);
+    const userDoc = await onBoardUser(req.body.oAuthSource, req.body.oAuthId, req.body.user);
     res.json(userDoc.toObject());
+});
+
+router.put("/:id/addOrganisation", async (req, res) => {
+    if (req.body === undefined) {
+        return res.status(400).send("Body is missing");
+    }
+    if (req.body.orgId === undefined) {
+        return res.status(400).send("coopManagerId is missing");
+    }
+    const orgId = req.body.orgId;
+    const coopManagerId = req.params.id;
+    const org = await addCoopManagerToOrganisation(coopManagerId, orgId);
+    res.json(org.toObject());
 });
 
 export default router;

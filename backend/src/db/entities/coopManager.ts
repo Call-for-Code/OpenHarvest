@@ -13,7 +13,8 @@ export interface CoopManager {
      *  GeoCode / LatLng coordinate tuple
      */
     location: number[],
-    mobile: string
+    mobile: string,
+    coopOrganisations: string[]
 }
 
 export const CoopManagerSchema = new Schema({
@@ -25,7 +26,8 @@ export const CoopManagerSchema = new Schema({
      *  GeoCode / LatLng coordinate tuple
      */
     location: [Number],
-    mobile: String
+    mobile: String,
+    coopOrganisations: [String]
 });
 
 export const CoopManagerModel = model<CoopManager>("coopManager", CoopManagerSchema);

@@ -1,8 +1,4 @@
 
-import { Schema, model, ObjectId, Types } from 'mongoose';
-import { Land } from './land';
-
-const ObjectId = Schema.Types.ObjectId;
 
 export interface Farmer {
     _id?: Types.ObjectId,

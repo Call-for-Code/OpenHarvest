@@ -36,9 +36,15 @@ class App extends Component<AppProps, AppState> {
 
     async componentDidMount() {
         // We need to detect if this is a new user and redirect them if they are.
-        const res = await fetch("/api/coopManager/hasBeenOnBoarded");
-        const result = await res.json();
-        if (result.exists == false) {
+        let newUser = true;
+        try {
+            const res = await fetch("/api/coopManager/hasBeenOnBoarded");
+            const result = await res.json();
+            newUser = result.exists;
+        }
+        catch (e) {}
+        
+        if (newUser) {
             // this.state = {
             //     // showOnBoardingWizard: true,
             //     showLogoutModal: false

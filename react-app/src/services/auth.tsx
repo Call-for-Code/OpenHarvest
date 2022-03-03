@@ -68,9 +68,16 @@ function useProvideAuth(): AuthProviderType {
     //   .auth()
     //   .signInWithPopup(new firebase.auth.GithubAuthProvider())
     //   .then((response) => handleUser(response.user))
-    const res = await fetch("/me");
-    const userInfo = await res.json();
-    console.log(userInfo);
+    let userInfo = null;
+    try {
+      const res = await fetch("/me");
+      userInfo = await res.json();
+      console.log(userInfo);
+    }
+    catch(e) {
+      console.log("User is not signed in.")
+    }
+    
     return handleUser(userInfo);
   }
 
