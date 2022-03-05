@@ -9,15 +9,15 @@ export interface CoopManager {
      *  GeoCode / LatLng coordinate tuple
      */
     location: number[],
-    mobile: string
+    mobile: string,
+    coopOrganisations: string[]
 }
 
-export async function onboard(oAuthSource: string, oAuthId: string, user: CoopManager, orgId: string): Promise<CoopManager> {
+export async function onboard(oAuthSource: string, oAuthId: string, user: CoopManager): Promise<CoopManager> {
     const data = await axios.post<CoopManager>("/api/coopManager/onboard/", {
         oAuthSource,
         oAuthId,
         user,
-        orgId
     })
     return data.data;
 }

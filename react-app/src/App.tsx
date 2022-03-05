@@ -12,6 +12,7 @@ import Farmers from "./components/Farmers/Farmers";
 import Crops from "./components/Crops/Crops";
 import { AuthContext, AuthProvider } from "./services/auth";
 import UserOnboarding from "./components/Onboarding/UserOnboarding";
+import { AddFarmer } from "./components/Farmers/AddFarmer";
 
 
 type AppProps = RouteComponentProps ;
@@ -89,6 +90,17 @@ class App extends Component<AppProps, AppState> {
                                     () => 
                                     <PrivateRoute>
                                         <Farmers />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                key={"AddFarmer"}
+                                path={"/farmers/add"}
+                                exact
+                                render={
+                                    () => 
+                                    <PrivateRoute>
+                                        <AddFarmer />
                                     </PrivateRoute>
                                 }
                             />

@@ -3,6 +3,45 @@ import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
 import { Farmer, getAllFarmers } from "../../services/farmers";
 import { Button } from "carbon-components-react";
 import { Add16 } from "@carbon/icons-react";
+import { useHistory } from "react-router";
+
+const actions = {
+    pagination: {
+      /** Specify a callback for when the current page or page size is changed. This callback is passed an object parameter containing the current page and the current page size */
+      onChangePage: () => {},
+    },
+    toolbar: {
+      onApplyFilter: () => {},
+      onToggleFilter: () => {},
+      onShowRowEdit: () => {},
+      onToggleColumnSelection: () => {},
+      /** Specify a callback for when the user clicks toolbar button to clear all filters. Recieves a parameter of the current filter values for each column */
+      onClearAllFilters: () => {},
+      onCancelBatchAction: () => {},
+      onApplyBatchAction: () => {},
+      onApplySearch: () => {},
+      /** advanced filter actions */
+      onCancelAdvancedFilter: () => {},
+      onRemoveAdvancedFilter: () => {},
+      onCreateAdvancedFilter: () => {},
+      onChangeAdvancedFilter: () => {},
+      onApplyAdvancedFilter: () => {},
+      onToggleAdvancedFilter: () => {},
+    },
+    table: {
+      onRowClicked: () => {},
+      onRowSelected: () => {},
+      onSelectAll: () => {},
+      onEmptyStateAction: () => {},
+      onApplyRowAction: () => {},
+      onRowExpanded: () => {},
+      onChangeOrdering: () => {},
+      onColumnSelectionConfig: () => {},
+      onChangeSort: () => {},
+      onColumnResize: () => {},
+      onOverflowItemClicked: () => {},
+    },
+};
 
 const columns = [
     {
@@ -19,29 +58,45 @@ const columns = [
     }   
 ]
 
-const view = {
-    toolbar: {
-        customToolbarContent: (
-            <Button
-              kind="primary"
-              iconDescription="Add Farmer"
-              onClick={() => console.log(true)}
-            >
-                Add
-            </Button>
-          )
-    }
-}
-
 const options = {
     hasRowSelection: 'single',
-
+    hasSearch: true,    
 }
 
 export default function Farmers() {
 
     const [farmers, setFarmers] = useState<Farmer[]>([]);
     const [farmerTableData, setFarmerTableData] = useState<any>([]);
+
+    const history = useHistory();
+
+    const view = {
+        toolbar: {
+            // toolbarActions: [
+            //     {
+            //         id: 'edit',
+            //         labelText: 'Add',
+            //         // can be a handful of included icons
+            //         renderIcon: Add16,
+            //         isOverflow: false,
+            //     },
+            // ]
+            customToolbarContent: (
+                <Button
+                  kind="primary"
+                  iconDescription="Add Farmer"
+                  renderIcon={Add16}
+                  onClick={() => history.push("farmers/add")}
+                >
+                    Add Farmer
+                </Button>
+            ),
+            search: {
+                defaultExpanded: true
+            }
+        }
+    }
+    
 
     useEffect(() => {
         async function load() {
@@ -77,8 +132,8 @@ export default function Farmers() {
                 columns={columns}
                 data={farmerTableData}
                 view={view}
+                actions={actions}
                 options={options}
-                hasSearch
                  />
         </div>
 

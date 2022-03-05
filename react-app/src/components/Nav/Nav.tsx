@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Header, HeaderGlobalAction, HeaderGlobalBar, HeaderMenuItem, HeaderName, HeaderNavigation, HeaderPanel, SkipToContent } from "carbon-components-react";
+import { Header, HeaderGlobalAction, HeaderGlobalBar, HeaderMenu, HeaderMenuItem, HeaderName, HeaderNavigation, HeaderPanel, SkipToContent } from "carbon-components-react";
 import { NavLink, NavLinkProps } from "react-router-dom";
 import { Login32, Logout32, UserAvatar32 } from "@carbon/icons-react";
 import { useAuth } from "../../services/auth";
@@ -17,7 +17,7 @@ export default function Nav() {
         // @ts-ignore
         <Header aria-label="IBM Platform Name">
             <SkipToContent />
-            <HeaderName href="#" prefix="IBM">
+            <HeaderName href="/" prefix="IBM">
                 <span>Open Harvest</span>
                 <div className={"iot--header__subtitle"}>
                 Co-op
@@ -39,6 +39,14 @@ export default function Nav() {
 
                 {!!auth.user && (
                     <>
+                        {/* // Displays when the user is onboarded */}
+                        {auth.user.coopManager && (
+                            <HeaderMenu menuLinkName={"Organisation: " + auth.user!!.selectedOrganisation!!.name}>
+                                {auth.user!!.organisations!!.map(it => 
+                                    <HeaderMenuItem key={it.name}>{it.name}</HeaderMenuItem>
+                                )}                                
+                            </HeaderMenu>
+                        )}
                         <HeaderGlobalAction aria-label="Account" isActive={expanded} onClick={toggleRightPanel}>
                             <UserAvatar32 />
                         </HeaderGlobalAction>

@@ -3,7 +3,6 @@ import axios from 'axios'
 export interface Organisation {
     _id?: string,
     name: string,
-    coopManagers: string[]
 }
 
 export async function getAllOrganisations(): Promise<Organisation[]> {

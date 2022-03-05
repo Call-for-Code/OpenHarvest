@@ -23,6 +23,8 @@ import coopManagerRoutes from "./routes/coopManager-route";
 import organisationRoutes from "./routes/organisation-route";
 import { doesUserExist, getCoopManager } from "./services/coopManager.service";
 import { CoopManager } from "db/entities/coopManager";
+import { getOrganisations } from "./services/organisation.service";
+import { Organisation } from "db/entities/organisation";
 
 mongoInit();
 
@@ -69,29 +71,26 @@ var Strategy = new OpenIDConnectStrategy({
         process.nextTick(async function () {
             profile.accessToken = accessToken;
             profile.refreshToken = refreshToken;
-            console.log(profile);
             // Get the farmer coop details
             const id = "IBMid:" + profile.id;
             const doc = await getCoopManager(id);
             if (doc) {
                 profile.isOnboarded = true;
                 profile.coopManager = doc.toObject();
+                profile.organisations = await getOrganisations(doc.coopOrganisations);
+                profile.selectedOrganisation = profile.organisations[0];
             }
             else {
                 profile.isOnboarded = false;
                 profile.coopManager = null;
             }
-
+            console.log(profile);
             done(null, profile);
         });
     }
 )
 
 passport.use(Strategy); 
-
-app.get('/', function(req, res) {
-    res.send('<h2>IBMid Node.js Sample App</h2><br /><a href="/hello">click to check your user info</a><br/>'+'<br />');
-});
 
 app.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
 
@@ -160,6 +159,8 @@ export interface CoopManagerUser {
     accessToken: string;
     refreshToken: string;
     coopManager: CoopManager | null;
+    organisations: Organisation[];
+    selectedOrganisation: Organisation;
 }
 
 function formatUser(user: any): CoopManagerUser {
@@ -177,7 +178,9 @@ function formatUser(user: any): CoopManagerUser {
     exp: user._json.exp,
     accessToken: user.accessToken,
     refreshToken: user.refreshToken,
-    coopManager: user.coopManager
+    coopManager: user.coopManager,
+    organisations: user.organisations,
+    selectedOrganisation: user.selectedOrganisation
   }
 }
 

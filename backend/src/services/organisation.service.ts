@@ -12,6 +12,11 @@ export function getOrganisation(id: string) {
     return OrganisationModel.findById(id);    
 }
 
+export function getOrganisations(id: string[], lean = true) {
+    const query = OrganisationModel.find({_id: {$in: id}});
+    return lean ? query.lean() : query;
+}
+
 export async function createOrganisationFromName(name: string) {
     const orgModel = new OrganisationModel();
     orgModel.name = name;

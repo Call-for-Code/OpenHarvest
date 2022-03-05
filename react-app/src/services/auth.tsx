@@ -1,4 +1,6 @@
 import React, { createContext, useContext, PropsWithChildren, useState, useEffect } from 'react';
+import { CoopManager } from './coopManager';
+import { Organisation } from './organisation';
 
 export interface CoopManagerUser {
     id: string;
@@ -14,6 +16,9 @@ export interface CoopManagerUser {
     exp: number;
     accessToken: string;
     refreshToken: string;
+    coopManager: CoopManager | null;
+    organisations?: Organisation[];
+    selectedOrganisation?: Organisation;
 }
 
 export const AuthContext = createContext<AuthProviderType>(undefined!!);

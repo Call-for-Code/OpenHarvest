@@ -43,7 +43,7 @@ export async function addCoopManagerToOrganisation(coopManagerId: string, orgId:
     }
 
     if (coopManager.coopOrganisations.includes(coopManagerId)) {
-        return org;
+        return coopManager;
     }
     else {
         coopManager.coopOrganisations.push(orgId);

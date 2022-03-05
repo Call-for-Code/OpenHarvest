@@ -86,7 +86,8 @@ export default function UserOnboarding() {
         console.log(location, mobile, selectedOrg);
         const coopManager: CoopManager = {
             location: location.split(",").map(it => parseFloat(it)),
-            mobile
+            mobile,
+            coopOrganisations: [selectedOrg]
         }
         if (auth.user == undefined) {
             console.log("User not Authenticated");
@@ -97,9 +98,11 @@ export default function UserOnboarding() {
             return;
         }
         setIsSubmitting(true);
-        const user = await onboard("IBMid", auth.user.id, coopManager, selectedOrg);
+        const user = await onboard("IBMid", auth.user.id, coopManager);
         setIsSubmitting(false);
         console.log(user);
+        // Update the user with the organisation details
+        await auth.checkIfSignedIn();
         history.push("/home");
     }
 
