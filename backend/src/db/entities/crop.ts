@@ -9,7 +9,8 @@ export interface Crop {
     name: string,
     planting_season: Date[],
     time_to_harvest: number,
-    is_ongoing: boolean
+    is_ongoing: boolean,
+    yield_per_sqm: number
 }
 
 export const CropSchema = new Schema({
@@ -18,7 +19,8 @@ export const CropSchema = new Schema({
     name: String,
     planting_season: [Date],
     time_to_harvest: Number,
-    is_ongoing: Boolean
+    is_ongoing: Boolean,
+    yield_per_sqm: Number
 });
 
 export const CropModel = model<Crop>("crop", CropSchema);

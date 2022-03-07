@@ -8,6 +8,7 @@
     "@testing-library/jest-dom": "^5.16.2",
     "@testing-library/react": "^12.1.3",
     "@testing-library/user-event": "^13.5.0",
+    "@turf/turf": "^6.5.0",
     "@types/carbon__colors": "0.0.1",
     "@types/carbon__icons-react": "^10.31.2",
     "@types/carbon-components-react": "^7.49.0",

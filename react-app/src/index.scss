@@ -4,6 +4,11 @@
 @tailwind utilities;
 
 @import 'leaflet/dist/leaflet.css';
+@import 'leaflet-draw/dist/leaflet.draw.css';
+
+.sr-only {
+    display: none;
+}
 
 main {
     width: 100%;

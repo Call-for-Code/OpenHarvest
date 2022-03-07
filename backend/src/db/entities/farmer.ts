@@ -8,9 +8,8 @@ export interface Farmer {
     _id?: Types.ObjectId,
     name: string,
     mobile: string[],
-    coopOrganisations: string[]
-    land_ids: string[]
-    lands?: Land[]
+    address: string,
+    coopOrganisations: string[],
 }
 
 export const FarmerSchema = new Schema({
@@ -20,8 +19,8 @@ export const FarmerSchema = new Schema({
     },
     name: String,
     mobile: [String],
+    address: String,
     coopOrganisations: [String],
-    land_ids: [ObjectId]
 });
 
 export const FarmerModel = model<Farmer>("farmer", FarmerSchema);
