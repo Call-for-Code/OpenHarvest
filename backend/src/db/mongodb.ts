@@ -13,6 +13,7 @@ export async function mongoInit() {
         await writeFile("mongoose_sslCA", CACertStr);
 
         await connect(process.env.mongodb_url!!, {
+            sslValidate: false,
             sslCA: "mongoose_sslCA"
         });
     }
