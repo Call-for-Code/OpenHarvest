@@ -202,6 +202,9 @@ app.use("/api/weather", weatherRoutes);
 app.use("/api/coopManager", coopManagerRoutes);
 app.use("/api/organisation", organisationRoutes);
 
+app.get("/", ensureAuthenticated, express.static("public"));
+
+
 // start node server
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV == "production") {
