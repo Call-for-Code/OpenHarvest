@@ -5,7 +5,7 @@ import { TextArea, TextInput } from "carbon-components-react";
 import { FeatureCollection, Polygon } from "geojson";
 import { EISField } from "../../types/EIS";
 import { area } from "@turf/turf";
-import { Sprout16, Wheat16 } from "@carbon/icons-react";
+import { Sprout16, Wheat16, Add16 } from "@carbon/icons-react";
 
 
 const actions = {
@@ -48,6 +48,10 @@ const actions = {
 
 const columns = [
     {
+        id: 'name',
+        name: 'Field Name',
+    },
+    {
         id: 'area',
         name: 'Area (Ha)',
     },
@@ -72,7 +76,8 @@ const columns = [
 const options = {
     hasRowSelection: 'multi',
     hasSearch: false,
-    hasRowNesting: true
+    hasRowNesting: true,
+    hasRowActions: true
 }
 
 const view = {
@@ -124,8 +129,9 @@ export function AddFarmer() {
                 const sqm = squareMetresToHa(area(feature));
                 const cropYield = sqm * 100;
                 return {
-                    id: `row-id-${i}`,
+                    id: `subfield-id-${i}`,
                     values: {
+                        name: field.name,
                         area: sqm.toFixed(0),
                         crop: doesCropDataExist ? crops[0].crop.name : "None",
                         planted: doesCropDataExist ? crops[0].planted : "",
@@ -134,7 +140,13 @@ export function AddFarmer() {
                     },
                     children: [
 
-                    ]
+                    ],
+                    rowActions: [{
+                        id: 'addCrop',
+                        renderIcon: Add16,
+                        iconDescription: 'Plant a Crop',
+                        labelText: 'Plant a Crop'
+                    }]
                 }
             });
             setFieldTableData(tableData);
