@@ -75,21 +75,21 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
         - 27017:27017
       volumes:
         - {YOUR_MONGO_DB_DATA_DIR}
-  ```
+   ```
 4. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
    
 5. 
-```
-npm i
-npm start
-```
+      ```
+        npm i
+        npm start
+      ```
   
 #### frontend
-```
-cd frontend
-npm install
-npm start
-```
+  ```
+  cd frontend
+  npm install
+  npm start
+  ```
 ## Built with
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
