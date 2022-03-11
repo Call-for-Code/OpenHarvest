@@ -51,17 +51,45 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 ### Building app
 #### backend
-- chmod +x build.sh
-- ./build.sh
-- cd backend
-- npm i
-- vi localdev-config.json
-- generate a cloud key and include it in your file:{ "cloudant_apikey": , "cloudant_url":  }
-- npm start
+1. Create Certificates
+   ```
+   brew install mkcert
+   mkcert -install
+   mkcert localhost 127.0.0.1
+   ```
+2. Create Mongodb Data Directory
+   ```
+   mkdir {YOUR_PATH}/mongodb:/data/db
+   ```
+3. Create docker-compose.yml
+   ```
+   version: '3.7'
+   services:
+    mongodb_container:
+      image: mongo:latest
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: {YOUR_ROOT_USER}
+        MONGO_INITDB_ROOT_PASSWORD: {YOUR_ROOT_PASSWORD}
+      restart: unless-stopped
+      ports:
+        - 27017:27017
+      volumes:
+        - {YOUR_MONGO_DB_DATA_DIR}
+  ```
+4. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
+   
+5. 
+```
+npm i
+npm start
+```
+  
 #### frontend
-- cd frontend
-- npm install
-- npm start
+```
+cd frontend
+npm install
+npm start
+```
 ## Built with
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
