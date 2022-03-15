@@ -39,7 +39,7 @@ export function FieldEditorMap(props: PropsWithChildren<FieldEditorMapProps>) {
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <FieldEditorLayer onFieldUpdated={onUpdated}></FieldEditorLayer>
+            <FieldEditorLayer onFieldUpdated={onUpdated} existingField={props.existingField}></FieldEditorLayer>
         </MapContainer>
     )
 }

@@ -99,7 +99,7 @@ app.get('/auth/sso/callback', function (req, res, next) {
     let redirect_url = "/app";
     if (process.env.NODE_ENV == "production") {
         redirect_url = req.session.originalUrl;
-        redirect_url = "http://openharvest.net/";
+        redirect_url = "https://openharvest.net/";
     }
     else {
         redirect_url = "http://localhost:3001/";

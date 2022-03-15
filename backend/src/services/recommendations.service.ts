@@ -40,10 +40,13 @@ export default class RecommendationsService {
 
         cropDetails.forEach(crop => {
             // const crop = row.value;
+            const startDate = new Date(2021, 0, crop.planting_season[0]);
+            const endDate = new Date(2021, 0, crop.planting_season[1]);
+
             // const seasonStartMonth = crop.planting_season[0];
-            const seasonStartMonth = crop.planting_season[0].getMonth() + 1;
+            const seasonStartMonth = startDate.getMonth() + 1;
             // let seasonEndMonth = crop.planting_season[1];
-            let seasonEndMonth = crop.planting_season[1].getMonth() + 1;
+            let seasonEndMonth = endDate.getMonth() + 1;
             let inSeason = false;
             if (seasonStartMonth > seasonEndMonth) {
                 inSeason = (plantMonth >= seasonStartMonth && plantMonth <= 12) || (plantMonth >= 1 && plantMonth <= seasonEndMonth);

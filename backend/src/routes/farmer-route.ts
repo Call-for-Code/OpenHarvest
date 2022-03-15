@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
+import { EISField } from "./../integrations/EIS/types";
 
-import { FarmerModel } from "../db/entities/farmer";
+import { Farmer, FarmerModel } from "../db/entities/farmer";
 
 
 import LandAreasService from "../services/land-areas.service";
@@ -93,6 +94,38 @@ router.delete("/:id", async(req: Request, res: Response) => {
     } catch (e) {
         console.error(e);
         res.status(500).json(e);
+    }
+});
+
+export interface FarmerAddDTO {
+    farmer: Farmer;
+    field: EISField
+}
+
+router.post("/add", async(req: Request, res: Response) => {
+    const {farmer, field}: FarmerAddDTO = req.body;
+    if (farmer == undefined) {
+        res.status(400).send("Farmer not defined");
+        return;
+    }
+    if (field == undefined) {
+        res.status(400).send("Field not defined");
+        return;
+    }
+    // First we'll create the farmer
+    const farmerDoc = new FarmerModel(farmer);
+    const newFarmer = await farmerDoc.save();
+
+    if (newFarmer._id == undefined) {
+        throw new Error("Farmer ID is not defined after saving!")
+    }
+
+    // Then we'll create the Field
+    
+    // We have to set the farmer ID on the field first
+    for (let i = 0; i < field.subFields.length; i++) {
+        const properties = field.subFields[i].geo.geojson.features[0].properties;
+        properties.open_harvest.farmer_id = newFarmer._id!!.toString();
     }
 
 });

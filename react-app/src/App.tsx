@@ -14,6 +14,8 @@ import { AuthContext, AuthProvider } from "./services/auth";
 import UserOnboarding from "./components/Onboarding/UserOnboarding";
 import { AddFarmer } from "./components/Farmers/AddFarmer";
 
+import {enableAllPlugins} from "immer"
+enableAllPlugins();
 
 type AppProps = RouteComponentProps ;
 type AppState = {

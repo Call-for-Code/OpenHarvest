@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
+import produce from "immer"
 import { FieldEditorMap } from "./../Map/FieldEditorMap";
-import { TextArea, TextInput } from "carbon-components-react";
-import { FeatureCollection, Polygon } from "geojson";
-import { EISField } from "../../types/EIS";
+import { Button, TextArea, TextInput } from "carbon-components-react";
+import { EISField, SubFieldCrop } from "../../types/EIS";
 import { area } from "@turf/turf";
 import { Sprout16, Wheat16, Add16 } from "@carbon/icons-react";
+import { CropEditorModal } from "./CropEditorModal";
 
 
 const actions = {
@@ -21,7 +22,7 @@ const actions = {
       /** Specify a callback for when the user clicks toolbar button to clear all filters. Recieves a parameter of the current filter values for each column */
       onClearAllFilters: () => {},
       onCancelBatchAction: () => {},
-      onApplyBatchAction: (actionId: string, rowIds: string[]) => {console.log(actionId, rowIds)},
+      onApplyBatchAction: (actionId: string, rowIds: string[]) => {},
       onApplySearch: () => {},
       /** advanced filter actions */
       onCancelAdvancedFilter: () => {},
@@ -36,7 +37,7 @@ const actions = {
       onRowSelected: () => {},
       onSelectAll: () => {},
       onEmptyStateAction: () => {},
-      onApplyRowAction: () => {},
+      onApplyRowAction: (actionId: string, rowId: string) => {},
       onRowExpanded: () => {},
       onChangeOrdering: () => {},
       onColumnSelectionConfig: () => {},
@@ -111,10 +112,64 @@ export function AddFarmer() {
     // There can only really be one org
     const [coopOrgs, setCoopOrgs] = useState("");
     const [field, setField] = useState<EISField | null>(null);
-    const [fieldTableData, setFieldTableData] = useState<any>([])
+    const [fieldTableData, setFieldTableData] = useState<any>([]);
+
+    // Crop data
+    const [isCropEditorModalOpen, setIsCropEditorModalOpen] = useState(false);
+    const [currentCropEditorRow, setCurrentCropEditorRow] = useState<number | null>(null);
+
+    actions.toolbar.onApplyBatchAction = (actionId: string, rowIds: string[]) => {
+        console.log(actionId, rowIds);
+        if (actionId == "harvest") {
+            // Filter on the crop only rows and harvest them now
+            const crops = rowIds.filter(it => it.includes("crop"));
+            crops.forEach(it => {
+                const splitRowId = it.split("-");
+                const fieldIdx = parseInt(splitRowId[2]);
+                const cropIdx = parseInt(splitRowId[5]);
+
+                setField(produce(draftField => {
+                    const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].geo.geojson.features[0].properties.open_harvest;
+                    subfieldOpenHarvestProperties.crops[cropIdx].harvested = new Date();
+                }));
+            });
+        }
+    };
+    actions.table.onApplyRowAction = (actionId: string, rowId: string) => {
+        console.log(actionId, rowId);
+        if (actionId == "addCrop") {
+            const idx = parseInt(rowId.split("-")[2]);
+            setCurrentCropEditorRow(idx);
+            setIsCropEditorModalOpen(true);
+        }
+        else if (actionId == "harvestOneCrop") {
+            const splitRowId = rowId.split("-");
+            const fieldIdx = parseInt(splitRowId[2]);
+            const cropIdx = parseInt(splitRowId[5]);
+
+            setField(produce(draftField => {
+                const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].geo.geojson.features[0].properties.open_harvest;
+                subfieldOpenHarvestProperties.crops[cropIdx].harvested = new Date();
+            }));
+        }
+    };
 
     const onFieldUpdated = (field: EISField) => {
         setField(_ => field);
+    }
+
+    const onCropEditorModalClosed = (crop: SubFieldCrop) => {
+        const idx = currentCropEditorRow;
+        if (idx == null) {
+            throw new Error("currentCropEditorRow is null!");
+        }
+        if (field == null) {
+            throw new Error("field is null!");
+        }
+        setField(produce(draftField => {
+            const subfieldOpenHarvestProperties = draftField!!.subFields[idx].geo.geojson.features[0].properties.open_harvest;
+            subfieldOpenHarvestProperties.crops.push(crop);
+        }));        
     }
 
     useEffect(() => {
@@ -123,24 +178,44 @@ export function AddFarmer() {
         if (field) {
             const tableData = field.subFields.map((it, i) => {
                 const feature = it.geo.geojson.features[0];
-                const crops = feature.properties.open_harvest.crops;
+                const crops: SubFieldCrop[] = feature.properties.open_harvest.crops;
                 const doesCropDataExist = crops.length > 0;
 
                 const sqm = squareMetresToHa(area(feature));
                 const cropYield = sqm * 100;
+
+                const children = !doesCropDataExist ? [] : crops.map((it, index) => {
+                    return {
+                        id: `subfield-id-${i}-crop-id-${index}`,
+                        values: {
+                            name: field.name,
+                            area: sqm.toFixed(0),
+                            crop: it.crop.name,
+                            planted: it.planted.toLocaleDateString(),
+                            harvested: it.harvested ? it.harvested.toLocaleDateString() : "--",
+                            yield: cropYield.toFixed(2) + " Kg",
+                        },
+                        rowActions: [{
+                            id: 'harvestOneCrop',
+                            renderIcon: Wheat16,
+                            iconDescription: 'Harvest',
+                            labelText: 'Harvest'
+                        }]
+                    }
+                })
+                console.log(children);
+
                 return {
                     id: `subfield-id-${i}`,
                     values: {
                         name: field.name,
                         area: sqm.toFixed(0),
                         crop: doesCropDataExist ? crops[0].crop.name : "None",
-                        planted: doesCropDataExist ? crops[0].planted : "",
-                        harvested: doesCropDataExist ? crops[0].harvested : "",
+                        planted: doesCropDataExist ? crops[0].planted.toLocaleDateString() : "",
+                        harvested: doesCropDataExist ? (crops[0].harvested ? crops[0].harvested.toLocaleDateString() : "") : "", // yikes
                         yield: cropYield.toFixed(2) + " Kg",
                     },
-                    children: [
-
-                    ],
+                    children,
                     rowActions: [{
                         id: 'addCrop',
                         renderIcon: Add16,
@@ -152,7 +227,11 @@ export function AddFarmer() {
             setFieldTableData(tableData);
         }
 
-    }, [field])
+    }, [field]);
+
+    function saveFarmer() {
+        
+    }
 
     return <>
         <PageTitleBar
@@ -164,7 +243,7 @@ export function AddFarmer() {
         {/* // Content container */}
         <div className="w-full h-[calc(100vh-96px)] flex flex-row">
             <div className="w-1/2">
-                <FieldEditorMap onFieldUpdated={onFieldUpdated}></FieldEditorMap>
+                <FieldEditorMap onFieldUpdated={onFieldUpdated} existingField={field ? field : undefined}></FieldEditorMap>
             </div>
             <div className="w-1/2 space-y-10">
                 <div className="flex flex-row">
@@ -203,8 +282,20 @@ export function AddFarmer() {
                         actions={actions}
                         options={options}
                     />
+                    <div className="flex justify-end mt-5 pr-5">
+                        <Button
+                            kind="primary"
+                        >
+                            Save
+                        </Button>
+                    </div>
+                    
                 </div>
-                
+                <CropEditorModal 
+                    open={isCropEditorModalOpen}
+                    setOpen={setIsCropEditorModalOpen}
+                    finished={onCropEditorModalClosed}
+                />
             </div>
         </div>
     </>;

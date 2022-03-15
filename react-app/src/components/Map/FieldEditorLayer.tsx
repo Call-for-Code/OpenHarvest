@@ -3,6 +3,7 @@ import React, { PropsWithChildren, ReactElement, useCallback, useEffect, useRef,
 import { Circle, FeatureGroup, GeoJSON } from "react-leaflet";
 import { Polygon as leafletPolygon } from "leaflet";
 import { EditControl } from "react-leaflet-draw";
+import produce from "immer"
 import { EISField, EISSubField, EISSubFieldProperties } from "./../../types/EIS";
 
 export interface FieldEditorLayerProps {
@@ -67,10 +68,9 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
         }
 
         // Create a new object for components listening outside
-        const newField = {
-            name: fieldRef.current.name,
-            subFields: [...fieldRef.current.subFields, subfield]
-        }
+        const newField = produce(fieldRef.current, (draftField) => {
+            draftField.subFields.push(subfield);
+        });
 
         fieldRef.current = newField;
         
