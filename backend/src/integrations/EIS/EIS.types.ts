@@ -1,6 +1,6 @@
+import { Crop } from "../../db/entities/crop";
 import { Feature, FeatureCollection, Geometry, Polygon } from "geojson";
-import { Crop } from "../services/crops";
-
+import { LatLng } from "integrations/weather-company-api.types";
 
 /**
  * There are many redundant fields you'll notice because EIS's data structures 
@@ -74,7 +74,6 @@ export interface EISSubFieldProperties {
     }
 }
 
-
 export interface EISSubField {
     name: string;
     geo: {
@@ -88,6 +87,17 @@ export interface EISField {
     subFields: EISSubField[]
 }
 
+export interface EISFieldCreateResponse {
+    /**
+     * UUID of the field
+     */
+    field: string;
+    /**
+     * UUID of the subfields
+     */
+    subFields: string[];
+}
+
 // END Field Create Structures
 
 // SubField EIS Return Data
@@ -99,10 +109,7 @@ export interface EISSubFieldSearchReturnFeatureProperties {
         east: number;
         west: number;
     };
-    centroid: {
-        latitude: number;
-        longitude: number;
-    };
+    centroid: LatLng;
     ianaTimeZone: string;
     deleted: boolean;
     inputType: string;

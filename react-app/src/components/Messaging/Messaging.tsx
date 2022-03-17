@@ -1,9 +1,9 @@
 import React, { Component, ReactElement, useEffect, useState } from "react";
+import { TextArea } from "carbon-components-react";
 import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
 import { Farmer, getAllFarmers } from "../../services/farmers";
-import { Button } from "carbon-components-react";
-import { Add16 } from "@carbon/icons-react";
-import { useHistory } from "react-router";
+import { Chat32 } from "@carbon/icons-react";
+
 
 const actions = {
     pagination: {
@@ -18,7 +18,7 @@ const actions = {
       /** Specify a callback for when the user clicks toolbar button to clear all filters. Recieves a parameter of the current filter values for each column */
       onClearAllFilters: () => {},
       onCancelBatchAction: () => {},
-      onApplyBatchAction: () => {},
+      onApplyBatchAction: (actionId: string, rowIds: string[]) => {}, // defined so that TS doesn't complain when we override them below
       onApplySearch: () => {},
       /** advanced filter actions */
       onCancelAdvancedFilter: () => {},
@@ -58,45 +58,31 @@ const columns = [
     }   
 ]
 
+const view = {
+    toolbar: {
+        batchActions: [
+            {
+                iconDescription: 'Message',
+                id: 'message',
+                labelText: 'Message',
+                renderIcon: Chat32
+            },
+        ],
+        search: {
+            defaultExpanded: true
+        }
+    }
+}
+
 const options = {
     hasRowSelection: 'single',
     hasSearch: true,    
 }
 
-export default function Farmers() {
+export function Messaging() {
 
     const [farmers, setFarmers] = useState<Farmer[]>([]);
     const [farmerTableData, setFarmerTableData] = useState<any>([]);
-
-    const history = useHistory();
-
-    const view = {
-        toolbar: {
-            // toolbarActions: [
-            //     {
-            //         id: 'edit',
-            //         labelText: 'Add',
-            //         // can be a handful of included icons
-            //         renderIcon: Add16,
-            //         isOverflow: false,
-            //     },
-            // ]
-            customToolbarContent: (
-                <Button
-                  kind="primary"
-                  iconDescription="Add Farmer"
-                  renderIcon={Add16}
-                  onClick={() => history.push("farmers/add")}
-                >
-                    Add Farmer
-                </Button>
-            ),
-            search: {
-                defaultExpanded: true
-            }
-        }
-    }
-    
 
     useEffect(() => {
         async function load() {
@@ -118,25 +104,29 @@ export default function Farmers() {
         load();
     }, []);
 
-    return <div className="w-9/12 mx-auto space-y-5">
-        
-            <PageTitleBar
-                title={"Farmers"}
-                forceContentOutside
-                headerMode={"STATIC"}
-                collapsed={false}
-            />
 
-            <StatefulTable
-                id="table"
-                columns={columns}
-                data={farmerTableData}
-                view={view}
-                actions={actions}
-                options={options}
-                 />
-        </div>
-
-        
-
+    /**
+     * Layout:
+     * Text Area For the message
+     * Table with Farmers
+     * 
+     * User can select multiple farmers and send out a message to them using batch actions
+     */
+    return <div className="flex flex-col space-y-5">
+        <PageTitleBar
+            title={"Message a Farmer"}
+            forceContentOutside
+            headerMode={"STATIC"}
+            collapsed={false}
+        />
+        <TextArea labelText="Message" />
+        <StatefulTable
+            id="table"
+            columns={columns}
+            data={farmerTableData}
+            view={view}
+            actions={actions}
+            options={options}
+        />
+    </div>
 }

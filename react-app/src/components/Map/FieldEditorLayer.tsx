@@ -49,6 +49,7 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
         const subfieldGeoJSON = layer.toGeoJSON() as Feature<Polygon, EISSubFieldProperties>;
         subfieldGeoJSON.properties = {
             farm_name: "test",
+            open_harvest_farmer_id: "",
             open_harvest: {
                 farmer_id: "",
                 crops: []

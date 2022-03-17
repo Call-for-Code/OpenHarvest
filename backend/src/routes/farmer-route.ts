@@ -1,13 +1,20 @@
 import { Router, Request, Response } from "express";
-import { EISField } from "./../integrations/EIS/types";
-
+import { EISField } from "../integrations/EIS/EIS.types";
+import { EISAPIService } from "../integrations/EIS/EIS-api.service";
 import { Farmer, FarmerModel } from "../db/entities/farmer";
-
-
 import LandAreasService from "../services/land-areas.service";
 
 // const LotAreaService = require("./../services/lot-areas.service");
-const lotAreas = new LandAreasService();
+// const lotAreas = new LandAreasService();
+
+const EISKey = process.env.EIS_apiKey;
+
+if (EISKey == undefined) {
+    console.error("You must define 'EIS_apiKey' in the environment!");
+    process.exit(-1);
+}
+
+const eisAPIService = new EISAPIService(EISKey);
 
 const router = Router();
 
@@ -39,19 +46,15 @@ async function createOrUpdateFarmer(req: Request, res: Response) {
 }
 
 async function getFarmer(id: string) {
-    // const response = await client.getDocument({
-    //     db,
-    //     docId: `farmer:${id}`,
-    // });
-    // const farmer = response.result;
-    // farmer.lots = await lotAreas.getLots(farmer.lot_ids);
-
     // Aggregate with land areas eventually
-    const farmer = await FarmerModel.findById(id).exec();
+    const farmer = await FarmerModel.findById(id).lean().exec();
     if (farmer == null) {
         return null;
     }
-    // farmer.lands = await lotAreas.getLots(farmer.land_ids);
+    
+    // Get Fields
+    const field = await eisAPIService.getFarmerField(id);
+
     return farmer;
 }
 
@@ -125,9 +128,20 @@ router.post("/add", async(req: Request, res: Response) => {
     // We have to set the farmer ID on the field first
     for (let i = 0; i < field.subFields.length; i++) {
         const properties = field.subFields[i].geo.geojson.features[0].properties;
+        properties.open_harvest_farmer_id = newFarmer._id!!.toString();
         properties.open_harvest.farmer_id = newFarmer._id!!.toString();
     }
 
+    const createdFieldsUuids = await eisAPIService.createField(field);
+    const fieldUuid = createdFieldsUuids.field;
+
+    const createdField = await eisAPIService.getField(fieldUuid);
+
+    const farmerObj = newFarmer.toObject();
+
+    farmerObj.field = createdField;
+
+    res.json(farmerObj);
 });
 
 // // Link Lot

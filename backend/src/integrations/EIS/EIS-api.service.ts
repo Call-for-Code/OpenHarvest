@@ -1,4 +1,5 @@
 import axios from "axios";
+import { EISField, EISFieldCreateResponse, EISSubFieldSearchReturn, FieldResponse, Fields } from "./EIS.types";
 
 
 export class EISAPIService {
@@ -10,7 +11,9 @@ export class EISAPIService {
      */
     expiration = 0;
 
-    baseAPI = "https://foundation.agtech.ibm.com/v2/"
+    baseAPI = "https://foundation.agtech.ibm.com/v2/";
+
+    authAxios = axios.create({});
 
     constructor(private apiKey: string) {
 
@@ -29,13 +32,76 @@ export class EISAPIService {
             this.access_token = res.data.access_token;
             this.expiration = Date.now() + (res.data.expires_in * 1000);
 
+            this.authAxios.defaults.headers.common['Authorization'] = `Bearer ${this.access_token}`;
+
             return true;
         }
         return false;
     }
 
-    async getFields() {
-        const res = await axios.get(this.baseAPI + "field", {headers: { Authorization: `Bearer ${this.access_token}` }});
-        res.data
+    async createField(field: EISField): Promise<EISFieldCreateResponse> {
+        await this.ensureToken();
+
+        const res = await this.authAxios.post<EISFieldCreateResponse>(this.baseAPI + "field", field);
+        return res.data;
     }
+
+    async getFields() {
+        await this.ensureToken();
+        const res = await this.authAxios.get<Fields>(this.baseAPI + "field");
+        return res.data
+    }
+
+    async getField(uuid: string) {
+        await this.ensureToken();
+        const fieldRes = await this.authAxios.get<FieldResponse>(this.baseAPI + `field/${uuid}`);
+        
+        const field = fieldRes.data;
+        
+        // We need to convert the open harvest object from a string to JSON because EIS stores it as a string
+        for (let i = 0; i < field.subFields.features.length; i++) {
+            const subField = field.subFields.features[i];
+            subField.properties.open_harvest = JSON.parse(subField.properties.open_harvest as any);
+        }
+
+        return fieldRes.data;
+    }
+
+    async getFarmerField(farmer_id: string): Promise<FieldResponse | null> {
+        await this.ensureToken();
+        
+        const queryBody = {
+            "uuidsOnly": false,
+            "inputType": "SPECIFIED_FIELD",
+            "includeDeleted": true,
+            "includeAssetGeometry": true,
+            "properties": {
+                open_harvest: {
+                    farmer_id
+                }
+            }
+        };
+
+        const res = await this.authAxios.post<EISSubFieldSearchReturn>(this.baseAPI + "asset/search", queryBody);
+        const subfields = res.data;
+
+        if (subfields.totalRecords == 0) {
+            return null;
+        }
+
+        // Get the parent reference which points to the field uuid
+        const fieldUuid = subfields.features[0].parentReference;
+
+        try {
+            return await this.getField(fieldUuid);
+        }
+        catch (e) {
+            console.error(e);
+            return null;
+        }
+    }
+
+    
+
+
 }

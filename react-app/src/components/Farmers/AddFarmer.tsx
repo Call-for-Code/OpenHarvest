@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
+import { PageTitleBar, StatefulTable, Button, InlineLoading } from "carbon-addons-iot-react";
 import produce from "immer"
 import { FieldEditorMap } from "./../Map/FieldEditorMap";
-import { Button, TextArea, TextInput } from "carbon-components-react";
+import { TextArea, TextInput } from "carbon-components-react";
 import { EISField, SubFieldCrop } from "../../types/EIS";
 import { area } from "@turf/turf";
 import { Sprout16, Wheat16, Add16 } from "@carbon/icons-react";
 import { CropEditorModal } from "./CropEditorModal";
+import { addFarmer, FarmerAddDTO } from "../../services/farmers";
+import { useAuth } from "../../services/auth";
+import { useHistory } from "react-router";
 
 
 const actions = {
@@ -22,7 +25,7 @@ const actions = {
       /** Specify a callback for when the user clicks toolbar button to clear all filters. Recieves a parameter of the current filter values for each column */
       onClearAllFilters: () => {},
       onCancelBatchAction: () => {},
-      onApplyBatchAction: (actionId: string, rowIds: string[]) => {},
+      onApplyBatchAction: (actionId: string, rowIds: string[]) => {}, // defined so that TS doesn't complain when we override them below
       onApplySearch: () => {},
       /** advanced filter actions */
       onCancelAdvancedFilter: () => {},
@@ -104,6 +107,8 @@ function squareMetresToHa(sqm: number) {
     return sqm / 1000;
 }
 
+// This is a massive component it needs to be broken down...
+
 export function AddFarmer() {
 
     const [name, setName] = useState("");
@@ -113,6 +118,13 @@ export function AddFarmer() {
     const [coopOrgs, setCoopOrgs] = useState("");
     const [field, setField] = useState<EISField | null>(null);
     const [fieldTableData, setFieldTableData] = useState<any>([]);
+
+    const [isSaving, setIsSaving] = useState(false);
+    const [isSavedSuccessfully, setIsSavedSuccessfully] = useState(false);
+
+    const auth = useAuth();
+
+    const history = useHistory();
 
     // Crop data
     const [isCropEditorModalOpen, setIsCropEditorModalOpen] = useState(false);
@@ -229,8 +241,29 @@ export function AddFarmer() {
 
     }, [field]);
 
-    function saveFarmer() {
-        
+    function isValid() {
+        return name !== "" && mobile !== "" && field !== null && field.subFields.length !== 0;
+    }
+
+    async function saveFarmer() {
+        setIsSaving(true);
+        const addFarmerDTO: FarmerAddDTO = {
+            farmer: {
+                name,
+                mobile,
+                address,
+                coopOrganisations: [ auth.user!!.selectedOrganisation!!._id!! ],
+                fieldCount: field!!.subFields.length
+            },
+            field: field!!
+        }
+        const res = await addFarmer(addFarmerDTO);
+        setIsSavedSuccessfully(true);
+        setIsSaving(false);
+    }
+
+    function finished() {
+        history.push("/farmers");
     }
 
     return <>
@@ -245,7 +278,7 @@ export function AddFarmer() {
             <div className="w-1/2">
                 <FieldEditorMap onFieldUpdated={onFieldUpdated} existingField={field ? field : undefined}></FieldEditorMap>
             </div>
-            <div className="w-1/2 space-y-10">
+            <div className="w-1/2 space-y-10 px-2">
                 <div className="flex flex-row">
                     <TextInput
                         type="text"
@@ -283,11 +316,23 @@ export function AddFarmer() {
                         options={options}
                     />
                     <div className="flex justify-end mt-5 pr-5">
-                        <Button
-                            kind="primary"
-                        >
-                            Save
-                        </Button>
+                        {isSaving || isSavedSuccessfully ? (
+                            <InlineLoading
+                                description={isSavedSuccessfully ? "Created!" : "Creating..."}
+                                status={isSavedSuccessfully ? 'finished' : 'active'}
+                                onSuccess={finished}
+                            />
+                        ) : (
+                            <Button
+                                kind="primary"
+                                loading={isSaving}
+                                disabled={!isValid()}
+                                onClick={saveFarmer}
+                            >
+                                Save
+                            </Button>
+                        )}
+                        
                     </div>
                     
                 </div>

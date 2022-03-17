@@ -15,6 +15,7 @@ import UserOnboarding from "./components/Onboarding/UserOnboarding";
 import { AddFarmer } from "./components/Farmers/AddFarmer";
 
 import {enableAllPlugins} from "immer"
+import { Messaging } from "./components/Messaging/Messaging";
 enableAllPlugins();
 
 type AppProps = RouteComponentProps ;
@@ -113,6 +114,16 @@ class App extends Component<AppProps, AppState> {
                                 render={() => 
                                     <PrivateRoute>
                                         <Crops />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                key={"messaging"}
+                                path={"/messaging"}
+                                exact
+                                render={() => 
+                                    <PrivateRoute>
+                                        <Messaging />
                                     </PrivateRoute>
                                 }
                             />
