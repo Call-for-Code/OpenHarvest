@@ -2,7 +2,6 @@ import { PieChartCard } from 'carbon-addons-iot-react';
 import React, { useEffect, useState } from "react";
 import { getDashboard, YeildData } from '../../services/dashboard';
 
-
 export function PiChartGNY() {
 
     const size = "MEDIUM";
@@ -14,6 +13,7 @@ export function PiChartGNY() {
     }, []);
       
     return (
+      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -29,6 +29,7 @@ export function PiChartGNY() {
           title={'Ground Nut Yield'}
           values={chartData}
         />
+        </div>
     );
   }
 
@@ -44,6 +45,7 @@ export function PiChartGNY() {
     }, []);
       
     return (
+      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -59,5 +61,6 @@ export function PiChartGNY() {
           title={'Number of Farmers per Ground Nut Type'}
           values={chartData}
         />
+        </div>
     );
   }
