@@ -51,17 +51,17 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 ### Building app
 #### backend
-1. Create Certificates
+1. Install mkcert. For mac or linux: `brew install mkcert`. Windows user can download mkcert.exe from [Mkcert Github](https://github.com/FiloSottile/mkcert/releases)
+2. Create Certificates
    ```
-   brew install mkcert
    mkcert -install
    mkcert localhost 127.0.0.1
    ```
-2. Create Mongodb Data Directory
+3. Create Mongodb Data Directory. This is optional for Windows user.
    ```
    mkdir {YOUR_PATH}/mongodb:/data/db
    ```
-3. Create docker-compose.yml
+4. Create docker-compose.yml. For mac and linux
    ```
    version: '3.7'
    services:
@@ -76,9 +76,27 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
       volumes:
         - {YOUR_MONGO_DB_DATA_DIR}
    ```
-4. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
+   For windows:
+   ```
+   version: '3.7'
+   services:
+    mongodb_container:
+      image: mongo:latest
+      environment:
+        MONGO_INITDB_ROOT_USERNAME: {YOUR_ROOT_USER}
+        MONGO_INITDB_ROOT_PASSWORD: {YOUR_ROOT_PASSWORD}
+      restart: unless-stopped
+      ports:
+        - 27017:27017
+      volumes:
+        - data:/mongodb/data/db
+   volumes:
+     data:
+      driver: local
+   ```
+5. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
    
-5. 
+6. 
       ```
         npm i
         npm start
@@ -86,7 +104,7 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
   
 #### frontend
   ```
-  cd frontend
+  cd react-app
   npm install
   npm start
   ```
