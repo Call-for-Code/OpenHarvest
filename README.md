@@ -57,9 +57,9 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
    mkcert -install
    mkcert localhost 127.0.0.1
    ```
-2. Create Mongodb Data Directory
+2. Create Mongodb Data Directory, anywhere you want but preferably in the same directory as the docker compose.
    ```
-   mkdir {YOUR_PATH}/mongodb:/data/db
+   mkdir {YOUR_PATH}
    ```
 3. Create docker-compose.yml
    ```
@@ -74,7 +74,7 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
       ports:
         - 27017:27017
       volumes:
-        - {YOUR_MONGO_DB_DATA_DIR}
+        - {YOUR_MONGO_DB_DATA_DIR}:/data/db
    ```
 4. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
    
