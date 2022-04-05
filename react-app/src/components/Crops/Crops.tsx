@@ -4,6 +4,9 @@ import { ITableColumnProperties, ITableRow } from "../../types/table";
 import { Button } from "carbon-components-react";
 import { Add16 } from "@carbon/icons-react";
 import { Crop } from "../../services/crops";
+import { ICropService } from "../../services/CropService";
+import commonInjectableContainer from "../../common/di/inversify.config";
+import TYPES from "../../common/di/inversify.types";
 
 interface ICropTableRow extends ITableRow {
     values: Crop
@@ -19,6 +22,9 @@ export default class Crops extends Component<CropsProps, CropsState> {
     private readonly pageTitle = "Crops";
     private readonly noDataMessage = "No crops exists!";
     private readonly ROW_COUNT = 4;
+    private readonly deleteId = "deleteId";
+    private readonly deleteLabel = "Delete";
+    private readonly cropService: ICropService = commonInjectableContainer.get(TYPES.CropService);
 
     constructor(props: CropsProps) {
         super(props);
@@ -38,9 +44,34 @@ export default class Crops extends Component<CropsProps, CropsState> {
     }
 
     componentDidMount() {
-        /*fetch("/api/crop").then(response =>  {
-            console.log(response);
-        });*/
+        this.setState({
+            loading: true
+        });
+
+        this.cropService.findAll().then((res) => {
+            const data: ICropTableRow[] = [];
+
+            res.forEach(crop => {
+                data.push({
+                    id: crop._id.toString(),
+                    values: crop,
+                    rowActions: [{
+                        id: this.deleteId,
+                        labelText: this.deleteLabel,
+                        isOverflow: true,
+                        isDelete: true
+                    }]
+                });
+            });
+
+            this.setState({
+                data
+            });
+        }).finally(() => {
+            this.setState({
+                loading: false
+            });
+        });
     }
 
     onApplyRowAction(action: string, rowId: string): void {
