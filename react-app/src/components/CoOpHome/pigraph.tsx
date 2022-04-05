@@ -58,7 +58,7 @@ export function PiChartGNY() {
           isExpanded={false}
           onCardAction={false}
           size={size}
-          title={'Ground Nut Yield'}
+          title={'Number of Farmers per Ground Nut Type'}
           testID="basicCardStoryTest"
           values={chartData}
         />

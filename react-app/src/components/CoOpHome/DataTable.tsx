@@ -175,7 +175,7 @@ export function Table() {
     ];
     
     return (
-        <div >
+        <div style={{ width: `700px`, margin: 20 }}>
         <TableCard
             title="Yield history by crop"
             id="table-list"

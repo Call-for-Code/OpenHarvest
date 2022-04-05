@@ -2,6 +2,10 @@ import React, { Component, ReactElement } from "react";
 import { PageTitleBar } from "carbon-addons-iot-react";
 import { Weather7Day, WeatherToday } from "./WeatherForecast";
 import { HomeMap } from "./HomeMap";
+import { PiChartGNT, PiChartGNY } from "./pigraph";
+import { BarChartYFC, BarChartYHC } from "./CropCharts";
+import { Table } from "./DataTable";
+import { LandAreaCard, NumCropsCard, NumFarmersCard, PrecipWeekCard } from "./DataCards";
 
 type CoOpHomeProps = {};
 type CopOpHomeState = {};
@@ -30,6 +34,34 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
             <div className="w-9/12 h-[500px]">
                 <HomeMap></HomeMap>
             </div>
+            
+            <div>
+                <BarChartYFC></BarChartYFC>
+                <BarChartYHC></BarChartYHC>
+            </div>
+            <div>
+                <div>
+                <LandAreaCard></LandAreaCard>
+                </div>
+                <div>
+                <NumCropsCard></NumCropsCard>
+                </div>
+                <div>
+                <NumFarmersCard></NumFarmersCard>
+                </div>
+                <div>
+                <PrecipWeekCard></PrecipWeekCard>
+                </div>
+                
+            </div>
+            <div>
+                <PiChartGNT></PiChartGNT>
+                <PiChartGNY></PiChartGNY>
+            </div>
+            {/* <div>
+                <Table></Table>
+                <Table></Table>
+            </div> */}
             
 
         </div>
