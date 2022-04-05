@@ -87,6 +87,7 @@ export function YHBCTable() {
     
     
     return (
+      <div style={{ width: `700px`, margin: 20 }}>
       <StatefulTable
           id="table"
           columns={columns}
@@ -96,7 +97,7 @@ export function YHBCTable() {
           actions={actions}
           options={options}
             />
-        
+        </div>
     );
 
 }

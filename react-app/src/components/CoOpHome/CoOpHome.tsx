@@ -4,7 +4,11 @@ import { Weather7Day, WeatherToday } from "./WeatherForecast";
 import { HomeMap } from "./HomeMap";
 import { PiChartGNT, PiChartGNY } from "./pigraph";
 import { BarChartYFC, BarChartYHC } from "./CropCharts";
+<<<<<<< HEAD
 import { YHBCTable, YFBCTable } from "./DataTable";
+=======
+import { Table } from "./DataTable";
+>>>>>>> 8bc8b7e2 (UI Dashboard)
 import { LandAreaCard, NumCropsCard, NumFarmersCard, PrecipWeekCard } from "./DataCards";
 
 type CoOpHomeProps = {};
@@ -75,6 +79,34 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                     <PiChartGNY></PiChartGNY>
                 </div>
             </div>
+            
+            <div>
+                <BarChartYFC></BarChartYFC>
+                <BarChartYHC></BarChartYHC>
+            </div>
+            <div>
+                <div>
+                <LandAreaCard></LandAreaCard>
+                </div>
+                <div>
+                <NumCropsCard></NumCropsCard>
+                </div>
+                <div>
+                <NumFarmersCard></NumFarmersCard>
+                </div>
+                <div>
+                <PrecipWeekCard></PrecipWeekCard>
+                </div>
+                
+            </div>
+            <div>
+                <PiChartGNT></PiChartGNT>
+                <PiChartGNY></PiChartGNY>
+            </div>
+            {/* <div>
+                <Table></Table>
+                <Table></Table>
+            </div> */}
             
 
         </div>
