@@ -1,0 +1,140 @@
+import { CoopManager } from "../../db/entities/coopManager";
+import { Farmer, FarmerModel } from "../../db/entities/farmer";
+import { MessagingInterface } from "../messagingInterface";
+
+import { v4 as uuidv4 } from "uuid";
+import { MessageLog, MessageLogModel, Source } from "./../../db/entities/messageLog";
+
+export interface SMSSyncMessage {
+    to: string;
+    message: string;
+    uuid: string;
+}
+
+export interface SMSSyncMessageReceivedFormat {
+    secret: string;
+    /**
+     * International number with a +
+     */
+    from: string;
+    message: string;
+    /**
+     * Most annoyingly this is a string of a millisecond timestamp. We can just throw the parsed value into Date()
+     */
+    sent_timestamp: string;
+    sent_to: string;
+    message_id: string;
+    device_id: string;
+}
+
+/**
+ * This class handles interfacing with SMS Sync.
+ */
+export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat> {
+
+    constructor() {
+        super();
+    }
+
+    /**
+     * SMS Sync is a little annoying in that the phone initiates the connection to get messages to send
+     * So we have to have a list and provide a function to get the messages and clear it
+     */
+    private pendingMessages: SMSSyncMessage[] = [];
+
+    async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
+        const number = farmer.mobile;
+
+        if (message === undefined || message === null || message === "") {
+            throw new Error("Message is empty!");
+        }
+
+        await this.sendMessage(number, message);
+        
+        const messageLogEntry: MessageLog = {
+            farmer_id: farmer._id!!.toString(),
+            address: number,
+            message,
+            isViewed: true,
+            source: Source.OpenHarvest,
+            timestamp: new Date()
+        }
+
+        const messageLog = await MessageLogModel.create(messageLogEntry);
+
+        return messageLog;
+    }
+
+    async sendMessageToCoopManager(coopManager: CoopManager, message: string): Promise<MessageLog> {
+        throw new Error("Method not implemented.");
+
+        // const number = coopManager.mobile;
+        // await this.sendMessage(number, message);
+
+        // const messageLogEntry: MessageLog = {
+        //     farmer_id: farmer._id!!.toString(),
+        //     address: number,
+        //     message,
+        //     isViewed: true,
+        //     source: Source.OpenHarvest,
+        //     timestamp: new Date()
+        // }
+
+        // const messageLog = await MessageLogModel.create(messageLogEntry);
+
+        // return messageLog;
+        
+    }
+        
+    async sendMessage(destination: string, message: string): Promise<void> {
+        const smsMessage: SMSSyncMessage = {
+            to: destination,
+            message,
+            uuid: uuidv4()
+        }
+        console.log("Adding Message to the list:", destination, message);
+        this.pendingMessages.push(smsMessage);
+        console.log(this.pendingMessages);
+    }
+
+    async onReceivedMessage(message: SMSSyncMessageReceivedFormat): Promise<MessageLog | null> {
+
+        const farmer = await FarmerModel.findOne({mobile: message.from});
+
+        if (farmer === null) {
+            console.error("Unknown number!! Ignoring...");
+            return null;
+        }
+
+        const parsedTimestamp = parseInt(message.sent_timestamp);
+
+        const messageLogEntry: MessageLog = {
+            farmer_id: farmer._id!!.toString(),
+            address: message.from,
+            message: message.message,
+            isViewed: true,
+            source: Source.Farmer,
+            timestamp: new Date(parsedTimestamp)
+        }
+
+        const messageLog = await MessageLogModel.create(messageLogEntry);
+        
+        this.emit("onMessage", messageLog);
+        this.notify(messageLog)
+
+        return messageLog;
+    }
+
+    /**
+     * SMS Sync is a little annoying in that the phone initiates the connection to get messages to send
+     * So we have to have a list and provide a function to get the messages and clear it
+     */
+    getMessagesToSend(): SMSSyncMessage[] {
+        const messages = [...this.pendingMessages];
+        this.pendingMessages = [];
+        return messages;
+    }
+    
+}
+
+export const SMSSyncAPIInstance = new SMSSyncAPI();

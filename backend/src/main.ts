@@ -21,6 +21,9 @@ import recommendationsRoutes from "./routes/recommendations-route";
 import weatherRoutes from "./routes/weather-route";
 import coopManagerRoutes from "./routes/coopManager-route";
 import organisationRoutes from "./routes/organisation-route";
+import messageLogRoutes from "./routes/messaging-route";
+import smsRoutes from "./routes/sms-route";
+
 import { doesUserExist, getCoopManager } from "./services/coopManager.service";
 import { CoopManager } from "db/entities/coopManager";
 import { getOrganisations } from "./services/organisation.service";
@@ -202,6 +205,8 @@ app.use("/api/recommendations", recommendationsRoutes);
 app.use("/api/weather", weatherRoutes);
 app.use("/api/coopManager", coopManagerRoutes);
 app.use("/api/organisation", organisationRoutes);
+app.use("/api/messaging", messageLogRoutes);
+app.use("/api/sms", smsRoutes);
 
 app.get("/", ensureAuthenticated, express.static("public"));
 
@@ -222,12 +227,18 @@ else {
         process.exit(-1);
     }
 
+    // Listen on https at 3000
     https.createServer({
         key: fs.readFileSync(sslKey!!),
         cert: fs.readFileSync(sslCert!!)
     }, app).listen(port);
 
     console.log("Server starting on https://localhost:" + port);
+    
+    // Listen on http at 3080
+    app.listen(3080, function() {
+        console.log("Server starting on http://localhost:" + 3080);
+    });
 }
 
 

@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "@types/geojson": "^7946.0.8",
+    "@types/uuid": "^8.3.4",
     "axios": "^0.26.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -23,7 +24,9 @@
     "geojson": "^0.5.0",
     "mongoose": "^6.2.1",
     "passport": "^0.5.2",
-    "passport-ci-oidc": "^2.0.5"
+    "passport-ci-oidc": "^2.0.5",
+    "twilio": "^3.75.1",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
