@@ -4,6 +4,9 @@ import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
+import { DependencyLoader } from "./common/di/DependencyLoader";
+
+new DependencyLoader().load();
 
 ReactDOM.render(
     <React.StrictMode>

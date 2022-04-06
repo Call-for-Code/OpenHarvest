@@ -2,7 +2,7 @@
 // const {cropDetailsView} = require("../db/cloudant");
 // const {cropDetailsDdoc} = require("../db/cloudant");
 
-import { CropModel, Crop } from "./../db/entities/crop";
+import { CropModel, Crop } from "../db/entities/crop";
 
 // const APPLICATION_DB = "application-db";
 // const db = APPLICATION_DB;
