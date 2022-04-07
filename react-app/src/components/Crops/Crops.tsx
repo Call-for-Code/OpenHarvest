@@ -41,6 +41,8 @@ export default class Crops extends Component<CropsProps, CropsState> {
             dialogOpen: false
         };
 
+        this.filterRowId = this.filterRowId.bind(this);
+
         // handlers
         this.onApplyRowAction = this.onApplyRowAction.bind(this);
         this.onRowClicked = this.onRowClicked.bind(this);
@@ -85,7 +87,26 @@ export default class Crops extends Component<CropsProps, CropsState> {
     }
 
     onApplyRowAction(action: string, rowId: string): void {
+        if (action === this.deleteId) {
+            const selectedCrop = this.state.data.find(row => row.id === rowId);
 
+            if (selectedCrop?.values._id) {
+                this.cropService.deleteCrop(selectedCrop.values._id)
+                    .then(() => {
+                        this.setState({
+                            data: this.filterRowId(rowId)
+                        });
+                    })
+                    .catch(() => {
+                        // TODO: Add toast here and on success
+                        console.log("Error while deleting crop!!!");
+                    });
+            } else {
+                this.setState({
+                    data: this.filterRowId(rowId)
+                })
+            }
+        }
     }
 
     onRowClicked(rowId: string): void {
@@ -190,6 +211,9 @@ export default class Crops extends Component<CropsProps, CropsState> {
                         onRowClicked: this.onRowClicked
                     }
                 }}
+                options={{
+                    hasRowActions: true
+                }}
                 i18n={{
                     emptyMessage: this.noDataMessage
                 }}
@@ -251,5 +275,17 @@ export default class Crops extends Component<CropsProps, CropsState> {
         );
     }
 
+    private filterRowId(rowId: string): ICropTableRow[] {
+        const data: ICropTableRow[] = [];
+        this.state.data.filter(row => row.id !== rowId).forEach((row, index) => {
+            const modifiedRow = produce(row, draft => {
+                draft.id = (index + 1).toString(10);
+            });
+
+            data.push(modifiedRow);
+        });
+
+        return data;
+    }
 
 }

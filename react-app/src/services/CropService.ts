@@ -4,6 +4,8 @@ import axios from "axios";
 
 export interface ICropService {
     findAll: () => Promise<Crop[]>;
+    saveCrop: (crop: Crop) => Promise<void>;
+    deleteCrop: (id: string) => Promise<void>;
 }
 
 @injectable()
@@ -20,4 +22,20 @@ export class CropService implements ICropService {
         });
     }
 
+    saveCrop(crop: Crop): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            axios.post(this.baseUrl, crop)
+                .then(() => {
+                    resolve();
+                }).catch(reject);
+        });
+    }
+
+    deleteCrop(id: string): Promise<void> {
+        return new Promise<void>((resolve, reject) => {
+            axios.delete(this.baseUrl + "/" + id)
+                .then(() => resolve())
+                .catch(reject);
+        });
+    }
 }

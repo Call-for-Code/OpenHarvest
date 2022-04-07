@@ -55,7 +55,7 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         this.handleTimeToHarvestChange = this.handleTimeToHarvestChange.bind(this);
 
         this.isSelected = this.isSelected.bind(this);
-
+        this.getInvalidMessage = this.getInvalidMessage.bind(this);
     }
 
     componentDidMount() {
@@ -112,6 +112,7 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
     handleSubmit(): void {
         const values: Crop = {
+            _id: this.props.selectedCrop?.values._id,
             name: this.state.fieldStates["name"].value as string,
             planting_season: [this.state.fieldStates["plantingSeasonStart"].value as number, this.state.fieldStates["plantingSeasonEnd"].value as number],
             time_to_harvest: this.state.fieldStates["timeToHarvest"].value as number,
@@ -119,22 +120,25 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
             yield_per_sqm: this.state.fieldStates["yields"].value as number
         };
 
-        const modifiedData: ICropTableRow = {
-            id: this.props.selectedCrop?.id || "",
-            values,
-            rowActions: [{
-                id: this.deleteId,
-                labelText: MESSAGES.DELETE,
-                isOverflow: true,
-                isDelete: true
-            }]
-        };
+        this.cropService.saveCrop(values)
+            .then(() => {
+                const modifiedData: ICropTableRow = {
+                    id: this.props.selectedCrop?.id || "",
+                    values,
+                    rowActions: [{
+                        id: this.deleteId,
+                        labelText: MESSAGES.DELETE,
+                        isOverflow: true,
+                        isDelete: true
+                    }]
+                };
 
-        this.props.onSubmit(modifiedData);
+                this.props.onSubmit(modifiedData);
+            });
     }
 
     isFormInvalid(): boolean {
-        return false;
+        return this.formService.isFormNotSavable(this.state.fieldStates);
     }
 
     getTitle(): string {
@@ -143,6 +147,10 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
     isSelected(fieldName: string, value: string): boolean {
         return this.state.fieldStates[fieldName].value === value;
+    }
+
+    getInvalidMessage(fieldName: string): string | undefined {
+        return this.formService.getFieldInvalidMessage(fieldName, this.state.fieldStates[fieldName], this.state.fieldStates);
     }
 
     render(): JSX.Element {
@@ -164,7 +172,13 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
             <Grid>
                 <Row>
                     <Column>
-                        <TextInput id="name" labelText="Name" value={this.state.fieldStates["name"].value as string} onChange={this.handleNameChange} />
+                        <TextInput
+                            id="name"
+                            labelText="Name"
+                            value={this.state.fieldStates["name"].value as string}
+                            onChange={this.handleNameChange}
+                            invalid={!this.state.fieldStates["name"].state.valid}
+                            invalidText={this.getInvalidMessage("name")}/>
                     </Column>
                 </Row>
                 <Row>
@@ -208,7 +222,9 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
                             id="timeToHarvest"
                             label="Time to Harvest"
                             value={this.state.fieldStates["timeToHarvest"].value as number}
-                            onChange={this.handleTimeToHarvestChange} />
+                            onChange={this.handleTimeToHarvestChange}
+                            invalid={!this.state.fieldStates["timeToHarvest"].state.valid}
+                            invalidText={this.getInvalidMessage("timeToHarvest")}/>
                     </Column>
                 </Row>
                 <Row>
@@ -218,7 +234,13 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
                 </Row>
                 <Row>
                     <Column>
-                        <TextInput id="yields" labelText="Yields" value={this.state.fieldStates["yields"].value as string} onChange={this.handleYieldsChange} />
+                        <TextInput
+                            id="yields"
+                            labelText="Yields"
+                            value={this.state.fieldStates["yields"].value as number}
+                            onChange={this.handleYieldsChange}
+                            invalid={!this.state.fieldStates["yields"].state.valid}
+                            invalidText={this.getInvalidMessage("yields")}/>
                     </Column>
                 </Row>
             </Grid>
@@ -258,9 +280,9 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
             },
             {
                 name: "yields",
+                required: true,
                 numeric: {
-                    allowEmpty: false,
-                    min: 0
+                    allowEmpty: false
                 }
             }
         ];
