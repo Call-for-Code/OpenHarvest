@@ -1,6 +1,7 @@
 
 const TYPES = {
-    CropService: Symbol("CropService")
+    CropService: Symbol("CropService"),
+    FormService: Symbol("FormService"),
 };
 
 export default TYPES;

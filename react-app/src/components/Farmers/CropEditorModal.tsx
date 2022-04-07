@@ -1,8 +1,11 @@
 import { ComposedModal, ModalHeader, ModalBody, TextInput, ModalFooter, Button, InlineLoading, Select, SelectItem } from "carbon-components-react";
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import { useAuth } from "../../services/auth";
-import { Crop, getAllCrops } from "../../services/crops";
+import { Crop } from "../../services/crops";
 import { SubFieldCrop } from "../../types/EIS";
+import { ICropService } from "../../services/CropService";
+import commonInjectableContainer from "../../common/di/inversify.config";
+import TYPES from "../../common/di/inversify.types";
 
 export interface CropEditorModalProps {
     crop?: SubFieldCrop;
@@ -24,6 +27,7 @@ export function CropEditorModal(props: PropsWithChildren<CropEditorModalProps>) 
     const isNew = props.crop == undefined;
 
     const auth = useAuth();
+    const cropService: ICropService = commonInjectableContainer.get(TYPES.CropService);
 
     const [crops, setCrops] = useState<Crop[]>([]);
     
@@ -36,7 +40,7 @@ export function CropEditorModal(props: PropsWithChildren<CropEditorModalProps>) 
     useEffect(() => {
         // Thanks react
         async function load() {
-            const crops = await getAllCrops();
+            const crops = await cropService.findAll();
             setCrops(crops);
         }
 
