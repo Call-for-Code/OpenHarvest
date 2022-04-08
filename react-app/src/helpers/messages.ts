@@ -3,5 +3,10 @@ export const MESSAGES = {
     EDIT_CROP: "Edit Crop",
     SAVE: "Save",
     CANCEL: "Cancel",
-    DELETE: "Delete"
+    DELETE: "Delete",
+    ERROR: "Error",
+    SUCCESS: "Success",
+    INFO: "Info",
+    WARNING: "Warning",
+    ADD: "Add"
 };

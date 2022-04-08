@@ -1,7 +1,7 @@
 import React, { Component, ReactElement } from "react";
 import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
 import { IRenderDataFunctionArgs, ITableColumnProperties, ITableRow } from "../../types/table";
-import { Button } from "carbon-components-react";
+import { Button, NotificationKind } from "carbon-components-react";
 import { Add16, Checkmark16 } from "@carbon/icons-react";
 import { Crop } from "../../services/crops";
 import { ICropService } from "../../services/CropService";
@@ -11,6 +11,8 @@ import produce from "immer";
 import { MONTHS } from "../../helpers/constants";
 import { MESSAGES } from "../../helpers/messages";
 import CropForm from "./CropForm";
+import { CustomToast } from "../Toast/CustomToast";
+import { Toast } from "../../types/toast";
 
 export interface ICropTableRow extends ITableRow {
     values: Crop
@@ -22,6 +24,7 @@ type CropsState = {
     data: ICropTableRow[];
     dialogOpen: boolean;
     selectedCrop?: ICropTableRow;
+    toast?: Toast;
 };
 
 export default class Crops extends Component<CropsProps, CropsState> {
@@ -41,7 +44,9 @@ export default class Crops extends Component<CropsProps, CropsState> {
             dialogOpen: false
         };
 
+        // helpers
         this.filterRowId = this.filterRowId.bind(this);
+        this.createToast = this.createToast.bind(this);
 
         // handlers
         this.onApplyRowAction = this.onApplyRowAction.bind(this);
@@ -49,10 +54,12 @@ export default class Crops extends Component<CropsProps, CropsState> {
         this.addCrop = this.addCrop.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
         this.onFormCancel = this.onFormCancel.bind(this);
+        this.clearToast = this.clearToast.bind(this);
 
         // UI
         this.getCropsTable = this.getCropsTable.bind(this);
         this.getColumns = this.getColumns.bind(this);
+        this.getToast = this.getToast.bind(this);
     }
 
     componentDidMount() {
@@ -86,6 +93,22 @@ export default class Crops extends Component<CropsProps, CropsState> {
         });
     }
 
+    createToast(kind: NotificationKind, subtitle: string): Toast {
+        return {
+            kind,
+            subtitle,
+            onClose: this.clearToast
+        };
+    }
+
+    clearToast(): boolean {
+        this.setState({
+            toast: undefined
+        });
+
+        return true;
+    }
+
     onApplyRowAction(action: string, rowId: string): void {
         if (action === this.deleteId) {
             const selectedCrop = this.state.data.find(row => row.id === rowId);
@@ -93,18 +116,27 @@ export default class Crops extends Component<CropsProps, CropsState> {
             if (selectedCrop?.values._id) {
                 this.cropService.deleteCrop(selectedCrop.values._id)
                     .then(() => {
+                        const toast = this.createToast("success", "Deleted crop successfully!!!");
+
                         this.setState({
-                            data: this.filterRowId(rowId)
+                            data: this.filterRowId(rowId),
+                            toast
                         });
                     })
                     .catch(() => {
-                        // TODO: Add toast here and on success
-                        console.log("Error while deleting crop!!!");
+                        const toast = this.createToast("error", "Unable to delete crop!!!");
+
+                        this.setState({
+                            toast
+                        });
                     });
             } else {
+                const toast = this.createToast("success", "Deleted crop successfully!!!");
+
                 this.setState({
-                    data: this.filterRowId(rowId)
-                })
+                    data: this.filterRowId(rowId),
+                    toast
+                });
             }
         }
     }
@@ -134,7 +166,7 @@ export default class Crops extends Component<CropsProps, CropsState> {
                 isSortable: true,
                 name: "Sequence",
                 renderDataFunction: (args: IRenderDataFunctionArgs): JSX.Element => {
-                    const seqNumber = Number.parseInt(args.rowId);
+                    const seqNumber = Number.parseInt(args.rowId, 10);
                     return <span>{seqNumber}</span>;
                 }
             },
@@ -171,7 +203,7 @@ export default class Crops extends Component<CropsProps, CropsState> {
                 isSortable: true,
                 name: "Ongoing",
                 renderDataFunction: (args: IRenderDataFunctionArgs): JSX.Element => {
-                    return args.value == true ? <Checkmark16 /> : <span/>;
+                    return args.value === true ? <Checkmark16 /> : <span/>;
                 }
             },
             {
@@ -186,12 +218,13 @@ export default class Crops extends Component<CropsProps, CropsState> {
         const toolbarButtons = [];
 
         toolbarButtons.push(<Button key="add"
-                                    size="small"
-                                    kind="primary"
-                                    renderIcon={Add16}
-                                    onClick={this.addCrop}>Add</Button>);
+            size="small"
+            kind="primary"
+            renderIcon={Add16}
+            onClick={this.addCrop}>{MESSAGES.ADD}</Button>);
 
-        return <StatefulTable
+        return (
+            <StatefulTable
                 columns={this.getColumns()}
                 data={this.state.data}
                 view={{
@@ -217,12 +250,17 @@ export default class Crops extends Component<CropsProps, CropsState> {
                 i18n={{
                     emptyMessage: this.noDataMessage
                 }}
-            />
+            />);
+    }
+
+    getToast(): JSX.Element {
+        return <CustomToast toast={this.state.toast}/>;
     }
 
     onFormSubmit(row: ICropTableRow): void {
         const dataSize = this.state.data.length;
 
+        // When backend starts working, replace below with backend fetch crop call.
         const data = produce(this.state.data, draft => {
             const record = draft.find(r => r.id === row.id);
             if (record) {
@@ -256,22 +294,25 @@ export default class Crops extends Component<CropsProps, CropsState> {
     render(): ReactElement {
         return (
             <PageTitleBar
-            title={this.pageTitle}
-            forceContentOutside
-            headerMode={"STATIC"}
-            collapsed={false}
-            content={
-                <>
-                    {
-                        this.state.dialogOpen &&
-                        <CropForm open={this.state.dialogOpen}
-                                  selectedCrop={this.state.selectedCrop}
-                                  onSubmit={this.onFormSubmit}
-                                  onCancel={this.onFormCancel} />
-                    }
-                    { this.getCropsTable() }
-                </>
-            } />
+                title={this.pageTitle}
+                forceContentOutside
+                headerMode={"STATIC"}
+                collapsed={false}
+                content={
+                    <>
+                        {
+                            this.state.toast && this.getToast()
+                        }
+                        {
+                            this.state.dialogOpen &&
+                            <CropForm open={this.state.dialogOpen}
+                                selectedCrop={this.state.selectedCrop}
+                                onSubmit={this.onFormSubmit}
+                                onCancel={this.onFormCancel} />
+                        }
+                        { this.getCropsTable() }
+                    </>
+                } />
         );
     }
 

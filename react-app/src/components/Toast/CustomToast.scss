@@ -1,0 +1,8 @@
+.fixed-toast {
+  position: fixed;
+  top: 0;
+  right: 0;
+  transition: transform .6s ease-in-out;
+  animation: toast-in-right .7s;
+  z-index: 10000;
+}
