@@ -68,7 +68,7 @@ class App extends Component<AppProps, AppState> {
                         )}
                     />
 
-                    <Content className={"main-content"}>
+                    <Content className="main-content">
                         <Switch>
                             <Route exact path="/" >
                                 <Redirect to={"/home"}/>

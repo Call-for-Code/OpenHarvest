@@ -14,8 +14,8 @@ export interface Crop {
     yield_per_sqm: number
 }
 
+// Mongoose will automatically add _id property.
 export const CropSchema = new Schema({
-    _id: ObjectId,
     type: String,
     name: String,
     // Start Day of year to end Day of year when to plant the ground nuts

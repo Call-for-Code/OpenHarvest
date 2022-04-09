@@ -47,6 +47,7 @@ export default class Crops extends Component<CropsProps, CropsState> {
         // helpers
         this.filterRowId = this.filterRowId.bind(this);
         this.createToast = this.createToast.bind(this);
+        this.reloadTable = this.reloadTable.bind(this);
 
         // handlers
         this.onApplyRowAction = this.onApplyRowAction.bind(this);
@@ -62,11 +63,15 @@ export default class Crops extends Component<CropsProps, CropsState> {
         this.getToast = this.getToast.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.setState({
             loading: true
         });
 
+        this.reloadTable();
+    }
+
+    reloadTable(): void {
         this.cropService.findAll().then((res) => {
             const data: ICropTableRow[] = [];
 
@@ -116,7 +121,7 @@ export default class Crops extends Component<CropsProps, CropsState> {
             if (selectedCrop?.values._id) {
                 this.cropService.deleteCrop(selectedCrop.values._id)
                     .then(() => {
-                        const toast = this.createToast("success", "Deleted crop successfully!!!");
+                        const toast = this.createToast("success", MESSAGES.CROP_DELETE_SUCCESS);
 
                         this.setState({
                             data: this.filterRowId(rowId),
@@ -124,14 +129,14 @@ export default class Crops extends Component<CropsProps, CropsState> {
                         });
                     })
                     .catch(() => {
-                        const toast = this.createToast("error", "Unable to delete crop!!!");
+                        const toast = this.createToast("error", MESSAGES.CROP_DELETE_ERROR);
 
                         this.setState({
                             toast
                         });
                     });
             } else {
-                const toast = this.createToast("success", "Deleted crop successfully!!!");
+                const toast = this.createToast("success", MESSAGES.CROP_DELETE_SUCCESS);
 
                 this.setState({
                     data: this.filterRowId(rowId),
@@ -257,30 +262,15 @@ export default class Crops extends Component<CropsProps, CropsState> {
         return <CustomToast toast={this.state.toast}/>;
     }
 
-    onFormSubmit(row: ICropTableRow): void {
-        const dataSize = this.state.data.length;
+    onFormSubmit(): void {
+        const toast = this.createToast("success", MESSAGES.CROP_SAVE_SUCCESS);
 
-        // When backend starts working, replace below with backend fetch crop call.
-        const data = produce(this.state.data, draft => {
-            const record = draft.find(r => r.id === row.id);
-            if (record) {
-                record.values = row.values;
-            } else {
-                row.id = (dataSize + 1).toString(10);
-                row.rowActions = [{
-                    id: this.deleteId,
-                    labelText: MESSAGES.DELETE,
-                    isOverflow: true,
-                    isDelete: true
-                }];
-                draft.push(row);
-            }
-        });
+        this.reloadTable();
 
         this.setState({
-            data,
             dialogOpen: false,
-            selectedCrop: undefined
+            selectedCrop: undefined,
+            toast
         });
     }
 

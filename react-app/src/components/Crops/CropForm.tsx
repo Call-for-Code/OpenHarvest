@@ -6,7 +6,7 @@ import { createFormState, IFormService } from "../../helpers/FormService";
 import { ICropService } from "../../services/CropService";
 import commonInjectableContainer from "../../common/di/inversify.config";
 import TYPES from "../../common/di/inversify.types";
-import { Checkbox, Column, Grid, NotificationKind, NumberInput, Row, Select, SelectItem, SelectItemProps, TextInput } from "carbon-components-react";
+import { Checkbox, Column, Grid, Loading, NotificationKind, NumberInput, Row, Select, SelectItem, SelectItemProps, TextInput } from "carbon-components-react";
 import { MONTHS } from "../../helpers/constants";
 import { ComposedModal } from "carbon-addons-iot-react";
 import { Crop } from "../../services/crops";
@@ -16,13 +16,14 @@ import { Toast } from "../../types/toast";
 type CropFormProps = {
     selectedCrop?: ICropTableRow;
     open: boolean;
-    onSubmit: (cropRow: ICropTableRow) => void;
+    onSubmit: () => void;
     onCancel: () => void;
 };
 
 type CropFormState = {
     fieldStates: IFormFieldStates;
     toast?: Toast;
+    loading: boolean;
 };
 
 export default class CropForm extends Component<CropFormProps, CropFormState> {
@@ -46,6 +47,7 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
         this.state = {
             fieldStates: createFormState(this.formFields),
+            loading: true
         };
 
         // handlers
@@ -88,7 +90,8 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         }
 
         this.setState({
-            fieldStates
+            fieldStates,
+            loading: false
         });
     }
 
@@ -121,6 +124,10 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
     }
 
     handleSubmit(): void {
+        this.setState({
+            loading: true
+        });
+
         const values: Crop = {
             _id: this.props.selectedCrop?.values._id,
             name: this.state.fieldStates["name"].value as string,
@@ -132,31 +139,15 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
         this.cropService.saveCrop(values)
             .then(() => {
-                const modifiedData: ICropTableRow = {
-                    id: this.props.selectedCrop?.id || "",
-                    values,
-                    rowActions: [{
-                        id: this.deleteId,
-                        labelText: MESSAGES.DELETE,
-                        isOverflow: true,
-                        isDelete: true
-                    }]
-                };
-
-                const toast = this.createToast("success", "Saved crop successfully!");
-
-                this.setState({
-                    toast
-                });
-
-                this.props.onSubmit(modifiedData);
+                this.props.onSubmit();
             })
             .catch(() => {
-                const toast = this.createToast("error", "Unable to save crop!");
+                const toast = this.createToast("error", MESSAGES.CROP_SAVE_ERROR);
 
-                this.setState({
-                    toast
-                });
+                this.setState({ toast });
+            })
+            .finally(() => {
+                this.setState({ loading: false });
             });
     }
 
@@ -214,6 +205,10 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         >
             {
                 this.state.toast && this.getToast()
+            }
+            {
+                this.state.loading &&
+                    <Loading withOverlay />
             }
             <Grid>
                 <Row>
