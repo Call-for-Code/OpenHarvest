@@ -6,20 +6,24 @@ import { createFormState, IFormService } from "../../helpers/FormService";
 import { ICropService } from "../../services/CropService";
 import commonInjectableContainer from "../../common/di/inversify.config";
 import TYPES from "../../common/di/inversify.types";
-import { Checkbox, Column, Grid, NumberInput, Row, Select, SelectItem, SelectItemProps, TextInput } from "carbon-components-react";
+import { Checkbox, Column, Grid, Loading, NotificationKind, NumberInput, Row, Select, SelectItem, SelectItemProps, TextInput } from "carbon-components-react";
 import { MONTHS } from "../../helpers/constants";
 import { ComposedModal } from "carbon-addons-iot-react";
 import { Crop } from "../../services/crops";
+import { CustomToast } from "../Toast/CustomToast";
+import { Toast } from "../../types/toast";
 
 type CropFormProps = {
     selectedCrop?: ICropTableRow;
     open: boolean;
-    onSubmit: (cropRow: ICropTableRow) => void;
+    onSubmit: () => void;
     onCancel: () => void;
 };
 
 type CropFormState = {
     fieldStates: IFormFieldStates;
+    toast?: Toast;
+    loading: boolean;
 };
 
 export default class CropForm extends Component<CropFormProps, CropFormState> {
@@ -43,8 +47,10 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
         this.state = {
             fieldStates: createFormState(this.formFields),
+            loading: true
         };
 
+        // handlers
         this.handleClose = this.handleClose.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNameChange = this.handleNameChange.bind(this);
@@ -53,12 +59,18 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         this.handleOngoingChange = this.handleOngoingChange.bind(this);
         this.handleYieldsChange = this.handleYieldsChange.bind(this);
         this.handleTimeToHarvestChange = this.handleTimeToHarvestChange.bind(this);
+        this.clearToast = this.clearToast.bind(this);
 
+        // helpers
         this.isSelected = this.isSelected.bind(this);
         this.getInvalidMessage = this.getInvalidMessage.bind(this);
+        this.createToast = this.createToast.bind(this);
+
+        // UI
+        this.getToast = this.getToast.bind(this);
     }
 
-    componentDidMount() {
+    componentDidMount(): void {
         this.formFields = CropForm.getFormFields();
         let fieldStates: IFormFieldStates = createFormState(this.formFields);
 
@@ -78,7 +90,8 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         }
 
         this.setState({
-            fieldStates
+            fieldStates,
+            loading: false
         });
     }
 
@@ -111,6 +124,10 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
     }
 
     handleSubmit(): void {
+        this.setState({
+            loading: true
+        });
+
         const values: Crop = {
             _id: this.props.selectedCrop?.values._id,
             name: this.state.fieldStates["name"].value as string,
@@ -122,19 +139,24 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
 
         this.cropService.saveCrop(values)
             .then(() => {
-                const modifiedData: ICropTableRow = {
-                    id: this.props.selectedCrop?.id || "",
-                    values,
-                    rowActions: [{
-                        id: this.deleteId,
-                        labelText: MESSAGES.DELETE,
-                        isOverflow: true,
-                        isDelete: true
-                    }]
-                };
+                this.props.onSubmit();
+            })
+            .catch(() => {
+                const toast = this.createToast("error", MESSAGES.CROP_SAVE_ERROR);
 
-                this.props.onSubmit(modifiedData);
+                this.setState({ toast });
+            })
+            .finally(() => {
+                this.setState({ loading: false });
             });
+    }
+
+    createToast(kind: NotificationKind, subtitle: string): Toast {
+        return {
+            kind,
+            subtitle,
+            onClose: this.clearToast
+        };
     }
 
     isFormInvalid(): boolean {
@@ -153,6 +175,18 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         return this.formService.getFieldInvalidMessage(fieldName, this.state.fieldStates[fieldName], this.state.fieldStates);
     }
 
+    getToast(): JSX.Element {
+        return <CustomToast toast={this.state.toast}/>;
+    }
+
+    clearToast(): boolean {
+        this.setState({
+            toast: undefined
+        });
+
+        return true;
+    }
+
     render(): JSX.Element {
         return <ComposedModal
             open={this.props.open}
@@ -169,6 +203,13 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
                 isPrimaryButtonDisabled: this.isFormInvalid()
             }}
         >
+            {
+                this.state.toast && this.getToast()
+            }
+            {
+                this.state.loading &&
+                    <Loading withOverlay />
+            }
             <Grid>
                 <Row>
                     <Column>

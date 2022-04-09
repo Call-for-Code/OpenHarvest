@@ -3,5 +3,14 @@ export const MESSAGES = {
     EDIT_CROP: "Edit Crop",
     SAVE: "Save",
     CANCEL: "Cancel",
-    DELETE: "Delete"
+    DELETE: "Delete",
+    ERROR: "Error",
+    SUCCESS: "Success",
+    INFO: "Info",
+    WARNING: "Warning",
+    ADD: "Add",
+    CROP_SAVE_SUCCESS: "Saved crop successfully!",
+    CROP_SAVE_ERROR: "Unable to save crop!",
+    CROP_DELETE_SUCCESS: "Deleted crop successfully!",
+    CROP_DELETE_ERROR: "Unable to delete crop!",
 };

@@ -20,10 +20,11 @@ export default class CropService {
     }
 
     async saveOrUpdate(crop: Crop) {
-        const cropModel = new CropModel(crop);
+        if (crop._id) {
+            return CropModel.updateOne(crop);
+        }
 
-        const savedDoc = await cropModel.save();
-        return savedDoc;
+        return await new CropModel(crop).save();
     }
 
     getCrop(id: string) {
@@ -31,8 +32,7 @@ export default class CropService {
     }
 
     async deleteCrop(id: string) {
-        const result = await CropModel.deleteOne({_id: id}).exec();
-        return result;
+        return await CropModel.deleteOne({_id: id}).exec();
     }
 }
 
