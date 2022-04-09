@@ -52,6 +52,7 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 ### Building app
 #### backend
 1. Install mkcert. For mac or linux: `brew install mkcert`. Windows user can download mkcert.exe from [Mkcert Github](https://github.com/FiloSottile/mkcert/releases) 
+   
    Install ts-node for windows users in backend folder
    npm i -g ts-node
 2. Create Certificates
