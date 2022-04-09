@@ -51,13 +51,15 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 ### Building app
 #### backend
-1. Install mkcert. For mac or linux: `brew install mkcert`. Windows user can download mkcert.exe from [Mkcert Github](https://github.com/FiloSottile/mkcert/releases)
+1. Install mkcert. For mac or linux: `brew install mkcert`. Windows user can download mkcert.exe from [Mkcert Github](https://github.com/FiloSottile/mkcert/releases) 
+   Install ts-node for windows users in backend folder
+   npm i -g ts-node
 2. Create Certificates
    ```
    mkcert -install
    mkcert localhost 127.0.0.1
    ```
-2. Create Mongodb Data Directory, anywhere you want but preferably in the same directory as the docker compose. This is optional for Windows user.
+3. Create Mongodb Data Directory, anywhere you want but preferably in the same directory as the docker compose. This is optional for Windows user.
    ```
    mkdir {YOUR_PATH}
    ```
