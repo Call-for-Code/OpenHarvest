@@ -35,8 +35,9 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
      * to send a message to anywhere.
      * @param destination The destination represented as a string
      * @param message The message to send
+     * @returns The message ref id
      */
-    abstract sendMessage(destination: string, message: string): Promise<void>;
+    abstract sendMessage(destination: string, message: string): Promise<string>;
 
     /**
      * This method lets the Messaging Service know that a new external message

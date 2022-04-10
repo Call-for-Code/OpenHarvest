@@ -25,6 +25,7 @@
     "mongoose": "^6.2.1",
     "passport": "^0.5.2",
     "passport-ci-oidc": "^2.0.5",
+    "socket.io": "^4.4.1",
     "twilio": "^3.75.1",
     "uuid": "^8.3.2"
   },

@@ -4,7 +4,6 @@ import express from "express";
 import session from "express-session";
 import https from 'https'
 import passport from "passport";
-import { IDaaSOIDCStrategy as OpenIDConnectStrategy } from "passport-ci-oidc";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -17,17 +16,15 @@ import lotRoutes from "./routes/lot-route";
 import cropRoutes from "./routes/crop-route";
 import dashboardRoutes from "./routes/dashboard-route";
 import recommendationsRoutes from "./routes/recommendations-route";
-
 import weatherRoutes from "./routes/weather-route";
 import coopManagerRoutes from "./routes/coopManager-route";
 import organisationRoutes from "./routes/organisation-route";
 import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
 
-import { doesUserExist, getCoopManager } from "./services/coopManager.service";
-import { CoopManager } from "db/entities/coopManager";
-import { getOrganisations } from "./services/organisation.service";
-import { Organisation } from "db/entities/organisation";
+import { formatUser, ensureAuthenticated } from "./auth/helpers";
+import { IBMidStrategy } from "./auth/IBMiDStrategy";
+
 
 mongoInit();
 
@@ -60,40 +57,7 @@ passport.deserializeUser(function(obj, done) {
     done(null, obj);
 });
 
-// var OpenIDConnectStrategy = require('passport-ci-oidc').IDaaSOIDCStrategy;
-var Strategy = new OpenIDConnectStrategy({
-    discoveryURL: process.env.AUTH_discovery_url,
-    clientID: process.env.AUTH_client_id,
-    scope: 'email',
-    response_type: 'code',
-    clientSecret: process.env.AUTH_client_secret,
-    callbackURL: process.env.AUTH_callback_url,
-    skipUserProfile: true},
-    // Add your own data here.
-    function (iss, sub, profile, accessToken, refreshToken, params, done) {
-        process.nextTick(async function () {
-            profile.accessToken = accessToken;
-            profile.refreshToken = refreshToken;
-            // Get the farmer coop details
-            const id = "IBMid:" + profile.id;
-            const doc = await getCoopManager(id);
-            if (doc) {
-                profile.isOnboarded = true;
-                profile.coopManager = doc.toObject();
-                profile.organisations = await getOrganisations(doc.coopOrganisations);
-                profile.selectedOrganisation = profile.organisations[0];
-            }
-            else {
-                profile.isOnboarded = false;
-                profile.coopManager = null;
-            }
-            console.log(profile);
-            done(null, profile);
-        });
-    }
-)
-
-passport.use(Strategy); 
+passport.use(IBMidStrategy); 
 
 app.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
 
@@ -119,17 +83,6 @@ app.get('/failure', function(req, res) {
     res.send('login failed'); 
 });
 
-function ensureAuthenticated(req, res, next) {
-    // console.log(req);
-    if (!req.isAuthenticated()) {
-        console.info("Unauthenticated request. Trying to Authenticate");
-        req.session.originalUrl = req.originalUrl;
-        res.redirect('/login');
-    } else {
-        return next();
-    }
-}
-
 
 app.get('/hello', ensureAuthenticated, function (req, res) {
    var claims = req.user['_json'];
@@ -148,45 +101,7 @@ app.get('/hello', ensureAuthenticated, function (req, res) {
    res.send(html);
 });
 
-export interface CoopManagerUser {
-    id: string;
-    email_verified: boolean
-    displayName: string;
-    given_name: string;
-    name: string;
-    family_name: string;
-    iss: number;
-    aud: number;
-    sub: number;
-    iat: number;
-    exp: number;
-    accessToken: string;
-    refreshToken: string;
-    coopManager: CoopManager | null;
-    organisations: Organisation[];
-    selectedOrganisation: Organisation;
-}
 
-function formatUser(user: any): CoopManagerUser {
-  return {
-    id: user.id,
-    email_verified: user._json.email_verified,
-    displayName: user.displayName,
-    given_name: user._json.given_name,
-    name: user._json.name,
-    family_name: user._json.family_name,
-    iss: user._json.iss,
-    aud: user._json.aud,
-    sub: user._json.sub,
-    iat: user._json.iat,
-    exp: user._json.exp,
-    accessToken: user.accessToken,
-    refreshToken: user.refreshToken,
-    coopManager: user.coopManager,
-    organisations: user.organisations,
-    selectedOrganisation: user.selectedOrganisation
-  }
-}
 
 app.get('/me', ensureAuthenticated, (req, res) => {
     return res.json(formatUser(req.user));

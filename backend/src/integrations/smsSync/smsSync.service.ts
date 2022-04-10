@@ -3,7 +3,7 @@ import { Farmer, FarmerModel } from "../../db/entities/farmer";
 import { MessagingInterface } from "../messagingInterface";
 
 import { v4 as uuidv4 } from "uuid";
-import { MessageLog, MessageLogModel, Source } from "./../../db/entities/messageLog";
+import { MessageLog, MessageLogModel, Source, Status } from "./../../db/entities/messageLog";
 
 export interface SMSSyncMessage {
     to: string;
@@ -49,15 +49,16 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
             throw new Error("Message is empty!");
         }
 
-        await this.sendMessage(number, message);
+        const messageRef = await this.sendMessage(number, message);
         
         const messageLogEntry: MessageLog = {
             farmer_id: farmer._id!!.toString(),
             address: number,
             message,
-            isViewed: true,
+            status: Status.Sent,
             source: Source.OpenHarvest,
-            timestamp: new Date()
+            timestamp: new Date(),
+            messageRef: messageRef
         }
 
         const messageLog = await MessageLogModel.create(messageLogEntry);
@@ -86,15 +87,17 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
         
     }
         
-    async sendMessage(destination: string, message: string): Promise<void> {
+    async sendMessage(destination: string, message: string): Promise<string> {
+        const messageRef = uuidv4();
         const smsMessage: SMSSyncMessage = {
             to: destination,
             message,
-            uuid: uuidv4()
+            uuid: messageRef
         }
         console.log("Adding Message to the list:", destination, message);
         this.pendingMessages.push(smsMessage);
         console.log(this.pendingMessages);
+        return messageRef;
     }
 
     async onReceivedMessage(message: SMSSyncMessageReceivedFormat): Promise<MessageLog | null> {
@@ -112,9 +115,10 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
             farmer_id: farmer._id!!.toString(),
             address: message.from,
             message: message.message,
-            isViewed: true,
+            status: Status.Unread,
             source: Source.Farmer,
-            timestamp: new Date(parsedTimestamp)
+            timestamp: new Date(parsedTimestamp),
+            messageRef: message.message_id
         }
 
         const messageLog = await MessageLogModel.create(messageLogEntry);

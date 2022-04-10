@@ -1,12 +1,10 @@
 // import dependencies and initialize the express router
 import { Router } from "express";
-import { SMSSyncAPIInstance } from "./../integrations/smsSync/smsSync.service";
+import { TwilioInstance } from "./../integrations/twilio/twilio.service";
 import { MessageLogModel } from "../db/entities/messageLog";
 import { FarmerModel } from "../db/entities/farmer";
 
 const router = Router();
-
-const SMSSyncAPI = SMSSyncAPIInstance;
 
 router.get("/", async (req, res) => {
     const messages = await MessageLogModel.find({}).lean();
@@ -22,8 +20,9 @@ router.post("/sendSMSToFarmer", async (req, res) => {
     if (farmer == null) {
         return res.status(400).end("Farmer not Found!");
     }
+    
     try {
-        const messageLog = await SMSSyncAPI.sendMessageToFarmer(farmer, message);
+        const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
         res.json(messageLog)
     }
     catch (e: any) {

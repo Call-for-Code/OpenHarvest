@@ -9,6 +9,16 @@ export enum Source {
     Other = "Other"
 }
 
+export enum Status {
+    Sending = "Sending",
+    Sent = "Sent",
+    Delivered = "Delivered",
+    Failed = "Failed",
+    Unknown = "Unknown",
+    Unread = "Unread",
+    Read = "Read"
+}
+
 export interface MessageLog {
     _id?: Types.ObjectId;
     farmer_id: string;
@@ -17,9 +27,13 @@ export interface MessageLog {
      */
     address: string;
     message: string;
-    isViewed: boolean;
+    status: Status;
     source: Source
     timestamp: Date;
+    /**
+     * For auditing purposes this is the message id from the service
+     */
+    messageRef: string;
 }
 
 export const MessageLogSchema = new Schema({
@@ -33,9 +47,13 @@ export const MessageLogSchema = new Schema({
      */
     address: String,
     message: String,
-    isViewed: Boolean,
+    status: String,
     source: String,
-    timestamp: Date
+    timestamp: Date,
+    /**
+     * For auditing purposes this is the message id from the service
+     */
+    messageRef: String
 });
 
 export const MessageLogModel = model<MessageLog>("messageLog", MessageLogSchema);
