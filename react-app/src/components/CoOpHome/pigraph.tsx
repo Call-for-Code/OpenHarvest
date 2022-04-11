@@ -2,6 +2,7 @@ import { PieChartCard } from 'carbon-addons-iot-react';
 import React, { useEffect, useState } from "react";
 import { getDashboard, YeildData } from '../../services/dashboard';
 
+
 export function PiChartGNY() {
 
     const size = "MEDIUM";
@@ -9,7 +10,7 @@ export function PiChartGNY() {
     const [chartData, setChartData] = useState<YeildData[]>([]);
 
     useEffect(() => {
-      getDashboard().then(setChartData);
+      getDashboard().then((data) => setChartData(data.yeild));
     }, []);
       
     return (
@@ -33,6 +34,7 @@ export function PiChartGNY() {
       </div>
     );
   }
+
 // Farmers per ground nut type
   export function PiChartGNT() {
 
@@ -41,7 +43,7 @@ export function PiChartGNY() {
     const [chartData, setChartData] = useState<YeildData[]>([]);
 
     useEffect(() => {
-      getDashboard().then(setChartData);
+      getDashboard().then((data) => setChartData(data.nutType));
     }, []);
       
     return (

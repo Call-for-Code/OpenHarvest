@@ -17,7 +17,7 @@
     "@types/react-dom": "^17.0.11",
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
-    "axios": "^0.26.0",
+    "axios": "^0.26.1",
     "carbon-addons-iot-react": "^2.149.0-next.5",
     "carbon-components-react": "^7.53.0",
     "d3": "^7.3.0",
@@ -53,6 +53,7 @@
   },
   "scripts": {
     "start": "GENERATE_SOURCEMAP=false PORT=3001 react-scripts start",
+    "win-start": "set \"GENERATE_SOURCEMAP=false\" && set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
