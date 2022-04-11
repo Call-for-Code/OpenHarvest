@@ -2,6 +2,7 @@ import { PieChartCard } from 'carbon-addons-iot-react';
 import React, { useEffect, useState } from "react";
 import { getDashboard, YeildData } from '../../services/dashboard';
 
+
 export function PiChartGNY() {
 
     const size = "MEDIUM";

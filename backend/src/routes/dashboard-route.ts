@@ -4,6 +4,8 @@ var router = Router();
 import LandAreasService from "../services/land-areas.service";
 const lotAreas = new LandAreasService();
 
+
+
 //data table
 const tableDataYHBC = [
   {
