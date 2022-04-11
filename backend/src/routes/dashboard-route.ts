@@ -68,7 +68,10 @@ const chartData = [
       value: 30,
     },
   ];
-
+const totalLand = 1220;
+const totalCrops = 35;
+const totalFarmers= 30;
+const totalPrecip = 345;
 
 router.get("/crop-distribution", async(req, res) => {
     try {
@@ -107,6 +110,11 @@ router.get("/tiles", async (req, res) => {
         // resObj.totalLots = await lotAreas.getTotalLots();
         resObj.yeild = chartData;
         resObj.nutType= nutTypeData;
+        resObj.totCrops= totalCrops;
+        resObj.totFarmers=totalFarmers;
+        resObj.totLand=totalLand;
+        resObj.totPrecip=totalPrecip;
+
         res.json(resObj);
     } catch (e) {
         console.error(e);
