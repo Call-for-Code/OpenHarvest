@@ -88,7 +88,7 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
         const farmer = await FarmerModel.findOne({mobile: number});
 
         if (farmer === null) {
-            console.error("Unknown number!! Ignoring...");
+            console.error("Unknown number!! Ignoring...", number);
             return null;
         }
 

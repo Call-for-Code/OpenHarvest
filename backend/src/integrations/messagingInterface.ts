@@ -1,7 +1,9 @@
-import { Farmer } from "./../db/entities/farmer";
 import { EventEmitter } from "events";
+import { Farmer, FarmerModel } from "./../db/entities/farmer";
 import { MessageLog } from "./../db/entities/messageLog";
 import { CoopManager } from "./../db/entities/coopManager";
+import { EventBusInstance } from "./../integrations/eventBus.service";
+import { OrganisationModel } from "./../db/entities/organisation";
 
 export declare interface MessagingInterface<ReceivedMessageType> {
     on(event: 'onMessage', listener: (message: MessageLog) => void): this;
@@ -58,8 +60,22 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
      * All 
      * @param message The message we've received. (That's also already in the database)
      */
-    notify(message: MessageLog) {
-        
+    async notify(message: MessageLog) {
+        const farmer_id = message.farmer_id;
+        const farmer = await FarmerModel.findById(farmer_id);
+        if (farmer === null) {
+            throw new Error("Farmer from MessageLog not Found!");
+        }
+
+        for (const org_id of farmer.coopOrganisations) {
+            OrganisationModel.findById(org_id).then(org => {
+                if (org === null) {
+                    throw new Error("Org in Farmer not found!");
+                }
+                EventBusInstance.publishMessage(org, message);
+            })
+            
+        }
     }
 
 }

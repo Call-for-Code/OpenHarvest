@@ -1,4 +1,5 @@
 import React, { createContext, useContext, PropsWithChildren, useState, useEffect } from 'react';
+import { EventEmitter } from "eventemitter3";
 import { CoopManager } from './coopManager';
 import { Organisation } from './organisation';
 
@@ -40,6 +41,9 @@ export interface AuthProviderType {
   signout: () => void;
 }
 
+// EventEmitter for Auth
+export const AuthEventEmitter = new EventEmitter();
+
 function useProvideAuth(): AuthProviderType {
   const [user, setUser] = useState<CoopManagerUser | null>(null)
   const [loading, setLoading] = useState(true)
@@ -50,10 +54,12 @@ function useProvideAuth(): AuthProviderType {
 
       setLoading(false)
       setUser(user)
+      AuthEventEmitter.emit("signedIn", user);
       return user
     } else {
       setLoading(false)
       setUser(null)
+      AuthEventEmitter.emit("signedOut");
       return null
     }
   }
@@ -69,10 +75,7 @@ function useProvideAuth(): AuthProviderType {
 
   const checkIfSignedIn = async () => {
     setLoading(true)
-    // return firebase
-    //   .auth()
-    //   .signInWithPopup(new firebase.auth.GithubAuthProvider())
-    //   .then((response) => handleUser(response.user))
+
     let userInfo = null;
     try {
       const res = await fetch("/me");

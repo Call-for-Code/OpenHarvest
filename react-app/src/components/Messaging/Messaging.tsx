@@ -7,6 +7,7 @@ import { Chat32, Send32 } from "@carbon/icons-react";
 import { ConversationList, ConversationListProps } from "./ConversationList";
 import { ConversationListItemProps } from "./ConversationListItem";
 import { getAllMessages, MessageLog, sendMessageToFarmer } from "../../services/messageLog";
+import { SocketIOClientInstance } from "./../../services/socket.io";
 import { Conversation } from "./Conversation";
 
 export interface ConversationData {
@@ -27,6 +28,57 @@ export function Messaging() {
     const [selectedConvo, setSelectedConvo] = useState<ConversationData | null>(null);
 
     const [messageText, setMessageText] = useState<string>("");
+
+    // Register EventEmitter Event Handlers
+    useEffect(() => {
+        const onMessage = (message: MessageLog) => {
+            console.log("Messaging OnMessage");
+
+            const messagesFarmer = farmers.find(it => it._id == message.farmer_id);
+            if (messagesFarmer == undefined) {
+                throw new Error("Unknown Farmer in Message!");
+            }
+
+            setConversations(produce(draftConvos => {
+                console.log(conversations);
+
+                // Get the message's farmer and at it to them
+                const farmer_id = message.farmer_id;
+                const farmerConvo = draftConvos.find(it => it.farmer_id === farmer_id);
+                if (farmerConvo) {
+                    // We can add it directly
+                    farmerConvo.messages.push(message);
+                }
+                else {
+                    // We need to construct a new Conversation Data item and add it
+                    const name = messagesFarmer.name;
+                    const preview = message.message;
+
+                    draftConvos.push({
+                        name,
+                        farmer_id,
+                        preview,
+                        isActive: false,
+                        messages: [message]
+                    });
+                }
+                console.log(draftConvos);
+            }));
+
+            // Update the Selected convo just incase that's the one that changed
+            if (selectedConvo!!.farmer_id == message.farmer_id) {
+                setSelectedConvo(produce(draftConvo => {
+                    draftConvo!!.messages.push(message)
+                }));
+            }
+        }
+
+        SocketIOClientInstance.on("messaging", onMessage);
+
+        return () => {
+            SocketIOClientInstance.off("messaging", onMessage);    
+        }
+    }, []);
 
     useEffect(() => {
         async function load() {
@@ -77,29 +129,6 @@ export function Messaging() {
             setSelectedConvo(convos[0]);
             setConversations(convos);
 
-            // const messages: ConversationListItemProps[] = [{
-            //     name: "Ryan Pereira",
-            //     preview: "Hey How's the backyard farm going, I hear you're growing some chilli now!",
-            //     isActive: true
-            // }, {
-            //     name: "Tyler Phillips",
-            //     preview: "Tyler, just a reminder to keep those watermelons in check before the third impact!",
-            //     isActive: false
-            // }, {
-            //     name: "Vess Natchev",
-            //     preview: "Hi Vess, this is reminder to harvest your groundnuts before the rainy season starts.",
-            //     isActive: false
-            // }, {
-            //     name: "Vikas Jagtrap",
-            //     preview: "Hi Vikas, can you give me an update on how you're going with setting up your field",
-            //     isActive: false
-            // }, {
-            //     name: "Michael Jacobs",
-            //     preview: "Hey Michael, how did you go growing those tomato plants?!",
-            //     isActive: false
-            // }];
-
-            // setMessages(messages);
         }
 
         load();
@@ -141,15 +170,6 @@ export function Messaging() {
             headerMode={"STATIC"}
             collapsed={false}
         />
-        {/* <TextArea labelText="Message" />
-        <StatefulTable
-            id="table"
-            columns={columns}
-            data={farmerTableData}
-            view={view}
-            actions={actions}
-            options={options}
-        /> */}
 
         <div className="flex flex-row h-[calc(100vh-96px)]">
             {/* Conversation List */}

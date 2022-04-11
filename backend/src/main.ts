@@ -24,7 +24,8 @@ import smsRoutes from "./routes/sms-route";
 
 import { formatUser, ensureAuthenticated } from "./auth/helpers";
 import { IBMidStrategy } from "./auth/IBMiDStrategy";
-
+import { SocketIOManager, SocketIOManagerInstance } from "./sockets/socket.io";
+import { Server } from "http";
 
 mongoInit();
 
@@ -125,11 +126,12 @@ app.use("/api/sms", smsRoutes);
 
 app.get("/", ensureAuthenticated, express.static("public"));
 
+let server: Server;
 
 // start node server
 const port = process.env.PORT || 3000;
 if (process.env.NODE_ENV == "production") {
-    app.listen(port, function() {
+    server = app.listen(port, function() {
         console.log("Server starting on http://localhost:" + port);
     });
 
@@ -143,7 +145,7 @@ else {
     }
 
     // Listen on https at 3000
-    https.createServer({
+    server = https.createServer({
         key: fs.readFileSync(sslKey!!),
         cert: fs.readFileSync(sslCert!!)
     }, app).listen(port);
@@ -156,12 +158,8 @@ else {
     });
 }
 
+SocketIOManagerInstance.initialise(server);
 
-// app.listen(port, () => {
-//     console.log(`App UI available http://localhost:${port}`);
-// });
-
-// error handler for unmatched routes or api calls
 app.use((req, res) => {
     res.status(404);
 });
