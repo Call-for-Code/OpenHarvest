@@ -84,7 +84,7 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 <BarChartYFC></BarChartYFC>
                 <BarChartYHC></BarChartYHC>
             </div>
-            <div>
+            <div  className="flex">
                 <LandAreaCard></LandAreaCard>
                
                 <NumCropsCard></NumCropsCard>
