@@ -33,6 +33,7 @@ export function BarChartYHC() {
     }}
     content={{
 <<<<<<< HEAD
+<<<<<<< HEAD
       categoryDataSourceId: 'month',
       layout: 'VERTICAL',
       series: [
@@ -47,20 +48,27 @@ export function BarChartYHC() {
       yLabel: 'Temperature',
 =======
       categoryDataSourceId: 'city',
+=======
+      categoryDataSourceId: 'month',
+>>>>>>> acbd48ab (dashboard UI)
       layout: 'VERTICAL',
       series: [
         {
           color: ['blue'],
-          dataSourceId: 'particles',
+          dataSourceId: 'temperature',
         },
       ],
       type: 'SIMPLE',
+<<<<<<< HEAD
       unit: 'P',
 <<<<<<< HEAD
       xLabel: 'Cities',
       yLabel: 'Particles',
 >>>>>>> 1b33392b (dasboard UI)
 =======
+=======
+      unit: '°F',
+>>>>>>> acbd48ab (dashboard UI)
       xLabel: 'Date',
       yLabel: 'Temperature',
 >>>>>>> 8bc8b7e2 (UI Dashboard)
@@ -71,6 +79,7 @@ export function BarChartYHC() {
     id="simple-sample"
     locale="en"
     size="MEDIUMWIDE"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
     title="Temperature over Time"
@@ -126,36 +135,72 @@ export function BarChartYFC() {
 =======
     title="Yield History by Crop"
 >>>>>>> 8bc8b7e2 (UI Dashboard)
+=======
+    title="Temperature over Time"
+>>>>>>> acbd48ab (dashboard UI)
     tooltipDateFormatPattern="L HH:mm:ss"
     values={[
       {
-        city: 'Amsterdam',
-        emissions: 120,
-        particles: 447,
-        quarter: '2020-Q1',
+        month: 'April',
+        quarter: '2022-Q2',
         temperature: 44,
       },
       {
-        city: 'New York',
-        emissions: 130,
-        particles: 528,
+        month: 'May',
         quarter: '2020-Q1',
-        temperature: 11,
+        temperature: 110,
       },
       {
-        city: 'Bangkok',
-        emissions: 30,
-        particles: 435,
+        month: 'June',
         quarter: '2020-Q1',
         temperature: 32,
       },
       {
-        city: 'San Francisco',
-        emissions: 312,
-        particles: 388,
+        month: 'July',
         quarter: '2020-Q1',
         temperature: 120,
       },
+      {
+        month: 'August',
+        quarter: '2020-Q1',
+        temperature: 70,
+      },
+      {
+        month: 'September',
+        quarter: '2020-Q1',
+        temperature: 70,
+      },
+      {
+        month: 'October',
+        quarter: '2020-Q1',
+        temperature: 44,
+      },
+      {
+        month: 'November',
+        quarter: '2020-Q1',
+        temperature: 90,
+      },
+      {
+        month: 'December',
+        quarter: '2020-Q1',
+        temperature: 120,
+      },
+      {
+        month: 'January',
+        quarter: '2020-Q1',
+        temperature: 110,
+      },
+      {
+        month: 'February',
+        quarter: '2020-Q1',
+        temperature: 100,
+      },
+      {
+        month: 'March',
+        quarter: '2020-Q1',
+        temperature: 80,
+      },
+
     ]}
   />
 <<<<<<< HEAD
@@ -178,16 +223,16 @@ export function BarChartYFC() {
           expand: true,
         }}
         content={{
-          categoryDataSourceId: 'city',
+          categoryDataSourceId: 'month',
           layout: 'VERTICAL',
           series: [
             {
               color: ['green'],
-              dataSourceId: 'particles',
+              dataSourceId: 'temperature',
             },
           ],
           type: 'SIMPLE',
-          unit: 'P',
+          unit: '%',
           xLabel: 'Date',
           yLabel: 'Temperature',
         }}
@@ -197,37 +242,82 @@ export function BarChartYFC() {
         id="simple-sample"
         locale="en"
         size="MEDIUMWIDE"
-        title="Yield History by Forecast"
+        title="Precipitation over Time"
         tooltipDateFormatPattern="L HH:mm:ss"
         values={[
           {
-            city: 'Amsterdam',
+            month: 'April',
             emissions: 120,
-            particles: 447,
-            quarter: '2020-Q1',
-            temperature: 44,
+            quarter: '2022-Q2',
+            temperature: 50,
           },
           {
-            city: 'New York',
+            month: 'May',
             emissions: 130,
-            particles: 528,
             quarter: '2020-Q1',
-            temperature: 11,
+            temperature: 25,
           },
           {
-            city: 'Bangkok',
+            month: 'June',
             emissions: 30,
-            particles: 435,
             quarter: '2020-Q1',
-            temperature: 32,
+            temperature: 80,
           },
           {
-            city: 'San Francisco',
+            month: 'July',
             emissions: 312,
-            particles: 388,
             quarter: '2020-Q1',
             temperature: 120,
           },
+          {
+            month: 'August',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 70,
+          },
+          {
+            month: 'September',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 30,
+          },
+          {
+            month: 'October',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 90,
+          },
+          {
+            month: 'November',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 90,
+          },
+          {
+            month: 'December',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 20,
+          },
+          {
+            month: 'January',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 100,
+          },
+          {
+            month: 'February',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 60,
+          },
+          {
+            month: 'March',
+            emissions: 312,
+            quarter: '2020-Q1',
+            temperature: 80,
+          },
+    
         ]}
       />
 

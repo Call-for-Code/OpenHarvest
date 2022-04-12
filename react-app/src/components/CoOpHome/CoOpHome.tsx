@@ -85,15 +85,10 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 <BarChartYHC></BarChartYHC>
             </div>
             <div  className="flex">
-                <LandAreaCard></LandAreaCard>
-               
+                <LandAreaCard></LandAreaCard>         
                 <NumCropsCard></NumCropsCard>
-               
                 <NumFarmersCard></NumFarmersCard>
-              
                 <PrecipWeekCard></PrecipWeekCard>
-                
-                
             </div>
             <div>
                 <PiChartGNT></PiChartGNT>
