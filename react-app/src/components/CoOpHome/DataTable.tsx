@@ -1,195 +1,278 @@
+import { Add16 } from '@carbon/icons-react';
 import { TableCard } from 'carbon-addons-iot-react';
+import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
+import { Button } from 'carbon-components-react';
 import React from "react";
 
 
-export function Table() {
-    const onCardAction = jest.fn();
+const actions = {
+  pagination: {
+    /** Specify a callback for when the current page or page size is changed. This callback is passed an object parameter containing the current page and the current page size */
+    onChangePage: () => {},
+  },
+  toolbar: {
+    onApplyFilter: () => {},
+    onToggleFilter: () => {},
+    onShowRowEdit: () => {},
+    onToggleColumnSelection: () => {},
+    /** Specify a callback for when the user clicks toolbar button to clear all filters. Recieves a parameter of the current filter values for each column */
+    onClearAllFilters: () => {},
+    onCancelBatchAction: () => {},
+    onApplyBatchAction: () => {},
+    onApplySearch: () => {},
+    /** advanced filter actions */
+    onCancelAdvancedFilter: () => {},
+    onRemoveAdvancedFilter: () => {},
+    onCreateAdvancedFilter: () => {},
+    onChangeAdvancedFilter: () => {},
+    onApplyAdvancedFilter: () => {},
+    onToggleAdvancedFilter: () => {},
+  },
+  table: {
+    onRowClicked: () => {},
+    onRowSelected: () => {},
+    onSelectAll: () => {},
+    onEmptyStateAction: () => {},
+    onApplyRowAction: () => {},
+    onRowExpanded: () => {},
+    onChangeOrdering: () => {},
+    onColumnSelectionConfig: () => {},
+    onChangeSort: () => {},
+    onColumnResize: () => {},
+    onOverflowItemClicked: () => {},
+  },
+};
+
+const columns = [
+  {
+      id: 'crop',
+      name: 'Crop'
+  },
+  {
+      id: 'area',
+      name: 'Planted Area (ha)'
+  },
+  {   id: 'oneMonth',
+      name: '1 month'
+  },
+  {
+      id: 'twoMonth',
+      name: '2 month'
+  },
+  {
+      id: 'threeMonth',
+      name: '3 month'
+  } 
+]
+
+const options = {
+  hasRowSelection: 'single',
+  hasSearch: false,    
+}
+
+const view = {
+  toolbar: {
+      // toolbarActions: [
+      //     {
+      //         id: 'edit',
+      //         labelText: 'Add',
+      //         // can be a handful of included icons
+      //         renderIcon: Add16,
+      //         isOverflow: false,
+      //     },
+      // ]
+      search: {
+          defaultExpanded: false
+      }
+  }
+}
+
+//Yield history by crop
+export function YHBCTable() {
 
     const tableData = [
-        {
-          id: `row-1`,
-          values: {
-            alert: 'AHI005 Asset failure',
-            count: 1.2039201932,
-            hour: 1563877570000,
-            long_description: 'long description for a given event payload',
-            pressure: 0,
-          },
+      {
+        id: `row-1`,
+        values: {
+          crop: 'Charimbana',
+          area: 40,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-2`,
-          values: {
-            alert: 'AHI003 process need to optimize adjust X variables',
-            count: 1.10329291,
-            hour: 1563873970000,
-            long_description: 'long description for a given event payload',
-            pressure: 2,
-          },
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Chatimbana',
+          area: 50,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-3`,
-          values: {
-            alert: 'AHI001 proccess need to optimize adjust Y variables',
-            count: 3,
-            hour: 1564756946000,
-            long_description: 'long description for a given event payload',
-            pressure: 10,
-          },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Baka',
+          area: 30,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-4`,
-          values: {
-            alert: 'AHI001 proccess need to optimize adjust Y variables',
-            count: 5,
-            hour: 1563877570000,
-            other_description: 'other description for a given event payload',
-            long_description: 'long description for a given event payload',
-            pressure: 0,
-          },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Nsinjiro',
+          area: 35,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-5`,
-          values: {
-            alert: 'AHI001 proccess need to optimize',
-            count: 10,
-            hour: 1563874210000,
-            pressure: 10,
-            temperature: 80,
-          },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Kakoma',
+          area: 45,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-6`,
-          values: {
-            alert: 'AHI001 proccess need to optimize.',
-            count: 30,
-            hour: 1563874210000,
-            pressure: 68,
-          },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Chalimbana',
+          area: 20,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
         },
-        {
-          id: `row-7`,
-          values: {
-            alert: 'AHI001 proccess need to optimize',
-            count: 9,
-            hour: 1563870610000,
-            pressure: 0,
-          },
-        },
-        {
-          id: `row-8`,
-          values: {
-            alert: 'AHI001 proccess need to optimize adjust Y variables',
-            count: 7,
-            hour: 1563870610000,
-            pressure: 0,
-          },
-        },
-        {
-          id: `row-9`,
-          values: {
-            alert: 'AHI001 proccess need to optimize adjust Y variables',
-            count: 0,
-            hour: 1563873970000,
-            pressure: 0,
-          },
-        },
-        {
-          id: `row-10`,
-          values: {
-            alert: 'AHI010 proccess need to optimize adjust Y variables',
-            count: 2,
-            hour: 1563873970000,
-            pressure: 0,
-          },
-        },
-        {
-          id: `row-11`,
-          values: {
-            alert: 'AHI010 proccess need to optimize adjust Y variables',
-            count: 5,
-            hour: 1563877570000,
-            pressure: 1,
-          },
-        },
-      ];
-      const tableColumns = [
-        {
-          dataSourceId: 'alert',
-          label: 'Alert',
-          priority: 1,
-        },
-        {
-          dataSourceId: 'count',
-          label: 'Count',
-          priority: 3,
-          filter: { placeholderText: 'enter a string' },
-        },
-        {
-          dataSourceId: 'hour',
-          label: 'Hour',
-          priority: 2,
-          type: 'TIMESTAMP',
-        },
-        {
-          dataSourceId: 'pressure',
-          label: 'Pressure',
-          priority: 2,
-        },
-      ];        
-    const thresholds = [
-        // this threshold is applied to the whole row, not a particular attribute
-        {
-        dataSourceId: 'count',
-        comparison: '<',
-        value: 5,
-        severity: 3, // High threshold, medium, or low used for sorting and defined filtration
-        label:'Pressue',
-        showSeverityLabel:  true,
-        severityLabel: 'Critical',
-        },
-        {
-        dataSourceId: 'count',
-        comparison: '>=',
-        value: 10,
-        severity: 1, // High threshold, medium, or low used for sorting and defined filtration
-        showSeverityLabel:  true,
-        severityLabel: 'Critical',
-        },
-        {
-        dataSourceId: 'count',
-        comparison: '=',
-        value: 7,
-        severity: 2, // High threshold, medium, or low used for sorting and defined filtration
-        showSeverityLabel:  true,
-        severityLabel: 'Critical',
-        },
-        {
-        dataSourceId: 'pressure',
-        comparison: '>=',
-        value: 10,
-        severity: 1,
-        label: 'Pressue',
-        showSeverityLabel: true,
-        severityLabel: 'Critical',
-        },
+        
+      }
     ];
+       
+    
     
     return (
-        <div style={{ width: `700px`, margin: 20 }}>
-        <TableCard
-            title="Yield history by crop"
-            id="table-list"
-            tooltip="Here's a Tooltip"
-            content={{
-            columns: tableColumns,
-            thresholds,
-            }}
-            values={ tableData}
-            onCardAction={    onCardAction  }
-            size={100}
-            isLoading= {false}
-        />
+      <div>
+        <div>
+          <p>Yeild History by Crop</p>
+        </div >
+
+        <div style={{ width: `700px`, margin: 20 }} >
+          <StatefulTable
+              id="table"
+              columns={columns}
+              data={tableData}
+              view={view}
+              actions={actions}
+              options={options}
+                />
         </div>
+        
+      </div>
     );
+
+}
+
+//Yield forecast by crop
+export function YFBCTable() {
+
+  const tableData = [
+      {
+        id: `row-1`,
+        values: {
+          crop: 'Charimbana',
+          area: 40,
+          oneMonth: 100,
+          twoMonth: 150,
+          threeMonth: 200,
+        },
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Chatimbana',
+          area: 50,
+          oneMonth: 100,
+          twoMonth: 0,
+          threeMonth: 200,
+        },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Baka',
+          area: 30,
+          oneMonth: 100,
+          twoMonth: 150,
+          threeMonth: 200,
+        },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Nsinjiro',
+          area: 35,
+          oneMonth: 100,
+          twoMonth: 150,
+          threeMonth: 200,
+        },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Kakoma',
+          area: 45,
+          oneMonth: 100,
+          twoMonth: 150,
+          threeMonth: 200,
+        },
+        
+      },
+      {
+        id: `row-2`,
+        values: {
+          crop: 'Chalimbana',
+          area: 20,
+          oneMonth: 100,
+          twoMonth:150,
+          threeMonth: 200,
+        },
+        
+      }
+    ];
+     
+  
+  
+  return (
+    <div>
+      <div>
+        <p>Yeild Forecast by Crop</p>
+      </div >
+
+      <div style={{ width: `700px`, margin: 20 }} >
+        <StatefulTable
+            id="table"
+            columns={columns}
+            data={tableData}
+            view={view}
+            actions={actions}
+            options={options}
+              />
+      </div>
+      
+    </div>
+  );
 
 }

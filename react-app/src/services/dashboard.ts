@@ -21,6 +21,38 @@ export async function getDashboard(): Promise<TileDTO> {
 }
 
 
+//bar charts
+
+//temperature over time
+export interface TempData {
+    month : string;
+    temperature: number;
+}
+
+//preciptiaton over time
+export interface PrecipData {
+    month : string;
+    precipitation: number;
+}
+
+export interface BarData {
+    temp: TempData[];
+    precip:PrecipData[];
+
+}
+
+export async function getDashboardPrecipBar(): Promise<BarData> {
+    const data = await axios.get<BarData>("/api/dashboard/tiles/");
+    return data.data;
+}
+
+
+
+export async function getDashboardTempBar(): Promise<BarData> {
+    const data = await axios.get<BarData>("/api/dashboard/tiles/");
+    return data.data;
+}
+
 
 
 //Data cards - dashboard UI

@@ -4,7 +4,7 @@ import { Weather7Day, WeatherToday } from "./WeatherForecast";
 import { HomeMap } from "./HomeMap";
 import { PiChartGNT, PiChartGNY } from "./pigraph";
 import { BarChartYFC, BarChartYHC } from "./CropCharts";
-import { Table } from "./DataTable";
+import { YHBCTable, YFBCTable } from "./DataTable";
 import { LandAreaCard, NumCropsCard, NumFarmersCard, PrecipWeekCard } from "./DataCards";
 
 type CoOpHomeProps = {};
@@ -45,14 +45,15 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 <NumFarmersCard></NumFarmersCard>
                 <PrecipWeekCard></PrecipWeekCard>
             </div>
-            <div>
+            <div className="flex">
+                <YHBCTable></YHBCTable>
                 <PiChartGNT></PiChartGNT>
+                
+            </div>
+            <div className="flex">
+                <YFBCTable></YFBCTable>
                 <PiChartGNY></PiChartGNY>
             </div>
-            {/* <div>
-                <Table></Table>
-                <Table></Table>
-            </div> */}
             
 
         </div>
