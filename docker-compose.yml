@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  openharvest:
+    build: .
+    container_name: "OpenHarvest"
+    volumes:
+      - "./secrets:/secrets"
+      - "./backend/.env.dev.production:/home/node/app/.env:ro"
+    ports:
+      - "3000:3000"
