@@ -5,10 +5,14 @@ import { HomeMap } from "./HomeMap";
 import { PiChartGNT, PiChartGNY } from "./pigraph";
 import { BarChartYFC, BarChartYHC } from "./CropCharts";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { YHBCTable, YFBCTable } from "./DataTable";
 =======
 import { Table } from "./DataTable";
 >>>>>>> 8bc8b7e2 (UI Dashboard)
+=======
+import { YHBCTable, YFBCTable } from "./DataTable";
+>>>>>>> 56f186f9 (data tables)
 import { LandAreaCard, NumCropsCard, NumFarmersCard, PrecipWeekCard } from "./DataCards";
 
 type CoOpHomeProps = {};
@@ -90,14 +94,15 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 <NumFarmersCard></NumFarmersCard>
                 <PrecipWeekCard></PrecipWeekCard>
             </div>
-            <div>
+            <div className="flex">
+                <YHBCTable></YHBCTable>
                 <PiChartGNT></PiChartGNT>
+                
+            </div>
+            <div className="flex">
+                <YFBCTable></YFBCTable>
                 <PiChartGNY></PiChartGNY>
             </div>
-            {/* <div>
-                <Table></Table>
-                <Table></Table>
-            </div> */}
             
 
         </div>

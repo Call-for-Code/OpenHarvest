@@ -20,7 +20,6 @@ export async function getDashboard(): Promise<TileDTO> {
 }
 
 
-
 //bar charts
 
 //temperature over time
@@ -52,6 +51,9 @@ export async function getDashboardTempBar(): Promise<BarData> {
     const data = await axios.get<BarData>("/api/dashboard/tiles/");
     return data.data;
 }
+
+
+
 
 
 
