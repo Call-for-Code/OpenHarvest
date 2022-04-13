@@ -21,6 +21,7 @@ export async function getDashboard(): Promise<TileDTO> {
 }
 
 
+
 //bar charts
 
 //temperature over time
@@ -73,3 +74,27 @@ export async function getDashboardCards(): Promise<Cards> {
     return data.data;
 }
 
+
+//data tables
+export interface TableValues {
+    crop: string;
+    area: number;
+    oneMonth: number;
+    twoMonth: number;
+    threeMonth: number;
+}
+
+export interface TableData {
+    id : string;
+    values: TableValues[];
+}
+export interface DataTable {
+    YieldForecast: TableData[];
+    YieldHistory: TableData[];
+}
+
+
+export async function getDashboardDataTable(): Promise<DataTable> {
+    const data = await axios.get<DataTable>("/api/dashboard/tiles/");
+    return data.data;
+}

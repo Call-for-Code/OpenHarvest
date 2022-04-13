@@ -2,7 +2,8 @@ import { Add16 } from '@carbon/icons-react';
 import { TableCard } from 'carbon-addons-iot-react';
 import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
 import { Button } from 'carbon-components-react';
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { getDashboardDataTable, TableData } from '../../services/dashboard';
 
 
 const actions = {
@@ -90,74 +91,11 @@ const view = {
 //Yield history by crop
 export function YHBCTable() {
 
-    const tableData = [
-      {
-        id: `row-1`,
-        values: {
-          crop: 'Charimbana',
-          area: 40,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Chatimbana',
-          area: 50,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Baka',
-          area: 30,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Nsinjiro',
-          area: 35,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Kakoma',
-          area: 45,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Chalimbana',
-          area: 20,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      }
-    ];
-       
+    const [chartData, setChartData] = useState<TableData[]>([]);
+
+    useEffect(() => {
+      getDashboardDataTable().then((data) => setChartData(data.YieldHistory));
+    }, []);
     
     
     return (
@@ -170,7 +108,7 @@ export function YHBCTable() {
           <StatefulTable
               id="table"
               columns={columns}
-              data={tableData}
+              data={chartData}
               view={view}
               actions={actions}
               options={options}
@@ -185,73 +123,12 @@ export function YHBCTable() {
 //Yield forecast by crop
 export function YFBCTable() {
 
-  const tableData = [
-      {
-        id: `row-1`,
-        values: {
-          crop: 'Charimbana',
-          area: 40,
-          oneMonth: 100,
-          twoMonth: 150,
-          threeMonth: 200,
-        },
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Chatimbana',
-          area: 50,
-          oneMonth: 100,
-          twoMonth: 0,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Baka',
-          area: 30,
-          oneMonth: 100,
-          twoMonth: 150,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Nsinjiro',
-          area: 35,
-          oneMonth: 100,
-          twoMonth: 150,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Kakoma',
-          area: 45,
-          oneMonth: 100,
-          twoMonth: 150,
-          threeMonth: 200,
-        },
-        
-      },
-      {
-        id: `row-2`,
-        values: {
-          crop: 'Chalimbana',
-          area: 20,
-          oneMonth: 100,
-          twoMonth:150,
-          threeMonth: 200,
-        },
-        
-      }
-    ];
+  const [chartData, setChartData] = useState<TableData[]>([]);
+
+    useEffect(() => {
+      getDashboardDataTable().then((data) => setChartData(data.YieldForecast));
+    }, []);
+    
      
   
   
@@ -265,7 +142,7 @@ export function YFBCTable() {
         <StatefulTable
             id="table"
             columns={columns}
-            data={tableData}
+            data={chartData}
             view={view}
             actions={actions}
             options={options}

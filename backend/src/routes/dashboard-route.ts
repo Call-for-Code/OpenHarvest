@@ -4,6 +4,144 @@ var router = Router();
 import LandAreasService from "../services/land-areas.service";
 const lotAreas = new LandAreasService();
 
+//data table
+const tableDataYHBC = [
+  {
+    id: `row-1`,
+    values: {
+      crop: 'Charimbana',
+      area: 40,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Chatimbana',
+      area: 50,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Baka',
+      area: 30,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Nsinjiro',
+      area: 35,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Kakoma',
+      area: 45,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Chalimbana',
+      area: 20,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  }
+];
+
+const tableDataYFBC = [
+  {
+    id: `row-1`,
+    values: {
+      crop: 'Charimbana',
+      area: 40,
+      oneMonth: 100,
+      twoMonth: 150,
+      threeMonth: 200,
+    },
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Chatimbana',
+      area: 50,
+      oneMonth: 100,
+      twoMonth: 0,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Baka',
+      area: 30,
+      oneMonth: 100,
+      twoMonth: 150,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Nsinjiro',
+      area: 35,
+      oneMonth: 100,
+      twoMonth: 150,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Kakoma',
+      area: 45,
+      oneMonth: 100,
+      twoMonth: 150,
+      threeMonth: 200,
+    },
+    
+  },
+  {
+    id: `row-2`,
+    values: {
+      crop: 'Chalimbana',
+      area: 20,
+      oneMonth: 100,
+      twoMonth:150,
+      threeMonth: 200,
+    },
+    
+  }
+];
+
+
 //pi graph data
 const chartData = [
     {
@@ -227,6 +365,9 @@ router.get("/tiles", async (req, res) => {
         //bar graphs
         resObj.temp=tempData;
         resObj.precip=precipData;
+        //data tables
+        resObj.YieldForecast=tableDataYFBC;
+        resObj.YieldHistory =tableDataYHBC;
 
 
         res.json(resObj);
