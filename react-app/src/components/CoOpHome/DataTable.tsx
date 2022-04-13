@@ -112,6 +112,7 @@ export function YFBCTable() {
   }, []);
   
   return (
+    <div style={{ width: `700px`, margin: 20 }} >
     <StatefulTable
         id="table"
         columns={columns}
@@ -121,6 +122,7 @@ export function YFBCTable() {
         actions={actions}
         options={options}
           />
+          </div>
   );
 
 }
