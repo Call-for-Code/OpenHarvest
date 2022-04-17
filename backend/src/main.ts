@@ -137,7 +137,7 @@ if (sslKey == undefined || sslCert == undefined) {
     process.exit(-1);
 }
 
-let isSSLFile = sslKey.includes(".pem")
+let isSSLFile = sslKey.includes(".pem");
 
 // Listen on https
 server = https.createServer({
