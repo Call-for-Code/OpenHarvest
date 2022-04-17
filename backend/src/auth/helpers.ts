@@ -44,7 +44,8 @@ export function formatUser(user: any): CoopManagerUser {
 export function ensureAuthenticated(req, res, next) {
     // console.log(req);
     if (!req.isAuthenticated()) {
-        console.info("Unauthenticated request. Trying to Authenticate");
+        console.info("Unauthenticated request:", req.originalUrl);
+        console.info("Redirecting to /login to authenticate");
         req.session.originalUrl = req.originalUrl;
         res.redirect('/login');
     } else {

@@ -32,7 +32,7 @@ COPY --chown=node:node ./backend/package*.json ./
 USER node
 RUN npm install --production
 COPY --from=builder /home/node/app/dist ./build
-COPY --from=reactBuilder /home/node/react/build /public
+COPY --from=reactBuilder /home/node/react/build ./public
 
 # COPY --chown=node:node .env.prod .
 # COPY --chown=node:node .sequelizerc .

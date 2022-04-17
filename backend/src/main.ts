@@ -42,7 +42,8 @@ app.use(cookieParser());
 app.use(session({
     secret: "test",
     resave: true,
-    saveUninitialized: true}));
+    saveUninitialized: true
+}));
 
 // Passport
 app.use(passport.initialize());
@@ -122,7 +123,11 @@ app.use("/api/organisation", organisationRoutes);
 app.use("/api/messaging", messageLogRoutes);
 app.use("/api/sms", smsRoutes);
 
-app.get("/", express.static("public"));
+// Static Files
+const publicPath = path.resolve("public");
+console.log("React App being served from:", publicPath);
+
+app.use("/", express.static(publicPath));
 
 let server: Server;
 
