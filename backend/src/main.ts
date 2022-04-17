@@ -44,8 +44,6 @@ app.use(session({
     resave: true,
     saveUninitialized: true}));
 
-app.use(express.static(path.join("public")));
-
 // Passport
 app.use(passport.initialize());
 app.use(passport.session());
@@ -124,33 +122,39 @@ app.use("/api/organisation", organisationRoutes);
 app.use("/api/messaging", messageLogRoutes);
 app.use("/api/sms", smsRoutes);
 
-app.get("/", ensureAuthenticated, express.static("public"));
+app.get("/", express.static("public"));
 
 let server: Server;
 
 // start node server
 const port = process.env.PORT || 3000;
-const sslKey = process.env['SSL_Key'];
-const sslCert = process.env['SSL_Cert'];
-if (sslKey == undefined || sslCert == undefined) {
-    console.error("SSL is required. Please set SSL_Key, SSL_Cert in your environment");
-    process.exit(-1);
+if (process.env.NODE_ENV == "production") {
+    server = app.listen(port, function() {
+        console.log("Server starting on http://localhost:" + port);
+    });
+
 }
+else {
+    const sslKey = process.env['SSL_Key'];
+    const sslCert = process.env['SSL_Cert'];
+    if (sslKey == undefined || sslCert == undefined) {
+        console.error("SSL is required in Dev for Authentication. Please set SSL_Key, SSL_Cert in your environment");
+        process.exit(-1);
+    }
 
-let isSSLFile = sslKey.includes(".pem");
+    // Listen on https at 3000
+    server = https.createServer({
+        key: fs.readFileSync(sslKey!!),
+        cert: fs.readFileSync(sslCert!!)
+    }, app).listen(port);
 
-// Listen on https
-server = https.createServer({
-    key: isSSLFile ? fs.readFileSync(sslKey) : sslKey,
-    cert: isSSLFile ? fs.readFileSync(sslCert) : sslCert
-}, app).listen(port);
-
-console.log("Server starting on https://localhost:" + port);
-
-// Listen on http at 3080
-app.listen(3080, function() {
-    console.log("Server starting on http://localhost:" + 3080);
-});
+    console.log("Server starting on https://localhost:" + port);
+    
+    // Listen on http at 3080
+    app.listen(3080, function() {
+        console.log("Server starting on http://localhost:" + 3080);
+    });
+}
 
 SocketIOManagerInstance.initialise(server);
 

@@ -216,3 +216,4 @@ dist
 
 backend/tsbuildinfo
 backend/.env.dev.production
+backend/public
