@@ -3,13 +3,11 @@ import { Redirect } from "react-router-dom";
 import { useAuth } from "./../services/auth";
 
 const PrivateRoute = ({ children }: PropsWithChildren<any>) => {
- const authInfo = useAuth();
-
- const isLoggedIn = authInfo !== null;
+ const auth = useAuth();
 
  console.log("Accessing Private Route");
 
- return isLoggedIn ? children : <Redirect to="/" />;
+ return auth.isLoggedIn ? children : <Redirect to="/" />;
 };
 
 export default PrivateRoute;

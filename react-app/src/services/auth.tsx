@@ -35,6 +35,7 @@ export const useAuth = () => {
 
 export interface AuthProviderType { 
   user: CoopManagerUser | null;
+  isLoggedIn: boolean;
   loading: boolean;
   login: () => void;
   checkIfSignedIn: () => Promise<CoopManagerUser | null>;
@@ -45,26 +46,28 @@ export interface AuthProviderType {
 export const AuthEventEmitter = new EventEmitter();
 
 function useProvideAuth(): AuthProviderType {
-  const [user, setUser] = useState<CoopManagerUser | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [user, setUser] = useState<CoopManagerUser | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleUser = (rawUser: any) => {
+  function handleUser(rawUser: any) {
+    setLoading(false);
     if (rawUser) {
       const user = rawUser;
-
-      setLoading(false)
-      setUser(user)
+      
+      setUser(user);
+      setIsLoggedIn(true);
       AuthEventEmitter.emit("signedIn", user);
       return user
     } else {
-      setLoading(false)
-      setUser(null)
+      setUser(null);
+      setIsLoggedIn(false);
       AuthEventEmitter.emit("signedOut");
       return null
     }
   }
 
-  const login = () => {
+  function login() {
     if (process.env.NODE_ENV == "production") {
       window.location.href = "/login";
     }
@@ -73,27 +76,23 @@ function useProvideAuth(): AuthProviderType {
     }
   }
 
-  const checkIfSignedIn = async () => {
-    setLoading(true)
+  async function checkIfSignedIn() {
+    setLoading(true);
 
-    let userInfo = null;
     try {
       const res = await fetch("/me");
-      userInfo = await res.json();
+      const userInfo = await res.json();
       console.log(userInfo);
+      return handleUser(userInfo);
     }
     catch(e) {
       console.log("User is not signed in.")
+      return handleUser(null);
     }
-    
-    return handleUser(userInfo);
   }
 
-  const signout = () => {
-    // return firebase
-    //   .auth()
-    //   .signOut()
-    //   .then(() => handleUser(false))
+  function signout() 
+  {
     if (process.env.NODE_ENV == "production") {
       window.location.href = "/logout";
     }
@@ -104,12 +103,13 @@ function useProvideAuth(): AuthProviderType {
 
   // Check if we're signed in already
   useEffect(() => {
-    const userSignedInInfo = checkIfSignedIn();
+    checkIfSignedIn();
   }, [])
   
 
   return {
     user,
+    isLoggedIn,
     loading,
     login,
     checkIfSignedIn,
