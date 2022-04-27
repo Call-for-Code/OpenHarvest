@@ -72,20 +72,7 @@ const options = {
 }
 
 const view = {
-  toolbar: {
-      // toolbarActions: [
-      //     {
-      //         id: 'edit',
-      //         labelText: 'Add',
-      //         // can be a handful of included icons
-      //         renderIcon: Add16,
-      //         isOverflow: false,
-      //     },
-      // ]
-      search: {
-          defaultExpanded: false
-      }
-  }
+
 }
 
 //Yield history by crop
@@ -96,26 +83,20 @@ export function YHBCTable() {
     useEffect(() => {
       getDashboardDataTable().then((data) => setChartData(data.YieldHistory));
     }, []);
+
     
     
     return (
-      <div>
-        <div>
-          <p>Yeild History by Crop</p>
-        </div >
-
-        <div style={{ width: `700px`, margin: 20 }} >
-          <StatefulTable
-              id="table"
-              columns={columns}
-              data={chartData}
-              view={view}
-              actions={actions}
-              options={options}
-                />
-        </div>
+      <StatefulTable
+          id="table"
+          columns={columns}
+          data={chartData}
+          view={view}
+          secondaryTitle="Yield history by crop"
+          actions={actions}
+          options={options}
+            />
         
-      </div>
     );
 
 }
@@ -125,31 +106,20 @@ export function YFBCTable() {
 
   const [chartData, setChartData] = useState<TableData[]>([]);
 
-    useEffect(() => {
-      getDashboardDataTable().then((data) => setChartData(data.YieldForecast));
-    }, []);
-    
-     
-  
+  useEffect(() => {
+    getDashboardDataTable().then((data) => setChartData(data.YieldForecast));
+  }, []);
   
   return (
-    <div>
-      <div>
-        <p>Yeild Forecast by Crop</p>
-      </div >
-
-      <div style={{ width: `700px`, margin: 20 }} >
-        <StatefulTable
-            id="table"
-            columns={columns}
-            data={chartData}
-            view={view}
-            actions={actions}
-            options={options}
-              />
-      </div>
-      
-    </div>
+    <StatefulTable
+        id="table"
+        columns={columns}
+        data={chartData}
+        view={view}
+        secondaryTitle="Yield Forecast by Crop"
+        actions={actions}
+        options={options}
+          />
   );
 
 }

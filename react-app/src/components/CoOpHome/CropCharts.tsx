@@ -13,7 +13,6 @@ export function BarChartYHC() {
 
 
   return(
-  <div style={{ width: `1400px`, margin: 20 }}>
     <BarChartCard
     availableActions={{
       expand: true,
@@ -41,10 +40,7 @@ export function BarChartYHC() {
     title="Temperature over Time"
     tooltipDateFormatPattern="L HH:mm:ss"
     values={chartData}
-  />
-
-  </div>
-  
+  />  
   )
 }
 
@@ -61,7 +57,6 @@ export function BarChartYFC() {
 
 
   return(
-    <div style={{ width: `1400px`, margin: 20 }}>
       <BarChartCard
         availableActions={{
           expand: true,
@@ -90,9 +85,5 @@ export function BarChartYFC() {
         tooltipDateFormatPattern="L HH:mm:ss"
         values={chartData}
       />
-
-      
-    </div>  
-
   )
 }

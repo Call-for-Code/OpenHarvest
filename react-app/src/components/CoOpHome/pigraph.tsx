@@ -14,7 +14,6 @@ export function PiChartGNY() {
     }, []);
       
     return (
-      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -31,7 +30,6 @@ export function PiChartGNY() {
           testID="basicCardStoryTest"
           values={chartData}
         />
-      </div>
     );
   }
 
@@ -47,7 +45,6 @@ export function PiChartGNY() {
     }, []);
       
     return (
-      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -64,6 +61,5 @@ export function PiChartGNY() {
           testID="basicCardStoryTest"
           values={chartData}
         />
-      </div>
     );
   }

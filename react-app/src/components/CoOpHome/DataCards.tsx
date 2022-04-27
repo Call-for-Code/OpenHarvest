@@ -11,7 +11,6 @@ export function LandAreaCard() {
     }, );
     
     return(
-    <div style={{ width: `300px`, margin: 20 }}>    
     <Card
     size={CARD_SIZES.SMALL}
     title={'Total Land Area'}
@@ -21,7 +20,6 @@ export function LandAreaCard() {
     </div>
     
     </Card>
-    </div>
     );
 }
 
@@ -38,7 +36,6 @@ export function NumCropsCard() {
 
 
     return(
-    <div style={{ width: `300px`, margin: 20 }}>
     <Card
     size={CARD_SIZES.SMALL}
     title={'No of Crops'}
@@ -48,7 +45,6 @@ export function NumCropsCard() {
     </div>
     </Card>
 
-    </div>
     );
 }
 
@@ -61,7 +57,6 @@ export function NumFarmersCard() {
     }, );
 
     return(
-    <div style={{ width: `300px`, margin: 20 }}>
     <Card
     size={CARD_SIZES.SMALL}
     title={'Total Farmers'}
@@ -75,7 +70,6 @@ export function NumFarmersCard() {
 
 
 
-    </div>
     );
 }
 
@@ -91,7 +85,6 @@ export function PrecipWeekCard() {
 
 
     return(
-    <div style={{ width: `300px`, margin: 20 }}>
     <Card
     size={CARD_SIZES.SMALL}
     title={'Total Precipitation in Past Week'}
@@ -102,7 +95,6 @@ export function PrecipWeekCard() {
     </div>
 
     </Card>
-    </div>
     );
 }
 

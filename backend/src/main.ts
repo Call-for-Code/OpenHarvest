@@ -129,6 +129,17 @@ console.log("React App being served from:", publicPath);
 
 app.use("/", express.static(publicPath));
 
+// Otherwise default to sending the front end
+app.use((req, res) => {
+    if (req.method === "GET") {
+        res.sendFile(path.join(publicPath, "index.html"));    
+    }
+    else {
+        res.status(404).end();
+    }
+});
+
+
 let server: Server;
 
 // start node server
@@ -162,9 +173,5 @@ else {
 }
 
 SocketIOManagerInstance.initialise(server);
-
-app.use((req, res) => {
-    res.status(404);
-});
 
 module.exports = app;

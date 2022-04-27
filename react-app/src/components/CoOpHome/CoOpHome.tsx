@@ -22,7 +22,7 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 collapsed={false}
             />
 
-            <div className="w-full flex space-x-4">
+            <div className="flex space-x-4 m-[20px]">
                 <div className="flex-none w-3/12 h-48">
                     <WeatherToday></WeatherToday>
                 </div>
@@ -31,28 +31,53 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 </div>
             </div>
 
-            <div className="w-9/12 h-[500px]">
+            {/* <div className="w-9/12 h-[500px]">
                 <HomeMap></HomeMap>
-            </div>
+            </div> */}
             
-            <div>
+            <div className="m-[20px]">
                 <BarChartYFC></BarChartYFC>
+            </div>
+
+            <div className="m-[20px]">
                 <BarChartYHC></BarChartYHC>
             </div>
-            <div  className="flex">
-                <LandAreaCard></LandAreaCard>         
-                <NumCropsCard></NumCropsCard>
-                <NumFarmersCard></NumFarmersCard>
-                <PrecipWeekCard></PrecipWeekCard>
+
+            <div className="m-[20px] space-y-[20px] md:flex md:flex-row md:space-x-[20px] md:space-y-0 justify-between">
+                <div className="w-full">
+                    <LandAreaCard></LandAreaCard>
+                </div>
+                <div className="w-full">
+                    <NumCropsCard></NumCropsCard>
+                </div>
+                <div className="w-full">
+                    <NumFarmersCard></NumFarmersCard>
+                </div>
+                <div className="w-full">
+                    <PrecipWeekCard></PrecipWeekCard>
+                </div>
             </div>
-            <div className="flex">
-                <YHBCTable></YHBCTable>
-                <PiChartGNT></PiChartGNT>
-                
+
+            <style>
+	            --card-default-height: 405px;
+            </style>
+
+            <div className="m-[20px] space-y-[20px] md:flex md:flex-row md:space-x-[20px] md:space-y-0 justify-between">
+                <div className="w-full">
+                    <YHBCTable></YHBCTable>
+                </div>
+                <div className="w-full">
+                    <YFBCTable></YFBCTable>
+                </div>
             </div>
-            <div className="flex">
-                <YFBCTable></YFBCTable>
-                <PiChartGNY></PiChartGNY>
+
+            <div className="m-[20px] space-y-[20px] md:flex md:flex-row md:space-x-[20px] md:space-y-0 justify-between">
+                <div className="w-full h-full">
+                    <PiChartGNT></PiChartGNT>
+                </div>
+                <div className="w-full h-full">
+                    <PiChartGNY></PiChartGNY>
+                </div>
             </div>
             
 
