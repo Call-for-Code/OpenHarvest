@@ -13,6 +13,7 @@ import FoodTrust from "./components/FoodTrust/FoodTrust";
 import { AuthProvider } from "./services/auth";
 import UserOnboarding from "./components/Onboarding/UserOnboarding";
 import { AddFarmer } from "./components/Farmers/AddFarmer";
+import { ViewFarmer } from "./components/Farmers/ViewFarmer";
 
 import {enableAllPlugins} from "immer"
 import { Messaging } from "./components/Messaging/Messaging";
@@ -193,6 +194,17 @@ function App(props: AppProps) {
                                 () => 
                                 <PrivateRoute>
                                     <AddFarmer />
+                                </PrivateRoute>
+                            }
+                        />
+                        <Route
+                            key={"ViewFarmer"}
+                            path={"/farmers/:farmer_id"}
+                            exact
+                            render={
+                                () => 
+                                <PrivateRoute>
+                                    <ViewFarmer />
                                 </PrivateRoute>
                             }
                         />

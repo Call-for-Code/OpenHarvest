@@ -2,7 +2,7 @@ import React, { Component, ReactElement, useEffect, useState } from "react";
 import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
 import { Farmer, getAllFarmers } from "../../services/farmers";
 import { Button } from "carbon-components-react";
-import { Add16 } from "@carbon/icons-react";
+import { Add16, View16 } from "@carbon/icons-react";
 import { useHistory } from "react-router";
 
 const actions = {
@@ -33,7 +33,7 @@ const actions = {
       onRowSelected: () => {},
       onSelectAll: () => {},
       onEmptyStateAction: () => {},
-      onApplyRowAction: () => {},
+      onApplyRowAction: (actionId: string, rowId: string) => {},
       onRowExpanded: () => {},
       onChangeOrdering: () => {},
       onColumnSelectionConfig: () => {},
@@ -60,7 +60,8 @@ const columns = [
 
 const options = {
     hasRowSelection: 'single',
-    hasSearch: true,    
+    hasSearch: true,
+    hasRowActions: true,
 }
 
 export default function Farmers() {
@@ -96,6 +97,11 @@ export default function Farmers() {
             }
         }
     }
+
+    actions.table.onApplyRowAction = (actionId: string, rowId: string) => {
+        console.log(actionId, rowId);
+        history.push(`farmers/${rowId}`);
+    };
     
 
     useEffect(() => {
@@ -104,12 +110,18 @@ export default function Farmers() {
             setFarmers(farmers);
             const tableData = farmers.map((it, i) => {
                 return {
-                    id: `row-id-${i}`,
+                    id: it._id,
                     values: {
                         name: it.name,
                         mobile: it.mobile,
                         fieldsLen: it.fieldCount
-                    }
+                    },
+                    rowActions: [{
+                        id: 'view',
+                        renderIcon: View16,
+                        iconDescription: 'View Farmer Details',
+                        labelText: 'More Details'
+                    }]
                 }
             });
             setFarmerTableData(tableData);
