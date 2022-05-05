@@ -148,5 +148,23 @@ Some examples of synthetic event types are:
 2. Integrator Event
    1. A custom event called by an integrator
 
-
+# Dynamically Deploying and Running Integrations
+- A feature that would be "nice to have" is the ability for integrations to be managed via the UI.
+- Integrations are displayed, they can deployed ("Integrated"), configuration changed & torn down.
+## Enabling Technologies
+- Kubernetes
+  - OpenHarvest, Supervisor & Integrations in the same cluster
+- "Supervisor"
+  - This is a piece of software written by us, that will manage the process of bringing up and tearing down integrations
+  - It will manage and list which integrations are running and their state
+  - It will interface with Kubernetes to deploy these integrations
+  - It will be deployed with a list of 
+- Integrations will have a few requirements:
+  - Manifest which describes:
+    - Name
+    - Integration Configuration (exposed as env variables)
+    - Ports it communicates on
+  - Must be a Container Image
+- Container Image Repository
+  - Integrations and their images must be stored here.
 
