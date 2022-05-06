@@ -4,19 +4,16 @@
 
 
 
-Open-Harvest Is a group submission and Second Place Winner for Global Challenge [Call for Code](https://developer.ibm.com/callforcode/) 
-
-# Schedule
-![Schedule](./images/Schedule.png)
-
+Open-Harvest Is a group submission and Second Place Winner for Global Challenge [Call for Code](https://developer.ibm.com/callforcode/)
 ## Contents
 
 
 - [OpenHarvest](#openharvest)
-- [Schedule](#schedule)
   - [Contents](#contents)
   - [Demo video](#demo-video)
   - [The architecture](#the-architecture)
+    - [Technology Stack](#technology-stack)
+    - [Infrastructure / Deployment Stack](#infrastructure--deployment-stack)
   - [Long description](#long-description)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -36,8 +33,41 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 ## The architecture
 
+### Technology Stack
+```mermaid
+flowchart LR
+  subgraph react["React Client"]
+    direction LR
+    cc(Carbon Components)
+    wcc(Watson for IoT Carbon Components)
+  end
+  subgraph node["Node.js REST API"]
+    exp(Express HTTP Framework)
+  end
+  react<-->node
+  node<-->MongoDB
+  node<-->Twilio
 
-![Architecture](./images/architecture.PNG)
+  User<-->react
+  Integrations<-->node
+```
+
+### Infrastructure / Deployment Stack
+```mermaid
+flowchart LR
+  subgraph ibm_cloud["IBM Cloud"]
+    direction TB
+    ibm_ib(Image Builder)<-->ibm_cr
+    ibm_ce(Code Engine Running API Image)<-->mongodb(MongoDB Managed Service)
+    ibm_cr(Private Container Registry)--Deploys API Image-->ibm_ce
+  end
+  subgraph dns["Cloudflare DNS"]
+    domain(OpenHarvest.net)
+  end
+  dns-->ibm_cloud
+  User<-->dns
+```
+
 ## Long description
 [More detail are available here](./DESCRIPTION.md)
 
@@ -48,6 +78,7 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 * [node](https://nodejs.org/) and [npm](https://www.npmjs.com/) (Included with node)
 * [git](https://git-scm.com/)
+* [MongoDB](https://www.mongodb.com/)  Instructions on deploying and configuring this are included below
 
 ### Building app
 #### backend
@@ -115,7 +146,7 @@ Open-Harvest Is a group submission and Second Place Winner for Global Challenge 
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
 - [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
-- IBM Cloud Foundry
+- IBM Cloud
 ## Authors
 
 ![THETEAM](./images/THE_TEAM.PNG)

@@ -168,3 +168,22 @@ Some examples of synthetic event types are:
 - Container Image Repository
   - Integrations and their images must be stored here.
 
+## Diagram
+```mermaid
+flowchart LR
+   subgraph "Container Orchestrator (Kubernetes)"
+      direction LR
+      subgraph OpenHarvest Code
+         direction TB
+         oh(OpenHarvest)<-->sv(Supervisor)
+      end
+      oh-- Data & Synthetic Events -->mq(Message Queue Service)
+      sv<--Container Images of Integration-->cr(Container Registry)
+      subgraph Integrations
+         oh<--API-->eis(EIS Integration) & ift(IBM Food Trust Integration)
+      end
+      mq--Events-->eis & ift
+      sv-.Deploys, Configures and tears down .->eis & ift
+   end
+```
+
