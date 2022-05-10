@@ -1,8 +1,6 @@
 secrets/
 frontend/.angular/cache/
 
-# See http://help.github.com/ignore-files/ for more about ignoring files.
-
 # compiled output
 /dist
 /tmp
@@ -59,7 +57,6 @@ logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
 
 # Dependency directories
 node_modules/
@@ -217,3 +214,7 @@ dist
 backend/tsbuildinfo
 backend/.env.dev.production
 backend/public
+
+*.pem
+
+package-lock.json
