@@ -12,8 +12,8 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
   - [Contents](#contents)
   - [Demo video](#demo-video)
   - [The architecture](#the-architecture)
-    - [Technology Stack](#technology-stack)
-    - [Infrastructure / Deployment Stack](#infrastructure--deployment-stack)
+    - [Technology stack](#technology-stack)
+    - [Infrastructure / deployment stack](#infrastructure--deployment-stack)
   - [Long description](#long-description)
   - [Getting started](#getting-started)
     - [Prerequisites](#prerequisites)
@@ -31,7 +31,7 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
 
 ## The architecture
 
-### Technology Stack
+### Technology stack
 
 ```mermaid
 flowchart LR
@@ -51,7 +51,7 @@ flowchart LR
   Integrations<-->node
 ```
 
-### Infrastructure / Deployment Stack
+### Infrastructure / deployment stack
 
 ```mermaid
 flowchart LR
