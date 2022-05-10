@@ -86,8 +86,9 @@ flowchart LR
 
 1. Install mkcert. For Mac or Linux: `brew install mkcert`. Windows user can download `mkcert.exe` from [Mkcert Github](https://github.com/FiloSottile/mkcert/releases)
 
-   Install ts-node for windows users in backend folder
-   npm i -g ts-node
+   Install ts-node for Windows users in backend folder
+
+   `npm i -g ts-node`
 
 2. Create Certificates
 
@@ -96,13 +97,15 @@ flowchart LR
    mkcert localhost 127.0.0.1
    ```
 
-3. Create Mongodb Data Directory, anywhere you want but preferably in the same directory as the docker compose. This is optional for Windows user.
+3. Create Mongodb dData directory, anywhere you want but preferably in the same directory as Docker Compose. This is optional for Windows users.
 
    ```bash
    mkdir {YOUR_PATH}
    ```
 
-4. Create docker-compose.yml. For Mac and Linux
+4. Create docker-compose.yml.
+
+   For Mac and Linux:
 
    ```bash
    version: '3.7'
@@ -141,20 +144,18 @@ flowchart LR
 
 5. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
 
-6.
-
-  ```bash
-    npm i
-    npm start
-  ```
+6. ```bash
+   npm i
+   npm start
+   ```
 
 #### Frontend
 
-  ```bash
-  cd react-app
-  npm install
-  npm start
-  ```
+```bash
+cd react-app
+npm install
+npm start
+```
 
 ## Built with
 
