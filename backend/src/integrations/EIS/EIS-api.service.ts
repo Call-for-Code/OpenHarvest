@@ -58,7 +58,7 @@ export class EISAPIService {
         
         const field = fieldRes.data;
         
-        // We need to convert the open harvest object from a string to JSON because EIS stores it as a string
+        // We need to convert the OpenHarvest object from a string to JSON because EIS stores it as a string
         for (let i = 0; i < field.subFields.features.length; i++) {
             const subField = field.subFields.features[i];
             subField.properties.open_harvest = JSON.parse(subField.properties.open_harvest as any);

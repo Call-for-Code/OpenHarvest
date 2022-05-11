@@ -109,7 +109,7 @@ export default function UserOnboarding() {
     return (
         <div className="w-9/12 mx-auto space-y-10">
             <PageTitleBar
-                title={"Welcome to Open Harvest. Let's Get Started"}
+                title={"Welcome to OpenHarvest. Let's Get Started"}
                 forceContentOutside
                 headerMode={"STATIC"}
                 collapsed={false}

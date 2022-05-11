@@ -18,13 +18,13 @@ export default function Nav() {
         <Header aria-label="IBM Platform Name">
             <SkipToContent />
             <HeaderName href="/" prefix="IBM">
-                <span>Open Harvest</span>
+                <span>OpenHarvest</span>
                 <div className={"iot--header__subtitle"}>
                 Co-op
                 </div>
             </HeaderName>
 
-            <HeaderNavigation aria-label="IBM Open Harvest">
+            <HeaderNavigation aria-label="IBM OpenHarvest">
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/home">Home</HeaderMenuItem>
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
