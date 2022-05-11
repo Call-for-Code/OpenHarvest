@@ -11,7 +11,8 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
 - [OpenHarvest](#openharvest)
   - [Contents](#contents)
   - [Demo video](#demo-video)
-  - [The architecture](#the-architecture)
+  - [Demo URL](#demo-url)
+  - [Architecture](#architecture)
     - [Technology stack](#technology-stack)
     - [Infrastructure / deployment stack](#infrastructure--deployment-stack)
   - [Long description](#long-description)
@@ -19,7 +20,6 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
     - [Prerequisites](#prerequisites)
     - [Building app](#building-app)
       - [Backend](#backend)
-      - [Frontend](#frontend)
   - [Built with](#built-with)
   - [Authors](#authors)
   - [License](#license)
@@ -27,9 +27,15 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
 
 ## Demo video
 
-[![Watch the video](https://raw.githubusercontent.com/Call-for-Code/OpenHarvest/master/images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=6gZagLno-v8&t=10s)
+[![Watch the video](images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=6gZagLno-v8&t=10s)
 
-## The architecture
+## Demo URL
+This is built against master on request.
+
+Available at: https://openharvest.net
+
+
+## Architecture
 
 ### Technology stack
 
