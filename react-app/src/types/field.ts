@@ -1,7 +1,5 @@
 import { Feature, Polygon } from "geojson";
-import { Schema, model, ObjectId, Types } from 'mongoose';
-import { Crop } from "./crop";
-const ObjectId = Schema.Types.ObjectId;
+import { Crop } from "../services/crops";
 
 export interface SubFieldCrop {
     planted: Date;
@@ -17,12 +15,12 @@ export interface SubFieldProperties {
     /**
      * Area in Square Meters
      */
-    area: number;
-    bbox: {
+    area?: number;
+    bbox?: {
         northEast: {lat: number, lng: number},
         southWest: {lat: number, lng: number}
     },
-    centre: {
+    centre?: {
         lat: number,
         lng: number
     }
@@ -30,25 +28,14 @@ export interface SubFieldProperties {
 }
 
 export interface SubField extends Feature<Polygon, SubFieldProperties> {
-    _id?: Types.ObjectId;
+    _id?: string;
     name: string;
 }
 
-export const SubFieldSchema = new Schema({
-    _id: {
-        type: ObjectId,
-        auto: true
-    },
-    name: String,
-    type: String,
-    properties: Object,
-    geometry: Object
-});
-
 export interface Field {
-    _id?: Types.ObjectId;
+    _id?: string;
     farmer_id: string,
-    bbox: {
+    bbox?: {
         northEast: {lat: number, lng: number},
         southWest: {lat: number, lng: number}
     },
@@ -58,16 +45,3 @@ export interface Field {
     }
     subFields: SubField[];
 }
-
-export const FieldSchema = new Schema({
-    _id: {
-        type: ObjectId,
-        auto: true
-    },
-    // coopOrganisations: [String], // The field belongs to the org of the farmer
-    farmer_id: String,
-    bbox: Object,
-    subFields: [SubFieldSchema]
-});
-
-export const FieldModel = model<Field>("field", FieldSchema);

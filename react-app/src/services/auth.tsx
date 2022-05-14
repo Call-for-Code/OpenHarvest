@@ -69,10 +69,10 @@ function useProvideAuth(): AuthProviderType {
 
   function login() {
     if (process.env.NODE_ENV == "production") {
-      window.location.href = "/login";
+      window.location.href = "/auth/login";
     }
     else {
-      window.location.href = "https://localhost:3000/login";
+      window.location.href = "https://localhost:3000/auth/login";
     }
   }
 

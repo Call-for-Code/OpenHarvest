@@ -2,8 +2,7 @@ import path from "path";
 import fs from 'fs'
 import express from "express";
 import session from "express-session";
-import https from 'https'
-import passport from "passport";
+import https from 'https';
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
@@ -23,10 +22,9 @@ import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
 import foodTrustRoutes from "./routes/food-trust-route";
 
-import { formatUser, ensureAuthenticated } from "./auth/helpers";
-import { IBMidStrategy } from "./auth/IBMiDStrategy";
 import { SocketIOManager, SocketIOManagerInstance } from "./sockets/socket.io";
 import { Server } from "http";
+import { AuthRoutes } from "./auth/auth-route";
 
 mongoInit();
 
@@ -38,79 +36,24 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-// Enable session
+// Enable session for the sole reason of passport-ci-oidc. WE ARE NOT SUPPORTING SESSION BASED AUTH
 app.use(cookieParser());
 app.use(session({
-    secret: "test",
+    secret: process.env.jwt_secret!!,
     resave: true,
     saveUninitialized: true
 }));
 
 // Passport
-app.use(passport.initialize());
-app.use(passport.session());
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
-
-passport.use(IBMidStrategy); 
-
-app.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
-
-app.get('/auth/sso/callback', function (req, res, next) {
-    // @ts-ignore
-    let redirect_url = "/app";
-    if (process.env.NODE_ENV == "production") {
-        redirect_url = req.session.originalUrl;
-        redirect_url = "https://openharvest.net/";
-    }
-    else {
-        redirect_url = "http://localhost:3001/";
-    }
-    passport.authenticate('openidconnect', {
-        successRedirect: redirect_url,
-        // successRedirect: '/hello',
-        failureRedirect: '/failure'
-    })(req, res, next);
-});
-
-// failure page
-app.get('/failure', function(req, res) {
-    res.send('login failed'); 
-});
+// app.use(passport.initialize()); // This is only needed if we're using sessions: https://stackoverflow.com/a/56095662
+// app.use(passport.session());
 
 
-app.get('/hello', ensureAuthenticated, function (req, res) {
-   var claims = req.user['_json'];
-   var html ="<p>Hello " + claims.given_name + " " + claims.family_name + ": </p>";
-
-   html += "User details (ID token in _json object): </p>";
-
-   html += "<pre>" + JSON.stringify(req.user, null, 4) + "</pre>";
-
-   html += "<br /><a href=\"/logout\">logout</a>";
-
-   html += "<hr> <a href=\"/\">home</a>";
-
-   //res.send('Hello '+ claims.given_name + ' ' + claims.family_name + ', your email is ' + claims.email + '<br /> <a href=\'/\'>home</a>');
-
-   res.send(html);
-});
-
-
-
-app.get('/me', ensureAuthenticated, (req, res) => {
-    return res.json(formatUser(req.user));
-});
 
 // routes and api calls
 // app.use('/api', healthRoutes);
 // app.use('/api/names', nameRoutes);
+app.use("/auth/", AuthRoutes);
 
 app.use("/api/farmer", farmerRoutes);
 app.use("/api/lot", lotRoutes);

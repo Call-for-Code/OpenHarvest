@@ -2,10 +2,10 @@ import { Router, Request, Response } from "express";
 import { EISField } from "../integrations/EIS/EIS.types";
 import { EISAPIService } from "../integrations/EIS/EIS-api.service";
 import { Farmer, FarmerModel } from "../db/entities/farmer";
-import LandAreasService from "../services/land-areas.service";
+import { Field, FieldModel } from "../db/entities/field";
+import { center, bbox, area, bboxPolygon } from "@turf/turf";
+import { FeatureCollection } from "geojson";
 
-// const LotAreaService = require("./../services/lot-areas.service");
-// const lotAreas = new LandAreasService();
 
 const EISKey = process.env.EIS_apiKey;
 
@@ -53,7 +53,12 @@ async function getFarmer(id: string) {
     }
     
     // Get Fields
-    const field = await eisAPIService.getFarmerField(id);
+    // const field = await eisAPIService.getFarmerField(id);
+    const fields = await FieldModel.find({farmer_id: id});
+    if (fields.length === 0) {
+        throw new Error("Farmer missing Field!");
+    }
+    farmer.field = fields[0];
 
     return farmer;
 }
@@ -102,7 +107,8 @@ router.delete("/:id", async(req: Request, res: Response) => {
 
 export interface FarmerAddDTO {
     farmer: Farmer;
-    field: EISField
+    // field: EISField
+    field: Field
 }
 
 router.post("/add", async(req: Request, res: Response) => {
@@ -124,22 +130,48 @@ router.post("/add", async(req: Request, res: Response) => {
     }
 
     // Then we'll create the Field
-    
-    // We have to set the farmer ID on the field first
+    field.farmer_id = newFarmer._id.toHexString();
+
+    // Lets populate some of the field information
+
+    // Subfield area, centre and Bbox
     for (let i = 0; i < field.subFields.length; i++) {
-        const properties = field.subFields[i].geo.geojson.features[0].properties;
-        properties.open_harvest_farmer_id = newFarmer._id!!.toString();
-        properties.open_harvest.farmer_id = newFarmer._id!!.toString();
+        const subField = field.subFields[i];
+        subField.properties.area = area(subField);
+        const centreFeature = center(subField);
+        subField.properties.centre = {
+            lat: centreFeature.geometry.coordinates[1],
+            lng: centreFeature.geometry.coordinates[0],
+        }
+        const bboxCalc = bbox(subField);
+        subField.properties.bbox = {
+            northEast: {lat: bboxCalc[1], lng: bboxCalc[0]},
+            southWest: {lat: bboxCalc[3], lng: bboxCalc[2]}
+        }
     }
 
-    const createdFieldsUuids = await eisAPIService.createField(field);
-    const fieldUuid = createdFieldsUuids.field;
+    // Field bbox, centre
+    const fieldFeatureCollection: FeatureCollection<any, any> = {
+        type: "FeatureCollection",
+        features: field.subFields
+    };
+    const centreFeature = center(fieldFeatureCollection);
+    const bboxCalc = bbox(fieldFeatureCollection);
+    field.centre = {
+        lat: centreFeature.geometry.coordinates[1],
+        lng: centreFeature.geometry.coordinates[0],
+    }
+    field.bbox = {
+        northEast: {lat: bboxCalc[1], lng: bboxCalc[0]},
+        southWest: {lat: bboxCalc[3], lng: bboxCalc[2]}
+    }
 
-    const createdField = await eisAPIService.getField(fieldUuid);
+    const fieldDoc = new FieldModel(field);
+    const newField = await fieldDoc.save();
 
     const farmerObj = newFarmer.toObject();
 
-    farmerObj.field = createdField;
+    farmerObj.field = newField.toObject() as Field;
 
     res.json(farmerObj);
 });

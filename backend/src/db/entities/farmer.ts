@@ -1,7 +1,6 @@
 
-import { FieldResponse } from './../../integrations/EIS/EIS.types';
 import { Schema, model, ObjectId, Types } from 'mongoose';
-import { Land } from './land';
+import { Field } from "./field";
 
 const ObjectId = Schema.Types.ObjectId;
 
@@ -12,7 +11,7 @@ export interface Farmer {
     address: string,
     coopOrganisations: string[],
     fieldCount: number;
-    field?: FieldResponse;
+    field?: Field;
 }
 
 export const FarmerSchema = new Schema({

@@ -3,6 +3,7 @@ import L from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { FieldEditorLayer } from "./FieldEditorLayer";
 import { EISField } from "./../../types/EIS";
+import { Field } from "../../types/field";
 
 // @ts-ignore
 delete L.Icon.Default.prototype._getIconUrl;
@@ -17,16 +18,16 @@ export interface FieldEditorMapProps {
     /**
      * An existing one. If this is null or undefined a new one will be created and used.
      */
-    existingField?: EISField;
+    existingField?: Field;
     /**
      * Called when the field is updated in some way.
      */
-    onFieldUpdated?: (field: EISField) => void;
+    onFieldUpdated?: (field: Field) => void;
 }
 
 export function FieldEditorMap(props: PropsWithChildren<FieldEditorMapProps>) {
 
-    const onUpdated = (field: EISField) => {
+    const onUpdated = (field: Field) => {
         if (props.onFieldUpdated) {
             props.onFieldUpdated(field);
         }

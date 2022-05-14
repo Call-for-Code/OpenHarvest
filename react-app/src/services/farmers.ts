@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { EISField, FieldResponse } from '../types/EIS';
+import { Field } from '../types/field';
 
 export interface Farmer {
     _id?: string,
@@ -8,12 +8,12 @@ export interface Farmer {
     address: string,
     coopOrganisations: string[],
     fieldCount: number;
-    field?: FieldResponse;
+    field?: Field;
 }
 
 export interface FarmerAddDTO {
     farmer: Farmer;
-    field: EISField;
+    field: Field;
 }
 
 export async function getAllFarmers(): Promise<Farmer[]> {

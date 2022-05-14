@@ -166,7 +166,8 @@ npm start
 ## Built with
 
 - [Carbon Design System](https://github.com/Philipsty/carbon-angular-starter) - web framework used
-- [IBM Cloudant](https://cloud.ibm.com/catalog?search=cloudant#search_results) - The NoSQL database used
+- MongoDB - NoSQL database
+- Node.js
 - IBM Cloud
 
 ## Authors
