@@ -1,9 +1,9 @@
 import { EventEmitter } from "events";
-import { Farmer, FarmerModel } from "./../db/entities/farmer";
-import { MessageLog } from "./../db/entities/messageLog";
-import { CoopManager } from "./../db/entities/coopManager";
-import { EventBusInstance } from "./../integrations/eventBus.service";
-import { OrganisationModel } from "./../db/entities/organisation";
+import { FarmerModel } from "../db/entities/farmer";
+import { MessageLog } from "../db/entities/messageLog";
+import { EventBusInstance } from "./eventBus.service";
+import { OrganisationModel } from "../db/entities/organisation";
+import { Farmer, User } from "common-types";
 
 export declare interface MessagingInterface<ReceivedMessageType> {
     on(event: 'onMessage', listener: (message: MessageLog) => void): this;
@@ -30,7 +30,7 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
      * @param coopManager CoopManager we're sending a message to.
      * @param message The string message we want to send.
      */
-    abstract sendMessageToCoopManager(coopManager: CoopManager, message: string): Promise<MessageLog>;
+    abstract sendMessageToCoopManager(coopManager: User, message: string): Promise<MessageLog>;
 
     /**
      * Send a message to an arbitrary destination. This is a way of giving flexibility
@@ -67,15 +67,13 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
             throw new Error("Farmer from MessageLog not Found!");
         }
 
-        for (const org_id of farmer.coopOrganisations) {
-            OrganisationModel.findById(org_id).then(org => {
+            OrganisationModel.findById(farmer.organisation).then(org => {
                 if (org === null) {
                     throw new Error("Org in Farmer not found!");
                 }
                 EventBusInstance.publishMessage(org, message);
             })
             
-        }
     }
 
 }

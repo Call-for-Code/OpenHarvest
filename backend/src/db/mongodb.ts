@@ -1,6 +1,5 @@
 // Using Node.js `require()`
 import { connect } from 'mongoose';
-import { writeFile } from "fs/promises";
 
 export async function mongoInit() {
     // console.log(process.env.mongodb_url);

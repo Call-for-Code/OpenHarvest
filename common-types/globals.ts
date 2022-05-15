@@ -1,4 +1,4 @@
-export enum Languages {
+export enum Language {
     Amharic_Ethiopia = "am-ET",
     Arabic_United_Arab_Emirates = "ar-AE",
     Azerbaijani_Azerbaijan = "az-AZ",
@@ -92,7 +92,7 @@ export enum Languages {
 /**
  * Measurement units to return from the API
  */
-export enum Units {
+export enum Unit {
     imperial = "e",
     metric = "m",
     /**
@@ -102,27 +102,22 @@ export enum Units {
 }
 
 /**
- * LatLng representation for the Weather Company
- */
-export interface GeoCode {
-    latitude: number;
-    longitude: number;
-}
-
-/**
  * Result format of the API Call
  * NOTE: Not every api call supports CSV.
  */
-export enum Formats {
+export enum DataFormat {
     JSON = "json",
     CSV = "csv"
 }
 
-export interface CommonOptions {
-    format: Formats;
-    language: Languages;
-    units: Units
+export const isDefined = <T>(value: T | null | undefined): value is T => {
+    return value !== undefined && value != null;
+};
+
+export const isUndefined = <T>(value: T | null | undefined): value is undefined | null => {
+    return value === undefined || value == null;
+};
+
+export enum AuthMethod {
+    IBM_ID = "IBM_ID"
 }
-
-export type LatLng = GeoCode;
-

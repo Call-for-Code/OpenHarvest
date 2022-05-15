@@ -1,6 +1,5 @@
-import { Crop } from "../../db/entities/crop";
-import { Feature, FeatureCollection, Geometry, Polygon } from "geojson";
-import { LatLng } from "integrations/weather-company-api.types";
+import { Feature, FeatureCollection, Polygon } from "geojson";
+import { GeoCodeNumber, NewFieldCrop } from "common-types";
 
 /**
  * There are many redundant fields you'll notice because EIS's data structures 
@@ -37,7 +36,7 @@ export interface FieldResponseSubfieldFeatureExtras {
     projection: 4326;
 }
 
-export type FieldResponseSubfieldFeature = Feature<Geometry, EISSubFieldSearchReturnFeatureProperties> & FieldResponseSubfieldFeatureExtras;
+export type FieldResponseSubfieldFeature = Feature<Polygon, EISSubFieldSearchReturnFeatureProperties> & FieldResponseSubfieldFeatureExtras;
 
 export interface FieldResponseSubfield {
     type: "FeatureCollection",
@@ -51,16 +50,10 @@ export interface FieldResponse {
     subFields: FieldResponseSubfield;
 }
 
-// Field Create Structures
-export interface SubFieldCrop {
-    planted: Date;
-    harvested: Date | null;
-    farmer: string;
-    /**
-     * Crop Information
-     */
-    crop: Crop;
-}
+export type OpenHarvestSubFieldProps = {
+    farmer_id: string;
+    crops: NewFieldCrop[]
+};
 
 export interface EISSubFieldProperties {
     farm_name: string
@@ -68,10 +61,7 @@ export interface EISSubFieldProperties {
     /**
      * When getting a field from EIS this is initially a string and we need to parse the object
      */
-    open_harvest: {
-        farmer_id: string;
-        crops: SubFieldCrop[]
-    }
+    open_harvest: OpenHarvestSubFieldProps
 }
 
 export interface EISSubField {
@@ -109,7 +99,7 @@ export interface EISSubFieldSearchReturnFeatureProperties {
         east: number;
         west: number;
     };
-    centroid: LatLng;
+    centroid: GeoCodeNumber;
     ianaTimeZone: string;
     deleted: boolean;
     inputType: string;
@@ -118,10 +108,7 @@ export interface EISSubFieldSearchReturnFeatureProperties {
     farm_name: string;
     field_id: string;
     field_name: string;
-    open_harvest: {
-        farmer_id: string;
-        crops: SubFieldCrop[]
-    }
+    open_harvest: OpenHarvestSubFieldProps
 }
 
 export interface EISSubFieldSearchReturnFeatureExtras {

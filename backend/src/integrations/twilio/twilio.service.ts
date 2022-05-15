@@ -1,8 +1,8 @@
-import twilio, { Twilio} from "twilio";
-import { CoopManager } from "./../../db/entities/coopManager";
-import { Farmer, FarmerModel } from "./../../db/entities/farmer";
-import { MessageLog, MessageLogModel, Source, Status } from "./../../db/entities/messageLog";
-import { MessagingInterface } from "./../../integrations/messagingInterface";
+import { Farmer, User } from "common-types";
+import twilio, { Twilio } from "twilio";
+import { FarmerModel } from "../../db/entities/farmer";
+import { MessageLog, MessageLogModel, Source, Status } from "../../db/entities/messageLog";
+import { MessagingInterface } from "../messagingInterface";
 
 /**
  * The Message we get from Twilio on our webhook
@@ -25,25 +25,29 @@ export interface TwilioMessage {
  * This class handles interfacing with twilio.
  * It provides one 
  */
-class TwilioAPI extends MessagingInterface<TwilioMessage> {
+export class TwilioAPI extends MessagingInterface<TwilioMessage> {
 
     client: Twilio;
     messagingServiceSid: string;
+    twilioInstance: TwilioAPI;
     constructor() {
         super();
         const accountSid = process.env.Twilio_accountSid;
         const authToken = process.env.Twilio_token;
         this.messagingServiceSid = process.env.Twilio_messaging_service as string;
         this.client = twilio(accountSid, authToken);
+        this.twilioInstance = new TwilioAPI();
     }
 
     async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
-        const number = farmer.mobile;
-
         if (message === undefined || message === null || message === "") {
             throw new Error("Message is empty!");
         }
 
+        if (farmer.mobile.length === 0) {
+            throw new Error("Farmer has no mobile numbers: " + farmer);
+        }
+        const number = farmer.mobile[0];
         const messageRef = await this.sendMessage(number, message);
         
         const messageLogEntry: MessageLog = {
@@ -56,12 +60,10 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
             messageRef
         }
 
-        const messageLog = await MessageLogModel.create(messageLogEntry);
-
-        return messageLog;
+        return await MessageLogModel.create(messageLogEntry);
     }
 
-    async sendMessageToCoopManager(coopManager: CoopManager, message: string): Promise<MessageLog> {
+    async sendMessageToCoopManager(coopManager: User, message: string): Promise<MessageLog> {
         throw new Error("Method not implemented.");
     }
 
@@ -112,4 +114,4 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
     
 }
 
-export const TwilioInstance = new TwilioAPI();
+

@@ -15,7 +15,7 @@ export default function Nav() {
 
     return (
         // @ts-ignore
-        <Header aria-label="IBM Platform Name">
+        <Header aria-label="Open Harvest">
             <SkipToContent />
             <HeaderName href="/" prefix="IBM">
                 <span>Open Harvest</span>
@@ -24,12 +24,16 @@ export default function Nav() {
                 </div>
             </HeaderName>
 
-            <HeaderNavigation aria-label="IBM Open Harvest">
-                <HeaderMenuItem<NavLinkProps> element={NavLink} to="/home">Home</HeaderMenuItem>
-                <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
-                <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
-                <HeaderMenuItem<NavLinkProps> element={NavLink} to="/messaging">Messaging</HeaderMenuItem>
-            </HeaderNavigation>
+            {auth.user && (
+                <HeaderNavigation aria-label="IBM Open Harvest">
+                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/home">Home</HeaderMenuItem>
+                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
+                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
+                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/messaging">Messaging</HeaderMenuItem>
+                </HeaderNavigation>
+            )
+
+            }
 
             <HeaderGlobalBar>
                 {!auth.user && (
@@ -43,9 +47,9 @@ export default function Nav() {
                         {/* // Displays when the user is onboarded */}
                         {auth.user.coopManager && (
                             <HeaderMenu menuLinkName={"Organisation: " + auth.user!!.selectedOrganisation!!.name}>
-                                {auth.user!!.organisations!!.map(it => 
+                                {auth.user!!.organisations!!.map(it =>
                                     <HeaderMenuItem key={it.name}>{it.name}</HeaderMenuItem>
-                                )}                                
+                                )}
                             </HeaderMenu>
                         )}
                         <HeaderGlobalAction aria-label="Account" isActive={expanded} onClick={toggleRightPanel}>
@@ -57,14 +61,14 @@ export default function Nav() {
                         <HeaderPanel aria-label="Header Panel" expanded={expanded} >
                             <h3>Hi {auth.user!!.displayName}</h3>
                         </HeaderPanel>
-                        
+
                     </>
                 )}
-                
+
             </HeaderGlobalBar>
 
-            
+
 
         </Header>
-    )
+    );
 }

@@ -17,4 +17,22 @@ module.exports = function(app) {
             secure: false
         })
     );
+
+    app.use(
+        '/login',
+        createProxyMiddleware({
+            target: 'https://localhost:3000',
+            changeOrigin: true,
+            secure: false
+        })
+    );
+
+    app.use(
+        '/logout',
+        createProxyMiddleware({
+            target: 'https://localhost:3000',
+            changeOrigin: true,
+            secure: false
+        })
+    );
 };

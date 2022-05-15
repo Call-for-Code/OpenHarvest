@@ -1,5 +1,4 @@
-import { CoopManager } from "./../db/entities/coopManager";
-import { Organisation } from "./../db/entities/organisation";
+import { Organisation, User } from "common-types";
 
 export interface CoopManagerUser {
     id: string;
@@ -15,7 +14,7 @@ export interface CoopManagerUser {
     exp: number;
     accessToken: string;
     refreshToken: string;
-    coopManager: CoopManager | null;
+    coopManager: User | null;
     organisations: Organisation[];
     selectedOrganisation: Organisation;
 }

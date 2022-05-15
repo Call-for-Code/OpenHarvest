@@ -8,3 +8,15 @@ services:
       - "./backend/.env.dev.production:/home/node/app/.env:ro"
     ports:
       - "3000:3000"
+
+  mongodb:
+    container_name: 'mongodb-open_harvest'
+    image: mongo
+    restart: unless-stopped
+    environment:
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 27017:27017
+    volumes:
+      - ~/mongodb:/data/db

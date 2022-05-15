@@ -1,7 +1,7 @@
 import { Request, Response, Router } from "express";
-import CropService from "../services/crop.service";
-var router = Router();
-const cropService = new CropService();
+import { cropService } from "../services/CropService";
+
+const router = Router();
 
 router.get("/", getAllCrops);
 

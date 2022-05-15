@@ -3,8 +3,7 @@
 // const client = CloudantV1.newInstance({});
 
 // const { plantedCrops, cropProductionForecast} = require("../db/cloudant");
-import LandAreasService from "./land-areas.service";
-import CropService from "./crop.service";
+import { cropService } from "./CropService";
 
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
@@ -22,17 +21,9 @@ export interface RecommendationsRequest {
 }
 
 export default class RecommendationsService {
-    lotAreaService: LandAreasService;
-    cropService: CropService;
-    
-    constructor() {
-        this.lotAreaService = new LandAreasService();
-        this.cropService = new CropService();
-    }
-
     async getRecommendations(request: RecommendationsRequest) {
         this.createOrUpdateShortlistForLot(request);
-        const cropDetails = await this.cropService.getAllCrops();
+        const cropDetails = await cropService.getAllCrops();
 
         const plantDate = new Date(request.plantDate);
         const plantMonth = plantDate.getMonth() + 1;
@@ -68,41 +59,41 @@ export default class RecommendationsService {
             crops[crop.toLowerCase()].shortlist = 100;
         });
 
-        const overallCropDistribution: any = await this.lotAreaService.getOverallCropDistribution();
-        const minArea = Math.min(...overallCropDistribution.map(dist => dist.area));
-
-        overallCropDistribution.forEach((dist) => {
-            if (crops[dist.crop.toLowerCase()]) {
-                crops[dist.crop.toLowerCase()].area = dist.area;
-            }
-        });
-
-        const cropProductionForecast: any = await this.lotAreaService.getCropProductionForecast();
-        cropProductionForecast.forEach((dist) => {
-            const harvestDate = new Date(dist.date);
-            const crop = crops[dist.crop.toLowerCase()];
-            if (harvestDate <= crop.harvestEnd && harvestDate >= crop.harvestStart) {
-                crop.yield += dist.yield;
-            }
-        });
-        const minYield = Math.min(...cropDetails.map(crop => crops[crop.name.toLowerCase()].yield));
+        // const overallCropDistribution: any = await this.lotAreaService.getOverallCropDistribution();
+        // const minArea = Math.min(...overallCropDistribution.map(dist => dist.area));
+        //
+        // overallCropDistribution.forEach((dist) => {
+        //     if (crops[dist.crop.toLowerCase()]) {
+        //         crops[dist.crop.toLowerCase()].area = dist.area;
+        //     }
+        // });
+        //
+        // const cropProductionForecast: any = await this.lotAreaService.getCropProductionForecast();
+        // cropProductionForecast.forEach((dist) => {
+        //     const harvestDate = new Date(dist.date);
+        //     const crop = crops[dist.crop.toLowerCase()];
+        //     if (harvestDate <= crop.harvestEnd && harvestDate >= crop.harvestStart) {
+        //         crop.yield += dist.yield;
+        //     }
+        // });
+        // const minYield = Math.min(...cropDetails.map(crop => crops[crop.name.toLowerCase()].yield));
 
         const cropScores: any = [];
 
-        cropDetails.forEach((cropDetail) => {
-            const crop = crops[cropDetail.name.toLowerCase()];
-            const cropScore: any = {};
-            cropScore.crop = cropDetail.name;
-            cropScore.shortlistScore = crop.shortlist / 100 * weights.onShortlist;
-            cropScore.inSeasonScore = crop.inSeason / 100 * weights.inSeason;
-            cropScore.plantedAreaScore = crop.area === 0 ? 0 : (minArea / crop.area * weights.lowPlantedArea);
-            cropScore.yieldForecastScore = crop.yield === 0 ? 0 : (minYield / crop.yield * weights.lowYieldForecast);
-            cropScore.score = 10 * (cropScore.shortlistScore +
-                cropScore.inSeasonScore +
-                cropScore.plantedAreaScore +
-                cropScore.yieldForecastScore);
-            cropScores.push(cropScore);
-        });
+        // cropDetails.forEach((cropDetail) => {
+        //     const crop = crops[cropDetail.name.toLowerCase()];
+        //     const cropScore: any = {};
+        //     cropScore.crop = cropDetail.name;
+        //     cropScore.shortlistScore = crop.shortlist / 100 * weights.onShortlist;
+        //     cropScore.inSeasonScore = crop.inSeason / 100 * weights.inSeason;
+        //     cropScore.plantedAreaScore = crop.area === 0 ? 0 : (minArea / crop.area * weights.lowPlantedArea);
+        //     cropScore.yieldForecastScore = crop.yield === 0 ? 0 : (minYield / crop.yield * weights.lowYieldForecast);
+        //     cropScore.score = 10 * (cropScore.shortlistScore +
+        //         cropScore.inSeasonScore +
+        //         cropScore.plantedAreaScore +
+        //         cropScore.yieldForecastScore);
+        //     cropScores.push(cropScore);
+        // });
 
         return cropScores.sort((a, b) => b.score - a.score);
     }

@@ -1,6 +1,6 @@
 // import dependencies and initialize the express router
 import { Router } from "express";
-import { TwilioInstance } from "./../integrations/twilio/twilio.service";
+import { TwilioAPI } from "../integrations/twilio/twilio.service";
 import { MessageLogModel } from "../db/entities/messageLog";
 import { FarmerModel } from "../db/entities/farmer";
 
@@ -22,7 +22,7 @@ router.post("/sendSMSToFarmer", async (req, res) => {
     }
     
     try {
-        const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
+        const messageLog = await new TwilioAPI().sendMessageToFarmer(farmer, message);
         res.json(messageLog)
     }
     catch (e: any) {

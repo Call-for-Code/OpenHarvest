@@ -1,7 +1,8 @@
 import { Router } from "express";
+import RecommendationsService from "../services/recommendations.service";
+
 var router = Router();
 
-import RecommendationsService from "../services/recommendations.service";
 const recommendationsService = new RecommendationsService();
 router.post("/", async(req, res) => {
     try {

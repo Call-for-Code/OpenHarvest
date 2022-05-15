@@ -2,15 +2,10 @@
 // const {cropDetailsView} = require("../db/cloudant");
 // const {cropDetailsDdoc} = require("../db/cloudant");
 
-import { CropModel, Crop } from "../db/entities/crop";
+import { Crop } from "common-types";
+import { CropModel } from "../db/entities/crop";
 
-// const APPLICATION_DB = "application-db";
-// const db = APPLICATION_DB;
-
-// const LOT_DB = "lot-areas";
-let cropDetails;
-
-export default class CropService {
+export class CropService {
 
     constructor() {
     }
@@ -36,4 +31,4 @@ export default class CropService {
     }
 }
 
-// module.exports = CropService;
+export const cropService = new CropService();

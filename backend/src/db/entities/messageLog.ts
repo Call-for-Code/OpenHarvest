@@ -1,5 +1,4 @@
-
-import { Schema, model, ObjectId, Types } from 'mongoose';
+import { model, Schema, Types } from 'mongoose';
 
 const ObjectId = Schema.Types.ObjectId;
 

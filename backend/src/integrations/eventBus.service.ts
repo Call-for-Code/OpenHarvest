@@ -5,11 +5,11 @@
  * will make the move easy as it will just become an interface
  */
 
+import { Organisation } from "common-types";
 import { EventEmitter } from "events";
 
-import { Organisation } from "./../db/entities/organisation";
-import { MessageLog } from "./../db/entities/messageLog";
-import { SocketIOManagerInstance } from "./../sockets/socket.io";
+import { MessageLog } from "../db/entities/messageLog";
+import { SocketIOManagerInstance } from "../sockets/socket.io";
 
 export declare interface EventBus {
     on(event: 'onMessage', listener: (message: MessageLog) => void): this;

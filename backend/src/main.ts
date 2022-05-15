@@ -17,14 +17,14 @@ import cropRoutes from "./routes/crop-route";
 import dashboardRoutes from "./routes/dashboard-route";
 import recommendationsRoutes from "./routes/recommendations-route";
 import weatherRoutes from "./routes/weather-route";
-import coopManagerRoutes from "./routes/coopManager-route";
+import userRoutes from "./routes/user-route";
 import organisationRoutes from "./routes/organisation-route";
 import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
 
-import { formatUser, ensureAuthenticated } from "./auth/helpers";
+import { ensureAuthenticated, formatUser } from "./auth/helpers";
 import { IBMidStrategy } from "./auth/IBMiDStrategy";
-import { SocketIOManager, SocketIOManagerInstance } from "./sockets/socket.io";
+import { SocketIOManagerInstance } from "./sockets/socket.io";
 import { Server } from "http";
 
 mongoInit();
@@ -118,7 +118,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/recommendations", recommendationsRoutes);
 
 app.use("/api/weather", weatherRoutes);
-app.use("/api/coopManager", coopManagerRoutes);
+app.use("/api/coopManager", userRoutes);
 app.use("/api/organisation", organisationRoutes);
 app.use("/api/messaging", messageLogRoutes);
 app.use("/api/sms", smsRoutes);

@@ -1,7 +1,8 @@
 import { Router } from "express";
+import LandAreasService from "../services/land-areas.service";
+
 var router = Router();
 
-import LandAreasService from "../services/land-areas.service";
 const lotAreas = new LandAreasService();
 
 //data table

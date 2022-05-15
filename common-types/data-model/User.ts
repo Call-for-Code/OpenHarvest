@@ -1,5 +1,6 @@
+import { Point } from "geojson";
 
-export interface CoopManager {
+export default interface User {
     /**
      * Auth provider + auth provider id. E.g. "IBMid:1SDAS61W6A"
      */
@@ -7,7 +8,8 @@ export interface CoopManager {
     /**
      *  GeoCode / LatLng coordinate tuple
      */
-    location: number[],
-    mobile: string,
-    coopOrganisations: string[]
+    location: Point,
+    mobile: string
 }
+
+

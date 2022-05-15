@@ -4,9 +4,8 @@
 
 
 import { Router } from "express";
-import { MessageLogModel } from "../db/entities/messageLog";
-import { SMSSyncAPIInstance, SMSSyncMessageReceivedFormat } from "./../integrations/smsSync/smsSync.service";
-import { TwilioInstance, TwilioMessage } from "../integrations/twilio/twilio.service";
+import { SMSSyncAPIInstance, SMSSyncMessageReceivedFormat } from "../integrations/smsSync/smsSync.service";
+import { TwilioAPI, TwilioMessage } from "../integrations/twilio/twilio.service";
 
 const router = Router();
 
@@ -53,7 +52,7 @@ router.post("/twilio-sms-incoming", async (req, res) => {
     // console.log("Twilio Message:", req.body);
     const message: TwilioMessage = req.body;
     
-    TwilioInstance.onReceivedMessage(message);
+    new TwilioAPI().onReceivedMessage(message);
 
     res.status(200).end();
 });

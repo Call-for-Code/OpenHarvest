@@ -1,30 +1,14 @@
+import { model, Schema, Types } from 'mongoose';
+import { Farmer } from "common-types"
+import { FarmSchema } from "./farm";
 
-import { FieldResponse } from './../../integrations/EIS/EIS.types';
-import { Schema, model, ObjectId, Types } from 'mongoose';
-import { Land } from './land';
-
-const ObjectId = Schema.Types.ObjectId;
-
-export interface Farmer {
-    _id?: Types.ObjectId,
-    name: string,
-    mobile: string,
-    address: string,
-    coopOrganisations: string[],
-    fieldCount: number;
-    field?: FieldResponse;
-}
-
-export const FarmerSchema = new Schema({
-    _id: {
-        type: ObjectId,
-        auto: true
-    },
+export const FarmerSchema = new Schema<Farmer>({
+    _id: Types.ObjectId,
     name: String,
     mobile: String,
     address: String,
-    coopOrganisations: [String],
-    fieldCount: Number
+    organisation: String,
+    farms: [FarmSchema]
 });
 
 export const FarmerModel = model<Farmer>("farmer", FarmerSchema);

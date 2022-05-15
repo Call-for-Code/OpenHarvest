@@ -1,20 +1,31 @@
+import { model, Schema } from 'mongoose';
 
-import { Schema, model, ObjectId, Types } from 'mongoose';
-import { Land } from './land';
+import { Organisation, User } from "common-types";
 
-const ObjectId = Schema.Types.ObjectId;
-
-export interface Organisation {
-    _id?: Types.ObjectId,
-    name: string
-}
-
-export const OrganisationSchema = new Schema({
-    _id: {
-        type: ObjectId,
-        auto: true
-    },
-    name: String,
+export const UserSchema = new Schema<User>({
+    /**
+     * Auth provider + auth provider id. E.g. "IBMid:1SDAS61W6A"
+     */
+    _id: String,
+    /**
+     *  GeoCode / LatLng coordinate tuple
+     */
+    location: [{
+        type: "Point",
+        coordinates: [Number]
+    }],
+    mobile: String,
 });
+
+
+export const OrganisationSchema = new Schema<Organisation>({
+    name: {
+        type: String,
+        unique: true,
+        required: true,
+        index: true
+    },
+    users: [UserSchema]
+}, { _id : false });
 
 export const OrganisationModel = model<Organisation>("organisation", OrganisationSchema);

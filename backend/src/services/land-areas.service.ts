@@ -1,6 +1,4 @@
-import { Land, LandModel } from "../db/entities/land";
-import { Types } from 'mongoose';
-import { FarmerModel } from "./../db/entities/farmer";
+// import { Land, LandModel } from "../db/entities/land";
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
 
@@ -17,24 +15,24 @@ export interface BoundingBox {
 export default class LandAreasService {
     constructor() {}
 
-    async updateLot(lot: Land) {
-        const landModel = new LandModel(lot);
+    // async updateLot(lot: Land) {
+    //     const landModel = new LandModel(lot);
+    //
+    //     const savedDoc = await landModel.save();
+    //     return savedDoc;
+    // }
 
-        const savedDoc = await landModel.save();
-        return savedDoc;
-    }
-
-    getLot(id: string) {
-        return LandModel.findById(id);
-    }
-
-    getLots(ids: string[]) {
-        return LandModel.find({ '_id': { $in: ids } });
-    }
-
-    getAllLots() {
-        return LandModel.find();
-    }
+    // getLot(id: string) {
+    //     return LandModel.findById(id);
+    // }
+    //
+    // getLots(ids: string[]) {
+    //     return LandModel.find({ '_id': { $in: ids } });
+    // }
+    //
+    // getAllLots() {
+    //     return LandModel.find();
+    // }
 
     getAreasInBbox(box: BoundingBox) {
         // const bbox = `${box.lowerLeft.lng},${box.lowerLeft.lat},${box.upperRight.lng},${box.upperRight.lat}`;
@@ -162,14 +160,10 @@ export default class LandAreasService {
         return 0;
     }
 
-    getTotalFarmers() {
-        //return this.getViewValue(farmerCountDoc, farmerCountView, APPLICATION_DB);
-        return FarmerModel.count().exec();
-    }
 
     getCropsPlanted() {
         // return this.getViewValue(cropsPlantedDoc, cropsPlantedView, LOT_DB);
-        
+
         // Aggregate of crops planted
         return 0;
     }
@@ -181,9 +175,9 @@ export default class LandAreasService {
         return 0;
     }
 
-    getTotalLots() {
-        return LandModel.count().exec();
-    }
+    // getTotalLots() {
+    //     return LandModel.count().exec();
+    // }
 }
 
 // module.exports = LotAreas;

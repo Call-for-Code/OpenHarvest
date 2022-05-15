@@ -1,9 +1,9 @@
-import { CoopManager } from "../../db/entities/coopManager";
-import { Farmer, FarmerModel } from "../../db/entities/farmer";
+import { FarmerModel } from "../../db/entities/farmer";
 import { MessagingInterface } from "../messagingInterface";
 
 import { v4 as uuidv4 } from "uuid";
-import { MessageLog, MessageLogModel, Source, Status } from "./../../db/entities/messageLog";
+import { MessageLog, MessageLogModel, Source, Status } from "../../db/entities/messageLog";
+import { Farmer, User } from "common-types";
 
 export interface SMSSyncMessage {
     to: string;
@@ -43,11 +43,15 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
     private pendingMessages: SMSSyncMessage[] = [];
 
     async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
-        const number = farmer.mobile;
-
         if (message === undefined || message === null || message === "") {
             throw new Error("Message is empty!");
         }
+
+        if (farmer.mobile.length === 0) {
+            throw new Error("Farmer has no mobile numbers: " + farmer);
+        }
+
+        const number = farmer.mobile[0];
 
         const messageRef = await this.sendMessage(number, message);
         
@@ -61,12 +65,10 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
             messageRef: messageRef
         }
 
-        const messageLog = await MessageLogModel.create(messageLogEntry);
-
-        return messageLog;
+        return await MessageLogModel.create(messageLogEntry);
     }
 
-    async sendMessageToCoopManager(coopManager: CoopManager, message: string): Promise<MessageLog> {
+    async sendMessageToCoopManager(coopManager: User, message: string): Promise<MessageLog> {
         throw new Error("Method not implemented.");
 
         // const number = coopManager.mobile;
@@ -124,7 +126,7 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
         const messageLog = await MessageLogModel.create(messageLogEntry);
         
         this.emit("onMessage", messageLog);
-        this.notify(messageLog)
+        await this.notify(messageLog)
 
         return messageLog;
     }

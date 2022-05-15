@@ -1,23 +1,15 @@
+import Farm, { NewFarm } from "./Farm";
 
-
-export interface Farmer {
-    _id?: Types.ObjectId,
+export interface NewFarmer {
+    _id?: string,
     name: string,
     mobile: string[],
-    coopOrganisations: string[]
-    land_ids: string[]
-    lands?: Land[]
+    address: string,
+    organisation: string,
+    farms: NewFarm[]
 }
 
-export const FarmerSchema = new Schema({
-    _id: {
-        type: ObjectId,
-        auto: true
-    },
-    name: String,
-    mobile: [String],
-    coopOrganisations: [String],
-    land_ids: [ObjectId]
-});
-
-export const FarmerModel = model<Farmer>("farmer", FarmerSchema);
+export default interface Farmer extends NewFarmer{
+    _id: string,
+    farms: Farm[]
+}

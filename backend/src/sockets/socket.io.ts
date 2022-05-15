@@ -1,7 +1,7 @@
-import { MessageLog } from "./../db/entities/messageLog";
+import { MessageLog } from "../db/entities/messageLog";
 import { Server as NodejsServer } from "http";
 import { Namespace, Server } from "socket.io";
-import { Organisation } from "./../db/entities/organisation";
+import { Organisation } from "common-types";
 
 
 // interface ServerToClientEvents {
@@ -67,7 +67,7 @@ export class SocketIOManager {
 
     getNamespaceOfOrg(org: Organisation) {
         this.ensureInitialised()
-        return this.ioServer.of(`/org-${org._id}`);
+        return this.ioServer.of(`/org-${org.name}`);
     }
 
     publishMessage(org: Organisation, message: MessageLog) {
@@ -77,7 +77,7 @@ export class SocketIOManager {
     publish(org: Organisation, event: string, ...args: any) {
         this.ensureInitialised()
 
-        console.log("[Socket IO Server] Publishing Event. Namespace:", `/org-${org._id}`, "Event:", event, "Args", ...args);
+        console.log("[Socket IO Server] Publishing Event. Namespace:", `/org-${org.name}`, "Event:", event, "Args", ...args);
 
         const nsp = this.getNamespaceOfOrg(org);
         nsp.emit(event, ...args);
