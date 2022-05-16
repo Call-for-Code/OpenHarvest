@@ -28,7 +28,7 @@ const tableDataYHBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-3`,
     values: {
       crop: 'Baka',
       area: 30,
@@ -39,7 +39,7 @@ const tableDataYHBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-4`,
     values: {
       crop: 'Nsinjiro',
       area: 35,
@@ -50,7 +50,7 @@ const tableDataYHBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-5`,
     values: {
       crop: 'Kakoma',
       area: 45,
@@ -61,7 +61,7 @@ const tableDataYHBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-6`,
     values: {
       crop: 'Chalimbana',
       area: 20,
@@ -96,7 +96,7 @@ const tableDataYFBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-3`,
     values: {
       crop: 'Baka',
       area: 30,
@@ -107,7 +107,7 @@ const tableDataYFBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-4`,
     values: {
       crop: 'Nsinjiro',
       area: 35,
@@ -118,7 +118,7 @@ const tableDataYFBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-5`,
     values: {
       crop: 'Kakoma',
       area: 45,
@@ -129,7 +129,7 @@ const tableDataYFBC = [
     
   },
   {
-    id: `row-2`,
+    id: `row-6`,
     values: {
       crop: 'Chalimbana',
       area: 20,
