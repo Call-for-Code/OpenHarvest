@@ -75,7 +75,7 @@ router.get("/:id", async (req: Request, res: Response) => {
     }
 
     try {
-        const farmer = getFarmer(id);
+        const farmer = await getFarmer(id);
         if (farmer == null) {
             res.status(404).end();
         }

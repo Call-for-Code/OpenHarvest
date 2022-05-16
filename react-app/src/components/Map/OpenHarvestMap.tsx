@@ -1,5 +1,5 @@
-import React, { PropsWithChildren, useEffect } from "react";
-import L, { latLng, LatLng, LatLngTuple } from 'leaflet'
+import React, { PropsWithChildren, useEffect, useState } from "react";
+import L, { latLng, LatLng, LatLngBounds, LatLngBoundsExpression, LatLngExpression, LatLngLiteral, LatLngTuple } from 'leaflet'
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { FieldEditorLayer } from "./FieldEditorLayer";
 import { EISField } from "./../../types/EIS";
@@ -15,7 +15,9 @@ L.Icon.Default.mergeOptions({
 });
 
 export interface OpenHarvestMapProps {
-
+    centre?: LatLngExpression;
+    bounds?: LatLngBoundsExpression;
+    zoom?: number;
 }
 /**
  * The default map component for open harvest.
@@ -25,18 +27,25 @@ export interface OpenHarvestMapProps {
  * @returns 
  */
 export function OpenHarvestMap(props: PropsWithChildren<OpenHarvestMapProps>) {
-
-    let defaultCentreCoords = latLng([-13.805811, 32.888162]); // Mchinji, Malawai
-    const defaultZoom = 13;
-
     const auth = useAuth();
 
+    let defaultCentreCoords = latLng([-13.805811, 32.888162]); // Mchinji, Malawai
     if (auth.isLoggedIn) {
         defaultCentreCoords = latLng(auth.user!!.coopManager!!.location as LatLngTuple);
     }
+    const defaultZoom = 13;
+    
+    const [centre, setCentre] = useState<LatLngExpression>(props.centre || defaultCentreCoords);
+    const [zoom, setZoom] = useState<number>(props.zoom || defaultZoom);
+    const [bounds, setBounds] = useState<LatLngBoundsExpression | undefined>(props.bounds);
+
+    useEffect(() => {
+        
+    }, [props.centre, props.zoom, props.bounds]);
+
 
     return (
-        <MapContainer center={defaultCentreCoords} zoom={defaultZoom} className="w-full h-full">
+        <MapContainer center={centre} zoom={zoom} bounds={bounds} className="w-full h-full">
             <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

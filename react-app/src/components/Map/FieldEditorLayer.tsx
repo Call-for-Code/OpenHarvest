@@ -15,6 +15,7 @@ export interface FieldEditorLayerProps {
      * Called when the field is updated in some way.
      */
     onFieldUpdated?: (field: Field) => void;
+    disableEdit?: boolean;
 }
 
 
@@ -24,6 +25,8 @@ export interface FieldEditorLayerProps {
  * @returns FieldEditorMap Component
  */
 export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>): ReactElement {
+
+    const disableEditing = props.disableEdit || false;
 
     // field will be late inited as part of the use effect which is why the type doesn't include `| null`
     // As to why I'm using a ref, it's because react-leaflet-draw doesn't update it's OnCreated Callback
@@ -101,18 +104,23 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
     }, [fieldRef.current ? fieldRef.current.subFields.length : -1])
 
     return <FeatureGroup>
-        <EditControl
-            position='topright'
-            onEdited={(event: any) => {console.log("edited", event.layer)}}
-            onCreated={(e: any) => onCreated(e)}
-            onDeleted={(event: any) => console.log("deleted", event.layer)}
-            draw={{
-                polyline: false,
-                rectangle: false,
-                circle: false,
-                circlemarker: false,
-                marker: false
-            }}
-        />
+        {
+            !disableEditing &&
+            <EditControl
+                position='topright'
+                onEdited={(event: any) => {console.log("edited", event.layer)}}
+                onCreated={(e: any) => onCreated(e)}
+                onDeleted={(event: any) => console.log("deleted", event.layer)}
+                draw={{
+                    polyline: false,
+                    rectangle: false,
+                    circle: false,
+                    circlemarker: false,
+                    marker: false
+                }}
+            />
+        }
+        
+        {fieldLayers.map(Layer => <>{Layer}</>)}
     </FeatureGroup>
 }
