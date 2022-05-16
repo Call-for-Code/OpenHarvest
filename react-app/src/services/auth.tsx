@@ -142,7 +142,7 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
 
   // Check if we're signed in already
   useEffect(() => {
-    console.log("Auth", initialToken);
+    // console.log("Auth", initialToken);
     checkIfSignedIn();
   }, [])
   
