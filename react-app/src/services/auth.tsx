@@ -3,6 +3,8 @@ import { EventEmitter } from "eventemitter3";
 import { CoopManager } from './coopManager';
 import { Organisation } from './organisation';
 
+const localStorageTokenKey = "openharvest_token";
+
 export interface CoopManagerUser {
     id: string;
     email_verified: boolean
@@ -56,8 +58,12 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(initialToken);
 
-  function handleUser(rawUser: any) {
+  function handleUser(rawUser: CoopManagerUser | null, token: string | null) {
     setLoading(false);
+    
+    // @ts-expect-error It's totally valid to save a null value but TS doesn't think so.
+    localStorage.setItem(localStorageTokenKey, token);
+    
     if (rawUser) {
       const user = rawUser;
       
@@ -85,16 +91,44 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
   async function checkIfSignedIn() {
     setLoading(true);
 
-    try {
-      const res = await fetch("/me");
-      const userInfo = await res.json();
-      console.log(userInfo);
-      return handleUser(userInfo);
+    const localStorageToken = localStorage.getItem(localStorageTokenKey);
+
+    // Check if a token was passed in
+    if (token) {
+      // Lets parse the token and get user details
+      const segments = token.split(".");
+      const user = JSON.parse(atob(segments[1]))
+      setToken(token);
+      console.log("[Auth] Loaded token from auth transaction");
+      return handleUser(user, token);
     }
-    catch(e) {
-      console.log("User is not signed in.")
-      return handleUser(null);
+    else if (localStorageToken !== null) {
+      // We also need to handle the case of an expired token
+      const segments = localStorageToken.split(".");
+      const user = JSON.parse(atob(segments[1]))
+      setToken(localStorageToken);
+      console.log("[Auth] Loaded token from localStorage");
+      return handleUser(user, localStorageToken);
     }
+    else {
+      try {
+        const res = await fetch("/me");
+        const userInfo = await res.json();
+        console.log(userInfo);
+        return handleUser(userInfo, null);
+      }
+      catch(e) {
+        console.log("User is not signed in.")
+        return handleUser(null, null);
+      }
+    }
+
+    // Check if there's a token in local storage
+
+    // else lets ask the server if there's a session active
+
+
+    
   }
 
   function signout() {
@@ -108,17 +142,7 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
 
   // Check if we're signed in already
   useEffect(() => {
-    // Check if we have a token, which means we did have a session. Check the expiration date
-    if (token) {
-      
-    }
-    
-    // We can also load from local storage
-
-    
-
-
-
+    console.log("Auth", initialToken);
     checkIfSignedIn();
   }, [])
   

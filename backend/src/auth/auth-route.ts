@@ -31,9 +31,9 @@ router.get(
     passport.authenticate('openidconnect', {failureRedirect: '/failure'}),
     function (req, res) {
         // Encode a new JWT token and pass it to the web app via a http param
-        const token = jwt.sign(req.user!!, opts.secretOrKey!!);
-        res.redirect(redirect_url + "?token=" + token);
-        return;
+        const formattedUser = formatUser(req.user);
+        const token = jwt.sign(formattedUser!!, opts.secretOrKey!!);
+        return res.redirect(redirect_url + "?token=" + token);
     }
 );
 

@@ -30,16 +30,11 @@ function App(props: AppProps) {
     // console.log(props.location);
 
     const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
+    const searchToken = props.location.search.includes("token=") ?  props.location.search.split("token=")[1] : "";
+    const [initialToken, setInitialToken] = useState(searchToken);
 
     useEffect(() => {
         async function load() {
-
-            const search = props.location.search;
-            if (search.includes("token=")) {
-                console.log("token is present!!", search.split("token=")[1]);
-            }
-
-
             // We need to detect if this is a new user and redirect them if they are.
             let newUser = false;
             const res = await fetch("/api/coopManager/hasBeenOnBoarded", {});
@@ -163,7 +158,7 @@ function App(props: AppProps) {
 
     return (
         <>
-            <AuthProvider>                            
+            <AuthProvider token={initialToken}>                            
                 <Nav />
                 <Content className="main-content">
                     <Switch>
