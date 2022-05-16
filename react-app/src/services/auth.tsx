@@ -22,10 +22,14 @@ export interface CoopManagerUser {
     selectedOrganisation?: Organisation;
 }
 
+export interface AuthProviderProps {
+  token?: string
+}
+
 export const AuthContext = createContext<AuthProviderType>(undefined!!);
 
-export function AuthProvider({ children }: PropsWithChildren<{}>) {
-  const auth = useProvideAuth()
+export function AuthProvider({ children, token }: PropsWithChildren<AuthProviderProps>) {
+  const auth = useProvideAuth(token)
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }
 
@@ -35,6 +39,7 @@ export const useAuth = () => {
 
 export interface AuthProviderType { 
   user: CoopManagerUser | null;
+  token?: string;
   isLoggedIn: boolean;
   loading: boolean;
   login: () => void;
@@ -45,10 +50,11 @@ export interface AuthProviderType {
 // EventEmitter for Auth
 export const AuthEventEmitter = new EventEmitter();
 
-function useProvideAuth(): AuthProviderType {
+function useProvideAuth(initialToken?: string): AuthProviderType {
   const [user, setUser] = useState<CoopManagerUser | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(initialToken);
 
   function handleUser(rawUser: any) {
     setLoading(false);
@@ -91,8 +97,7 @@ function useProvideAuth(): AuthProviderType {
     }
   }
 
-  function signout() 
-  {
+  function signout() {
     if (process.env.NODE_ENV == "production") {
       window.location.href = "/logout";
     }
@@ -103,12 +108,24 @@ function useProvideAuth(): AuthProviderType {
 
   // Check if we're signed in already
   useEffect(() => {
+    // Check if we have a token, which means we did have a session. Check the expiration date
+    if (token) {
+      
+    }
+    
+    // We can also load from local storage
+
+    
+
+
+
     checkIfSignedIn();
   }, [])
   
 
   return {
     user,
+    token,
     isLoggedIn,
     loading,
     login,

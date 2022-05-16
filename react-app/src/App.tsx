@@ -27,12 +27,19 @@ type AppState = {
 
 function App(props: AppProps) {
 
-    console.log(props.location);
+    // console.log(props.location);
 
     const [showLogoutModal, setShowLogoutModal] = useState<boolean>(false);
 
     useEffect(() => {
         async function load() {
+
+            const search = props.location.search;
+            if (search.includes("token=")) {
+                console.log("token is present!!", search.split("token=")[1]);
+            }
+
+
             // We need to detect if this is a new user and redirect them if they are.
             let newUser = false;
             const res = await fetch("/api/coopManager/hasBeenOnBoarded", {});
