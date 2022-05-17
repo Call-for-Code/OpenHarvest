@@ -1,11 +1,11 @@
-import { EISConfig, Farm, Farmer, isDefined, isUndefined, NewFarm, Organisation } from "common-types";
+import { EISConfig, Farm, Farmer, isDefined, NewFarm } from "../../../common-types/src";
 import { FarmModel } from "../db/entities/farm";
 import { eisFarmService } from "../integrations/EIS/EISFarmService";
 import { organisationService } from "./OrganisationService";
 
 export interface IFarmService {
     getFarmerFarms(farmer: Farmer): Promise<Farm[]>;
-    saveFarm(newFarm: NewFarm): Promise<Farm>;
+    saveFarm(farmer: Farmer, newFarm: NewFarm): Promise<Farm>;
     saveFarms(farmer: Farmer, newFarms: NewFarm[]): Promise<Farm[]>;
 }
 
@@ -21,12 +21,12 @@ class FarmService implements IFarmService {
         return await FarmModel.find({"farmer._id": farmer._id}).exec() as Farm[];
     }
 
-    async saveFarm(newFarm: NewFarm): Promise<Farm> {
+    async saveFarm(farmer: Farmer, newFarm: NewFarm): Promise<Farm> {
 
-        const eisConfig = await FarmService.getEISConfig(newFarm.farmer.organisation);
+        const eisConfig = await FarmService.getEISConfig(farmer.organisation);
 
         if (isDefined(eisConfig)) {
-            return await eisFarmService.saveFarm(eisConfig, newFarm);
+            return await eisFarmService.saveFarm(eisConfig, farmer, newFarm);
         }
 
         const farmDoc = new FarmModel(newFarm);
@@ -37,12 +37,11 @@ class FarmService implements IFarmService {
         const eisConfig = await FarmService.getEISConfig(farmer.organisation);
         const farms: Farm[] = [];
         for (const newFarm of newFarms) {
-            newFarm.farmer = farmer;
             let farm: Farm;
             if (isDefined(eisConfig)) {
-                farm = await eisFarmService.saveFarm(eisConfig, newFarm);
+                farm = await eisFarmService.saveFarm(eisConfig, farmer, newFarm);
             } else {
-                farm = await this.saveFarm(newFarm) as Farm;
+                farm = await this.saveFarm(farmer, newFarm) as Farm;
             }
             farms.push(farm);
         }
@@ -51,11 +50,7 @@ class FarmService implements IFarmService {
     }
 
     private static async getEISConfig(org: string): Promise<EISConfig | undefined> {
-        let organisation: Organisation | null = await organisationService.getOrganisation(org);
-        if (isUndefined(organisation)) {
-            throw new Error("Organisation does not exist: " + org)
-        }
-        return organisation.eisConfig;
+        return organisationService.getEISConfig(org);
     }
 
 }

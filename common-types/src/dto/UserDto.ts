@@ -1,10 +1,11 @@
 import { Point } from "geojson";
+import OrganisationDto from "./OrganisationDto";
 
 export type UserDto = {
     location: Point;
     id: string;
     email: string;
-    organisation: string,
+    organisation: OrganisationDto,
     mobile: string
 }
 

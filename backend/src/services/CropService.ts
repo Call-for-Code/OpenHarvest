@@ -2,7 +2,7 @@
 // const {cropDetailsView} = require("../db/cloudant");
 // const {cropDetailsDdoc} = require("../db/cloudant");
 
-import { Crop } from "common-types";
+import { Crop } from "../../../common-types/src";
 import { CropModel } from "../db/entities/crop";
 
 export class CropService {

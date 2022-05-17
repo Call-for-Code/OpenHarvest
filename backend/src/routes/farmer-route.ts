@@ -1,9 +1,9 @@
 import { Request, Response, Router } from "express";
 import { farmerService } from "../services/FarmerService";
 
-import { Farmer, isUndefined, NewFarmer } from "common-types";
 import { FarmerModel } from "../db/entities/farmer";
 import { farmService } from "../services/FarmService";
+import { Farmer, isUndefined, NewFarmer } from "../../../common-types/src";
 
 // const LotAreaService = require("./../services/lot-areas.service");
 // const lotAreas = new LandAreasService();
@@ -94,7 +94,7 @@ router.post("/add", async(req: Request<{}, {}, NewFarmer>, res: Response) => {
     }
     const farmer = await farmerService.saveFarmer(newFarmer);
 
-    const farms = await farmService.saveFarms(farmer, newFarmer.farms);
+    await farmService.saveFarms(farmer, newFarmer.farms);
 
     res.json(farmer);
 });

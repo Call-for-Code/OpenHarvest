@@ -121,3 +121,9 @@ export const isUndefined = <T>(value: T | null | undefined): value is undefined 
 export enum AuthMethod {
     IBM_ID = "IBM_ID"
 }
+
+export enum Integration {
+    EIS = "EIS",
+    WEATHER = "WEATHER",
+    MESSAGING = "MESSAGING",
+}

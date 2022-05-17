@@ -1,15 +1,14 @@
 import { Polygon } from "geojson";
-import FieldCrop, { NewFieldCrop } from "./FieldCrop";
+import FieldCrop from "./FieldCrop";
 
 
 export interface NewField {
     _id?: string,
     name: string;
-    geoShape: Polygon;
-    crops: NewFieldCrop[]
+    geometry: Polygon;
+    crops: FieldCrop[]
 }
 
 export default interface Field extends NewField {
     _id: string,
-    crops: FieldCrop[]
 }

@@ -12,7 +12,7 @@ import 'dotenv/config';
 import { mongoInit } from "./db/mongodb";
 
 import farmerRoutes from "./routes/farmer-route";
-import lotRoutes from "./routes/lot-route";
+// import lotRoutes from "./routes/lot-route";
 import cropRoutes from "./routes/crop-route";
 import dashboardRoutes from "./routes/dashboard-route";
 import recommendationsRoutes from "./routes/recommendations-route";
@@ -27,7 +27,7 @@ import { IBMidStrategy } from "./auth/IBMiDStrategy";
 import { SocketIOManagerInstance } from "./sockets/socket.io";
 import { Server } from "http";
 
-mongoInit();
+mongoInit().then(() => console.log("Connected to DB"));
 
 const app = express();
 
@@ -49,11 +49,14 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+// @ts-ignore
 passport.serializeUser(function(user, done) {
     done(null, user);
 });
 
+// @ts-ignore
 passport.deserializeUser(function(obj, done) {
+    // @ts-ignore
     done(null, obj);
 });
 
@@ -62,9 +65,9 @@ passport.use(IBMidStrategy);
 app.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
 
 app.get('/auth/sso/callback', function (req, res, next) {
-    // @ts-ignore
-    let redirect_url = "/app";
+    let redirect_url;
     if (process.env.NODE_ENV == "production") {
+        // @ts-ignore
         redirect_url = req.session.originalUrl;
         redirect_url = "https://openharvest.net/";
     }
@@ -85,11 +88,13 @@ app.get('/failure', function(req, res) {
 
 
 app.get('/hello', ensureAuthenticated, function (req, res) {
-   var claims = req.user['_json'];
-   var html ="<p>Hello " + claims.given_name + " " + claims.family_name + ": </p>";
+    // @ts-ignore
+   const claims = req.user['_json'];
+   let html ="<p>Hello " + claims.given_name + " " + claims.family_name + ": </p>";
 
    html += "User details (ID token in _json object): </p>";
 
+    // @ts-ignore
    html += "<pre>" + JSON.stringify(req.user, null, 4) + "</pre>";
 
    html += "<br /><a href=\"/logout\">logout</a>";
@@ -104,6 +109,7 @@ app.get('/hello', ensureAuthenticated, function (req, res) {
 
 
 app.get('/me', ensureAuthenticated, (req, res) => {
+    // @ts-ignore
     return res.json(formatUser(req.user));
 });
 
@@ -112,7 +118,7 @@ app.get('/me', ensureAuthenticated, (req, res) => {
 // app.use('/api/names', nameRoutes);
 
 app.use("/api/farmer", farmerRoutes);
-app.use("/api/lot", lotRoutes);
+// app.use("/api/lot", lotRoutes);
 app.use("/api/crop", cropRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/recommendations", recommendationsRoutes);
@@ -149,8 +155,7 @@ if (process.env.NODE_ENV == "production") {
         console.log("Server starting on http://localhost:" + port);
     });
 
-}
-else {
+} else {
     const sslKey = process.env['SSL_Key'];
     const sslCert = process.env['SSL_Cert'];
     if (sslKey == undefined || sslCert == undefined) {

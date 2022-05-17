@@ -1,4 +1,4 @@
-import { CommonOptions } from "../types";
+import { CommonOptions } from "../index";
 
 export type WeatherCompanyConfig = {
     apiUrl: string;

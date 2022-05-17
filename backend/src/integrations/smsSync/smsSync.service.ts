@@ -3,7 +3,7 @@ import { MessagingInterface } from "../messagingInterface";
 
 import { v4 as uuidv4 } from "uuid";
 import { MessageLog, MessageLogModel, Source, Status } from "../../db/entities/messageLog";
-import { Farmer, User } from "common-types";
+import { Farmer, User } from "../../../../common-types/src";
 
 export interface SMSSyncMessage {
     to: string;

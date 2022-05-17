@@ -10,6 +10,7 @@ export const IBMidStrategy = new OpenIDConnectStrategy({
     callbackURL: process.env.AUTH_callback_url,
     skipUserProfile: true},
     // Add your own data here.
+    // @ts-ignore
     function (iss, sub, profile, accessToken, refreshToken, params, done) {
         process.nextTick(async function () {
             profile.accessToken = accessToken;

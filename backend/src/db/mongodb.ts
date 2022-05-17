@@ -1,5 +1,5 @@
 // Using Node.js `require()`
-import { connect } from 'mongoose';
+import { connect, Schema } from 'mongoose';
 
 export async function mongoInit() {
     // console.log(process.env.mongodb_url);
@@ -19,8 +19,31 @@ export async function mongoInit() {
     else {
         await connect(process.env.mongodb_url!!);
     }
-    console.log("Connected to DB");
 }
+
+export const PointSchema = new Schema({
+    type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+    },
+    coordinates: {
+        type: [Number],
+        required: true
+    }
+});
+
+export const PolygonSchema = new Schema({
+    type: {
+        type: String,
+        enum: ['Polygon'],
+        required: true
+    },
+    coordinates: {
+        type: [[[Number]]], // Array of arrays of arrays of numbers
+        required: true
+    }
+});
 
 
 

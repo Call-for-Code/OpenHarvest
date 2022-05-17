@@ -1,10 +1,10 @@
 import { FarmerModel } from "../db/entities/farmer";
-import { Farmer, NewFarmer } from "common-types";
+import { Farmer, NewFarmer } from "../../../common-types/src";
 import { farmService } from "./FarmService";
 
 class FarmerService {
     async getFarmers(): Promise<Farmer[]> {
-        return  await FarmerModel.find().lean().exec();
+        return await FarmerModel.find().lean().exec();
     }
 
     async saveFarmer(newFarmer: NewFarmer): Promise<Farmer> {

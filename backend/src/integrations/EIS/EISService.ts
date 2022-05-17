@@ -1,6 +1,5 @@
 import axios, { AxiosInstance } from "axios";
-import { EISConfig } from "../../../../common-types/integrations/EISConfig";
-import { isUndefined } from "common-types";
+import { EISConfig, isUndefined } from "../../../../common-types/src";
 
 type EISSession = {
     token: string,

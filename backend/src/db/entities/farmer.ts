@@ -1,5 +1,5 @@
 import { model, Schema, Types } from 'mongoose';
-import { Farmer } from "common-types"
+import { Farmer } from '../../../../common-types/src';
 import { FarmSchema } from "./farm";
 
 export const FarmerSchema = new Schema<Farmer>({

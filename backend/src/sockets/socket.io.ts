@@ -1,7 +1,7 @@
 import { MessageLog } from "../db/entities/messageLog";
 import { Server as NodejsServer } from "http";
 import { Namespace, Server } from "socket.io";
-import { Organisation } from "common-types";
+import { Organisation } from "../../../common-types/src";
 
 
 // interface ServerToClientEvents {

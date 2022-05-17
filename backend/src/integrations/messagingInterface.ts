@@ -3,7 +3,7 @@ import { FarmerModel } from "../db/entities/farmer";
 import { MessageLog } from "../db/entities/messageLog";
 import { EventBusInstance } from "./eventBus.service";
 import { OrganisationModel } from "../db/entities/organisation";
-import { Farmer, User } from "common-types";
+import { Farmer, User } from "../../../common-types/src";
 
 export declare interface MessagingInterface<ReceivedMessageType> {
     on(event: 'onMessage', listener: (message: MessageLog) => void): this;

@@ -1,6 +1,6 @@
 import User from "./User";
 import { AuthMethod } from "../globals";
-import { EISConfig, WeatherCompanyConfig } from "../types";
+import { EISConfig, WeatherCompanyConfig } from "../index";
 
 export default interface Organisation {
     name: string,

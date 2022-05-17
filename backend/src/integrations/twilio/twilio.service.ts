@@ -1,4 +1,4 @@
-import { Farmer, User } from "common-types";
+import { Farmer, User } from "../../../../common-types/src";
 import twilio, { Twilio } from "twilio";
 import { FarmerModel } from "../../db/entities/farmer";
 import { MessageLog, MessageLogModel, Source, Status } from "../../db/entities/messageLog";

@@ -1,5 +1,5 @@
 import { Feature, FeatureCollection, Polygon } from "geojson";
-import { GeoCodeNumber, NewFieldCrop } from "common-types";
+import { FieldCrop, GeoCodeNumber } from "../../../../common-types/src";
 
 /**
  * There are many redundant fields you'll notice because EIS's data structures 
@@ -52,7 +52,7 @@ export interface FieldResponse {
 
 export type OpenHarvestSubFieldProps = {
     farmer_id: string;
-    crops: NewFieldCrop[]
+    crops: FieldCrop[]
 };
 
 export interface EISSubFieldProperties {

@@ -1,4 +1,4 @@
-import { EISConfig, Farm, Farmer, Field, NewFarm, NewField } from "common-types";
+import { EISConfig, Farm, Farmer, Field, NewFarm, NewField } from "../../../../common-types/src";
 import { EISField, EISFieldCreateResponse, EISSubField, EISSubFieldProperties, EISSubFieldSearchReturn, FieldResponse, OpenHarvestSubFieldProps } from "./EIS.types";
 import { EISService } from "./EISService";
 import { Feature, FeatureCollection, Polygon } from "geojson";
@@ -38,7 +38,7 @@ export class EISFarmService extends EISService {
 
         try {
             for (const parentRef of Object.keys(parentRefs)) {
-                farms.push(await this.getFarm(eisConfig, parentRef, farmer));
+                farms.push(await this.getFarm(eisConfig, parentRef));
             }
         } catch (e) {
             console.error(e);
@@ -46,20 +46,20 @@ export class EISFarmService extends EISService {
         return farms;
     }
 
-    async saveFarm(eisConfig: EISConfig, farm: NewFarm): Promise<Farm> {
+    async saveFarm(eisConfig: EISConfig, farmer: Farmer, farm: NewFarm): Promise<Farm> {
         const eisSession = await this.getToken(eisConfig);
 
         const eisField: EISField = {
             name: farm.name,
-            subFields: farm.fields.map((field) => EISFarmService.convertToEisSubField(farm.farmer, field))
+            subFields: farm.fields.map((field) => EISFarmService.convertToEisSubField(farmer, field))
         };
 
         const res = await eisSession.authAxios.post<EISFieldCreateResponse>(eisSession.eisConfig.apiUrl + "field", eisField);
 
-        return this.getFarm(eisConfig, res.data.field, farm.farmer);
+        return this.getFarm(eisConfig, res.data.field);
     }
 
-    private async getFarm(eisConfig: EISConfig, uuid: string, farmer: Farmer): Promise<Farm> {
+    private async getFarm(eisConfig: EISConfig, uuid: string): Promise<Farm> {
         const eisSession = await this.getToken(eisConfig);
 
         const fieldRes = await eisSession.authAxios.get<FieldResponse>(eisSession.eisConfig.apiUrl + `field/${uuid}`);
@@ -73,7 +73,7 @@ export class EISFarmService extends EISService {
 
             let field: Field = {
                 _id: subField.uuid,
-                geoShape: subField.geometry,
+                geometry: subField.geometry,
                 name: subField.properties.field_name,
                 crops: openHarvestProps.crops
             };
@@ -81,12 +81,12 @@ export class EISFarmService extends EISService {
             fields.push(field);
         }
 
-        return {_id: uuid, fields, farmer, name: fieldResponse.properties.name};
+        return {_id: uuid, fields, name: fieldResponse.properties.name};
     }
 
     private static convertToEisSubField(farmer: Farmer, field: NewField): EISSubField {
         const feature: Feature<Polygon, EISSubFieldProperties> = {
-            geometry: field.geoShape,
+            geometry: field.geometry,
             properties: {
                 farm_name: field.name,
                 open_harvest_farmer_id: farmer._id,

@@ -1,19 +1,14 @@
 import { model, Schema } from 'mongoose';
+import { Organisation, User } from '../../../../common-types/src';
 
-import { Organisation, User } from "common-types";
+import { PointSchema } from "../mongodb";
 
 export const UserSchema = new Schema<User>({
     /**
      * Auth provider + auth provider id. E.g. "IBMid:1SDAS61W6A"
      */
     _id: String,
-    /**
-     *  GeoCode / LatLng coordinate tuple
-     */
-    location: [{
-        type: "Point",
-        coordinates: [Number]
-    }],
+    location: PointSchema,
     mobile: String,
 });
 

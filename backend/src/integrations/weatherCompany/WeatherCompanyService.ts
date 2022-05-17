@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CommonOptions, DataFormat, GeoCodeNumber, geoCodeToString, Language, Unit, WeatherCompanyConfig } from "common-types";
+import { CommonOptions, DataFormat, GeoCodeNumber, geoCodeToString, Language, Unit, WeatherCompanyConfig } from "../../../../common-types/src";
 
 const apiRequestLimit = 50; // It's really 100 per minute
 let apiRequestCounter = 0;

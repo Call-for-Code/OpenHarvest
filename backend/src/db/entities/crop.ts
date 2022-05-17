@@ -1,6 +1,6 @@
 import { model, Schema, Types } from 'mongoose';
 
-import { Crop } from "common-types"
+import { Crop } from "../../../../common-types/src"
 
 // Mongoose will automatically add _id property.
 export const CropSchema = new Schema<Crop>({

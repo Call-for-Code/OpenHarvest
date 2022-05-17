@@ -5,7 +5,7 @@
  * will make the move easy as it will just become an interface
  */
 
-import { Organisation } from "common-types";
+import { Organisation } from "../../../common-types/src";
 import { EventEmitter } from "events";
 
 import { MessageLog } from "../db/entities/messageLog";

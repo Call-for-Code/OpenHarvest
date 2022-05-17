@@ -1,7 +1,6 @@
 import { Request, Router } from "express";
-import { organisationService } from "../services/OrganisationService";
 import { userService } from "../services/UserService";
-import { isUndefined, OrganisationDto, UserDto } from "common-types";
+import { isUndefined, UserDto } from "../../../common-types/src";
 
 const router = Router();
 
@@ -38,15 +37,5 @@ router.post("/onboard", async (req: Request<{}, {}, UserDto>, res) => {
     res.json(userDoc);
 });
 
-
-router.put("/addOrganisation", async (req: Request<{}, {}, OrganisationDto>, res) => {
-    if (req.body === undefined) {
-        return res.status(400).send("Body is missing");
-    }
-
-    const org = await organisationService.createOrganisation(req.body);
-
-    res.json(org);
-});
 
 export default router;

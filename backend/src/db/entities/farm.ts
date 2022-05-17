@@ -1,8 +1,8 @@
 import { model, Schema, Types } from 'mongoose';
-import { FarmerSchema } from './farmer';
 
-import { Field, FieldCrop, NewFarm } from "common-types"
 import { CropSchema } from "./crop";
+import { PolygonSchema } from "../mongodb";
+import { Field, FieldCrop, NewFarm } from '../../../../common-types/src';
 
 export const FieldCropSchema = new Schema<FieldCrop>({
     crop: CropSchema,
@@ -14,21 +14,14 @@ export const FieldSchema = new Schema<Field>({
     _id: Types.ObjectId,
     name: String,
     crops: [FieldCropSchema],
-    geoShape: {
-        type: "Polygon",
-        coordinates: [[Number]]
-    },
+    geometry: PolygonSchema,
 });
 
 export const FarmSchema = new Schema<NewFarm>({
     _id: Types.ObjectId,
-    farmer: FarmerSchema,
     name: String,
     fields: [FieldSchema],
-    geoShape: {
-        type: "Polygon",
-        coordinates: [[Number]]
-    },
+    geometry: PolygonSchema,
 });
 
 export const FarmModel = model<NewFarm>("farm", FarmSchema);

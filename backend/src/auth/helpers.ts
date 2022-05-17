@@ -1,4 +1,4 @@
-import { Organisation, User } from "common-types";
+import { Organisation, User } from "../../../common-types/src";
 
 export interface CoopManagerUser {
     id: string;
@@ -40,6 +40,7 @@ export function formatUser(user: any): CoopManagerUser {
   }
 }
 
+// @ts-ignore
 export function ensureAuthenticated(req, res, next) {
     // console.log(req);
     if (!req.isAuthenticated()) {

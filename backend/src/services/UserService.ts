@@ -1,11 +1,11 @@
-import { isUndefined, NewUserDto, Organisation, User, UserDto } from "common-types";
-import { organisationService } from "./OrganisationService";
+import { isUndefined, NewUserDto, Organisation, User, UserDto, UserOrganisationDto } from "../../../common-types/src";
+import { organisationService, toOrganisationDto } from "./OrganisationService";
 
 
 class UserService {
 
     async getUser(userId: string): Promise<UserDto[]> {
-        const orgs: Organisation[] = await organisationService.getOrganisationsByUserId(userId);
+        const orgs: UserOrganisationDto[] = await organisationService.getOrganisationsByUserId(userId);
 
         if (isUndefined(orgs) || orgs.length === 0) {
             return [];
@@ -14,8 +14,8 @@ class UserService {
         const userDtos: UserDto[] = [];
 
         orgs.forEach(org => {
-            org.users.filter(user => user._id === userId).map(user => {
-                userDtos.push(createToUserDto(user, org));
+            org.users.filter(user => user.id === userId).map(user => {
+                userDtos.push(toUserDto(user, org));
             })
         });
 
@@ -40,7 +40,7 @@ class UserService {
 
 export const userService = new UserService();
 
-export function createToUserDto(user: User, org: Organisation): UserDto {
+export function toUserDto(user: User, org: Organisation): UserDto {
     if (isUndefined(user._id)) {
         throw new Error("User does not have id.")
     }
@@ -48,7 +48,7 @@ export function createToUserDto(user: User, org: Organisation): UserDto {
         email: "",
         location: user.location,
         mobile: user.mobile,
-        organisation: org.name,
+        organisation: toOrganisationDto(org),
         id: user._id
     };
 }

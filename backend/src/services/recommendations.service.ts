@@ -7,13 +7,13 @@ import { cropService } from "./CropService";
 
 // const nswBbox = "140.965576,-37.614231,154.687500,-28.071980"; // lng lat
 // const nswBboxLatLng = "-37.614231,140.965576,-28.071980,154.687500"; // lat lng
-const weights = {
-    lowPlantedArea: 0.15,
-    lowYieldForecast: 0.20,
-    onShortlist: 0.25,
-    inSeason: 0.40,
-    // notOnOthersShortlist: 0.30,
-};
+// const weights = {
+//     lowPlantedArea: 0.15,
+//     lowYieldForecast: 0.20,
+//     onShortlist: 0.25,
+//     inSeason: 0.40,
+//     // notOnOthersShortlist: 0.30,
+// };
 
 export interface RecommendationsRequest {
     plantDate: string
@@ -38,7 +38,7 @@ export default class RecommendationsService {
             const seasonStartMonth = startDate.getMonth() + 1;
             // let seasonEndMonth = crop.planting_season[1];
             let seasonEndMonth = endDate.getMonth() + 1;
-            let inSeason = false;
+            let inSeason;
             if (seasonStartMonth > seasonEndMonth) {
                 inSeason = (plantMonth >= seasonStartMonth && plantMonth <= 12) || (plantMonth >= 1 && plantMonth <= seasonEndMonth);
             } else {
@@ -94,7 +94,7 @@ export default class RecommendationsService {
         //         cropScore.yieldForecastScore);
         //     cropScores.push(cropScore);
         // });
-
+        // @ts-ignore
         return cropScores.sort((a, b) => b.score - a.score);
     }
 
