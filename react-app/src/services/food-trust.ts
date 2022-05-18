@@ -3,12 +3,6 @@
 export class FoodTrustAPI {
     APIBase = "/api/foodtrust/";
 
-    async foodTrustAuthToken() {
-        const response = await fetch(this.APIBase + "foodTrustAuthToken");
-        const token = await response.json();
-        return token;
-    }
-
     async foodTrustProducts() {
         const params = {
             method: 'post',

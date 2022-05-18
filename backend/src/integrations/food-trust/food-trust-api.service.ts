@@ -3,8 +3,8 @@ import {lotCommissionXML, serialAndPalletCommissionXML, lotObservationXML, seria
 
 let expiration = 0;
 let iftToken = "";
-const serviceTokenAPI = 'https://iam.cloud.ibm.com/identity/token';
-const iftAPI = 'https://sandbox.transparentsupply.ibm.com/ift/api/'
+const serviceTokenAPI = process.env.service_token_api;
+const iftAPI = process.env.ift_url
 
 export class FoodTrustAPI {
 

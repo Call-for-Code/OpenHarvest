@@ -6,12 +6,6 @@ const router = Router();
 
 const api = new FoodTrustAPI();
 
-router.get("/foodTrustAuthToken", async (req, res) => {
-    const iamServiceToken = await api.getIamServiceToken();
-    const iftToken = await api.getIFTToken(iamServiceToken);
-    res.json(iftToken)
-});
-
 router.post("/foodTrustProduts", async (req, res) => {
     const products = await api.getProducts();
     res.json(products)
