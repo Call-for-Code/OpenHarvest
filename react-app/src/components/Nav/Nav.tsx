@@ -29,6 +29,7 @@ export default function Nav() {
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
                 <HeaderMenuItem<NavLinkProps> element={NavLink} to="/messaging">Messaging</HeaderMenuItem>
+                <HeaderMenuItem<NavLinkProps> element={NavLink} to="/foodTrust">Food Trust</HeaderMenuItem>
             </HeaderNavigation>
 
             <HeaderGlobalBar>

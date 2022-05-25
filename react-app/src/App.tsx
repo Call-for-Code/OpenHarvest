@@ -10,6 +10,7 @@ import Nav from "./components/Nav/Nav"
 import CoOpHome from "./components/CoOpHome/CoOpHome";
 import Farmers from "./components/Farmers/Farmers";
 import Crops from "./components/Crops/Crops";
+import FoodTrust from "./components/FoodTrust/FoodTrust";
 import { AuthContext, AuthProvider } from "./services/auth";
 import UserOnboarding from "./components/Onboarding/UserOnboarding";
 import { AddFarmer } from "./components/Farmers/AddFarmer";
@@ -124,6 +125,16 @@ class App extends Component<AppProps, AppState> {
                                 render={() => 
                                     <PrivateRoute>
                                         <Messaging />
+                                    </PrivateRoute>
+                                }
+                            />
+                            <Route
+                                key={"foodTrust"}
+                                path={"/foodTrust"}
+                                exact
+                                render={() => 
+                                    <PrivateRoute>
+                                        <FoodTrust />
                                     </PrivateRoute>
                                 }
                             />
