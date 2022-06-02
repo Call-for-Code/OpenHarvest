@@ -3,6 +3,9 @@ import { Schema, model, ObjectId, Types } from 'mongoose';
 
 const ObjectId = Schema.Types.ObjectId;
 
+/*
+    The GnosisPayloadsSchema will store payloads recently sent to Gnosis
+*/
 export interface GnosisPayloads {
     _id?: Types.ObjectId;
     farmer_id: string;

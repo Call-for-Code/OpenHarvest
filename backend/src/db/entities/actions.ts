@@ -3,6 +3,9 @@ import { Schema, model, ObjectId, Types } from 'mongoose';
 
 const ObjectId = Schema.Types.ObjectId;
 
+/*
+    The ActionsSchema will store the state of the Farmers [in]complete actions
+*/
 export interface Actions {
     _id?: Types.ObjectId;
     farmer_id: string;
