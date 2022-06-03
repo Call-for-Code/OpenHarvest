@@ -10,6 +10,7 @@ import Nav from "./components/Nav/Nav";
 import CoOpHome from "./components/CoOpHome/CoOpHome";
 import Farmers from "./components/Farmers/Farmers";
 import Crops from "./components/Crops/Crops";
+import FoodTrust from "./components/FoodTrust/FoodTrust";
 import { AuthProvider } from "./services/auth";
 import UserOnBoarding from "./components/Onboarding/UserOnboarding";
 import { AddFarmer } from "./components/Farmers/AddFarmer";
@@ -136,7 +137,7 @@ class App extends Component<AppProps, AppState> {
                                         }
                                     />
 
-                                </Switch>
+                            </Switch>
                         }
                     </Content>
                 </AuthProvider>

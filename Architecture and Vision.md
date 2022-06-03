@@ -5,7 +5,7 @@ It covers subjects such as:
 
 - Key Features
 - Deliberate Architectural Decisions
-- Ideals and "Blue Sky" vision that should guide Open Harvest decision making in the future.
+- Ideals and "Blue Sky" vision that should guide OpenHarvest decision making in the future.
 
 ## Key Purpose of OpenHarvest
 
@@ -23,7 +23,7 @@ It is designed to be easily integrated into other software.
 2. It is a dashboard and control centre for data related to Coops and organisations of Farmers.
 3. OpenHarvest should be extensible in several different areas:
    1. Data should be imported and exported via APIs to other systems
-   2. Open Harvest Events will notify other systems about new data or other events
+   2. OpenHarvest Events will notify other systems about new data or other events
    3. Integrations will be able to add data to display on the UI along side OpenHarvest Core / Primitive data
 
 Looking at other successful open source software it is reminiscent of the Unix philosophy of which an extract is:

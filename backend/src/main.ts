@@ -21,6 +21,7 @@ import userRoutes from "./routes/user-route";
 import organisationRoutes from "./routes/organisation-route";
 import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
+import foodTrustRoutes from "./routes/food-trust-route";
 
 import { ensureAuthenticated, formatUser } from "./auth/helpers";
 import { IBMidStrategy } from "./auth/IBMiDStrategy";
@@ -124,6 +125,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/recommendations", recommendationsRoutes);
 
 app.use("/api/weather", weatherRoutes);
+app.use("/api/foodtrust", foodTrustRoutes)
 app.use("/api/coopManager", userRoutes);
 app.use("/api/organisation", organisationRoutes);
 app.use("/api/messaging", messageLogRoutes);
