@@ -26,7 +26,7 @@ const FarmerActions = () => {
     const [deleteCropTemplateId, setDeleteCropTemplateId] = useState<string>();
     const [deleteWarncropTemplateId, setDeleteWarncropTemplateId] = useState(false);
 
-    async function handleSubmitDeleteActionWeightsById(){
+    async function handleDelete(){
         if(deleteCropTemplateId){
             const res = await actionWeightsAPI.deleteActionWeightsById(deleteCropTemplateId);
             console.log(res)
@@ -36,7 +36,7 @@ const FarmerActions = () => {
         
     }
     
-    async function handleSubmitGetActionWeightsById(){
+    async function handleGet(){
         if(getCropTemplateId){
             const res = await actionWeightsAPI.getActionWeightsById(getCropTemplateId);
             console.log(res)
@@ -47,7 +47,7 @@ const FarmerActions = () => {
     }
 
     // submits actionWeightsObject to ActionWeights creation API
-    async function handleSubmit(){
+    async function handlePut(){
         if(addCropTemplateId){
             
             const actionWeightsObject : ActionWeights = {
@@ -153,7 +153,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Enter the Crop Template ID" id="cropTemplate_id" onChange={handleAddCropTemplateIdChange} warn={addWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button" style={{background: "green"}} onClick={handleSubmit}>Put</Button>
+                    <Button type="button" style={{background: "green"}} onClick={handlePut}>Put</Button>
                 </Column>
             </Row>
             <Row style={rowStyle}>
@@ -161,7 +161,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Find ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleGetCropTemplateIdChange} warn={getWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button" onClick={handleSubmitGetActionWeightsById}>Get</Button>
+                    <Button type="button" onClick={handleGet}>Get</Button>
                 </Column>
             </Row>
             <Row style={rowStyle}>
@@ -169,7 +169,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Delete ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleDeleteCropTemplateIdChange} warn={deleteWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button"  style={{background: "red"}} onClick={handleSubmitDeleteActionWeightsById}>Delete</Button>
+                    <Button type="button"  style={{background: "red"}} onClick={handleDelete}>Delete</Button>
                 </Column>
             </Row>
         </Grid>
