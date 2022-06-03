@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from "react";
 import * as ReactDOM from 'react-dom';
 import {Grid, Column, Row, Slider, Button, TextInput} from "carbon-addons-iot-react";
-import { ActionWeights, ActionWeightsAPI} from "../../services/actionWeights";
+import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 
 // instantiate API for interacting with mongoDB
-const actionWeightsAPI = new ActionWeightsAPI();
+const cropTemplateAPI = new CropTemplateAPI();
 
 const rowStyle = {
     justifyContent:"center",
@@ -16,85 +16,87 @@ const columnStyle = {
     textAlign:"center",
 }
 
-const FarmerActions = () => {
+const Farmers = () => {
 
     // state management
-    const [addCropTemplateId, setAddCropTemplateId] = useState<string>();
-    const [addWarncropTemplateId, setAddWarncropTemplateId] = useState(false);
-    const [getCropTemplateId, setGetCropTemplateId] = useState<string>();
-    const [getWarncropTemplateId, setGetWarncropTemplateId] = useState(false);
-    const [deleteCropTemplateId, setDeleteCropTemplateId] = useState<string>();
-    const [deleteWarncropTemplateId, setDeleteWarncropTemplateId] = useState(false);
+    const [addCropTemplateName, setAddCropTemplateName] = useState<string>();
+    const [addWarncropTemplateName, setAddWarncropTemplateName] = useState(false);
+    const [getCropTemplateName, setGetCropTemplateName] = useState<string>();
+    const [getWarncropTemplateName, setGetWarncropTemplateName] = useState(false);
+    const [deleteCropTemplateName, setDeleteCropTemplateName] = useState<string>();
+    const [deleteWarncropTemplateName, setDeleteWarncropTemplateName] = useState(false);
 
+    // submits cropTemplateName to delete its respective to CropTemplate document
     async function handleDelete(){
-        if(deleteCropTemplateId){
-            const res = await actionWeightsAPI.deleteActionWeightsById(deleteCropTemplateId);
+        if(deleteCropTemplateName){
+            const res = await cropTemplateAPI.deleteCropTemplateByName(deleteCropTemplateName);
             console.log(res)
         }else{
-            setDeleteWarncropTemplateId(true)
+            setDeleteWarncropTemplateName(true)
         }
         
     }
     
+    // submits cropTemplateName to retrieve its respective to CropTemplate document
     async function handleGet(){
-        if(getCropTemplateId){
-            const res = await actionWeightsAPI.getActionWeightsById(getCropTemplateId);
+        if(getCropTemplateName){
+            const res = await cropTemplateAPI.getCropTemplateByName(getCropTemplateName);
             console.log(res)
         }else{
-            setGetWarncropTemplateId(true)
+            setGetWarncropTemplateName(true)
         }
         
     }
 
-    // submits actionWeightsObject to ActionWeights creation API
+    // submits actionCropTemplatesObject add or update a CropTemplate document
     async function handlePut(){
-        if(addCropTemplateId){
+        if(addCropTemplateName){
             
-            const actionWeightsObject : ActionWeights = {
+            const actionCropTemplatesObject : CropTemplate = {
                 action_a_weight: parseInt(document.getElementById("action-A-input-for-slider")!.getAttribute('value')!),
                 action_b_weight: parseInt(document.getElementById("action-B-input-for-slider")!.getAttribute('value')!),
                 action_c_weight: parseInt(document.getElementById("action-C-input-for-slider")!.getAttribute('value')!),
                 action_d_weight: parseInt(document.getElementById("action-D-input-for-slider")!.getAttribute('value')!),
-                crop_template_id: addCropTemplateId
+                crop_template_id: addCropTemplateName
                 }
             
-            const res = await actionWeightsAPI.putActionWeights(actionWeightsObject);
+            const res = await cropTemplateAPI.putCropTemplate(actionCropTemplatesObject);
             console.log(res)
             
         }else{
-            setAddWarncropTemplateId(true)
+            setAddWarncropTemplateName(true)
         }
         
     }
 
-    // update state for addCropTemplateId
-    const handleAddCropTemplateIdChange = (event:any) => {
-        setAddCropTemplateId(event.target.value)
+    // update state for addCropTemplateName
+    const handleAddCropTemplateNameChange = (event:any) => {
+        setAddCropTemplateName(event.target.value)
     }
 
-    // update state for getCropTemplateId
-    const handleGetCropTemplateIdChange = (event:any) => {
-        setGetCropTemplateId(event.target.value)
+    // update state for getCropTemplateName
+    const handleGetCropTemplateNameChange = (event:any) => {
+        setGetCropTemplateName(event.target.value)
     }
 
-    // update state for getCropTemplateId
-    const handleDeleteCropTemplateIdChange = (event:any) => {
-        setDeleteCropTemplateId(event.target.value)
+    // update state for getCropTemplateName
+    const handleDeleteCropTemplateNameChange = (event:any) => {
+        setDeleteCropTemplateName(event.target.value)
     }
 
     return(
         <Grid>
             <Row style={rowStyle}>
                 <Column sm={2} md={2} lg={2} style={columnStyle}>
-                    <p>Actions</p>
+                    <p>s</p>
                 </Column>
                 <Column sm={3} md={3} lg={3} style={columnStyle}>
-                    <p>Weights</p>
+                    <p>CropTemplates</p>
                 </Column>
             </Row>
             <Row style={rowStyle}>
                 <Column sm={2} md={2} lg={2} style={columnStyle}>
-                    <p>Some Action A</p>
+                    <p>Some  A</p>
                 </Column>
                 <Column sm={3} md={3} lg={3} style={columnStyle}>
                     <Slider
@@ -108,7 +110,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={2} md={2} lg={2} style={columnStyle}>
-                    <p>Some Action B</p>
+                    <p>Some  B</p>
                 </Column>
                 <Column sm={3} md={3} lg={3} style={columnStyle}>
                     <Slider
@@ -122,7 +124,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={2} md={2} lg={2} style={columnStyle}>
-                    <p>Some Action C</p>
+                    <p>Some  C</p>
                 </Column>
                 <Column sm={3} md={3} lg={3} style={columnStyle}>
                     <Slider
@@ -136,7 +138,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={2} md={2} lg={2} style={columnStyle}>
-                    <p>Some Action D</p>
+                    <p>Some  D</p>
                 </Column>
                 <Column sm={3} md={3} lg={3} style={columnStyle}>
                     <Slider
@@ -150,7 +152,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={3} md={3} lg={3}>
-                    <TextInput labelText="" placeholder="Enter the Crop Template ID" id="cropTemplate_id" onChange={handleAddCropTemplateIdChange} warn={addWarncropTemplateId} warnText="cropTemplate ID is required"/>
+                    <TextInput labelText="" placeholder="Enter the Crop Template ID" id="cropTemplate_id" onChange={handleAddCropTemplateNameChange} warn={addWarncropTemplateName} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
                     <Button type="button" style={{background: "green"}} onClick={handlePut}>Put</Button>
@@ -158,7 +160,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={3} md={3} lg={3}>
-                    <TextInput labelText="" placeholder="Find ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleGetCropTemplateIdChange} warn={getWarncropTemplateId} warnText="cropTemplate ID is required"/>
+                    <TextInput labelText="" placeholder="Find CropTemplates by Crop Template ID" id="cropTemplate_id" onChange={handleGetCropTemplateNameChange} warn={getWarncropTemplateName} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
                     <Button type="button" onClick={handleGet}>Get</Button>
@@ -166,7 +168,7 @@ const FarmerActions = () => {
             </Row>
             <Row style={rowStyle}>
                 <Column sm={3} md={3} lg={3}>
-                    <TextInput labelText="" placeholder="Delete ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleDeleteCropTemplateIdChange} warn={deleteWarncropTemplateId} warnText="cropTemplate ID is required"/>
+                    <TextInput labelText="" placeholder="Delete CropTemplates by Crop Template ID" id="cropTemplate_id" onChange={handleDeleteCropTemplateNameChange} warn={deleteWarncropTemplateName} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
                     <Button type="button"  style={{background: "red"}} onClick={handleDelete}>Delete</Button>
@@ -175,4 +177,4 @@ const FarmerActions = () => {
         </Grid>
     );
 }
-export default FarmerActions;
+export default Farmers;

@@ -1,16 +1,14 @@
 import { Router, Request, Response } from "express";
-// import { ActionsModel } from "db/entities/actions";
-import { ActionWeightsModel } from "../db/entities/actionWeights";
-// import { GnosisPayloadModel } from "db/entities/gnosisPayloads";
+import { CropTemplateModel } from "../db/entities/cropTemplate";
 
 const router = Router();
 
-async function createOrUpdateWeights(req: Request, res: Response) {
+async function createOrUpdateCropTemplates(req: Request, res: Response) {
     try{
-        const query = {"crop_template_id": req.body.cropTemplateId};
+        const query = {"crop_template_name": req.body.cropTemplateName};
         const update = {$set: req.body}
         const options = {upsert: true}
-        const docs = await ActionWeightsModel.updateOne(query, update, options)
+        const docs = await CropTemplateModel.updateOne(query, update, options)
         .then(doc => {
             console.log(doc)
           })
@@ -25,12 +23,12 @@ async function createOrUpdateWeights(req: Request, res: Response) {
 }
 
 //api to create or update weights
-router.put("/put", createOrUpdateWeights);
+router.put("/put", createOrUpdateCropTemplates);
 
-// return all ActionWeights from mongoDB
-router.get("/getWeights"), async (req: Request, res: Response) => {
+// return all ActionCropTemplates from mongoDB
+router.get("/getCropTemplates"), async (req: Request, res: Response) => {
     try {
-        const docs = await ActionWeightsModel.find({})
+        const docs = await CropTemplateModel.find({})
         .then(doc => {
             console.log(doc)
           })
@@ -45,9 +43,9 @@ router.get("/getWeights"), async (req: Request, res: Response) => {
 }
 
 // return all ActionWeight for a given crop template ID
-router.get("/getWeightsById/:cropTemplateId", async (req: Request, res: Response) => {
+router.get("/getCropTemplatesByName/:cropTemplateName", async (req: Request, res: Response) => {
     try {
-        const docs = await ActionWeightsModel.find({"crop_template_id": req.params.cropTemplateId})
+        const docs = await CropTemplateModel.find({"crop_template_name": req.params.cropTemplateName})
         .then(doc => {
             console.log(doc)
           })
@@ -62,9 +60,9 @@ router.get("/getWeightsById/:cropTemplateId", async (req: Request, res: Response
 });
 
 // delete ActionWeight by given crop template ID
-router.delete("/deleteWeightsById/:cropTemplateId", async (req: Request, res: Response) => {
+router.delete("/deleteCropTemplatesByName/:cropTemplateName", async (req: Request, res: Response) => {
     try {
-        const docs = await ActionWeightsModel.deleteOne({"crop_template_id": req.params.cropTemplateId})
+        const docs = await CropTemplateModel.deleteOne({"crop_template_name": req.params.cropTemplateName})
         .then(doc => {
             console.log(doc)
           })
@@ -77,18 +75,5 @@ router.delete("/deleteWeightsById/:cropTemplateId", async (req: Request, res: Re
         res.status(500).json(e);
     }
 });
-
-//api to get current actions
-
-//api to update current actions
-
-//api to get payloads (all or some)
-
-//api to insert new payloads
-
-// router.put("/foodTrustProduts", async (req, res) => {
-//     const products = await api.getProducts();
-//     res.json(products)
-// })
 
 export default router;
