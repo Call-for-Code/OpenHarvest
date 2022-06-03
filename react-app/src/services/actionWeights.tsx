@@ -6,20 +6,31 @@ export interface ActionWeights {
     action_a_weight: number,
     action_b_weight: number,
     action_c_weight: number,
-    action_d_weight: number
+    action_d_weight: number,
+    crop_template_id: string
 }
 
-export interface AddActionWeights {
-    weights: ActionWeights;
-    field: string;
-}
 
-export async function getActionWeightsById(): Promise<ActionWeights> {
-    const data = await axios.get<ActionWeights>("/api/getWeightsById/");
-    return data.data;
-}
+export class ActionWeightsAPI{
+    APIBase = "/api/weights/";
+    
+    async getAllActionWeights(): Promise<ActionWeights> {
+        const data = await axios.get<ActionWeights>(this.APIBase + "getWeights");
+        return data.data;
+    }
 
-export async function addActionWeights(farmer: AddActionWeights): Promise<ActionWeights> {
-    const data = await axios.post<ActionWeights>("/api/weights/add", farmer);
-    return data.data
+    async getActionWeightsById(cropTemplateId: string): Promise<ActionWeights> {
+        const data = await axios.get<ActionWeights>(this.APIBase + "getWeightsById/" + cropTemplateId);
+        return data.data;
+    }
+    
+    async deleteActionWeightsById(cropTemplateId: string): Promise<ActionWeights> {
+        const data = await axios.delete<ActionWeights>(this.APIBase + "deleteWeightsById/" + cropTemplateId);
+        return data.data;
+    }
+
+    async putActionWeights(actionWeightsObject: ActionWeights): Promise<ActionWeights> {
+        const data = await axios.put<ActionWeights>(this.APIBase + "put", actionWeightsObject);
+        return data.data
+    }
 }

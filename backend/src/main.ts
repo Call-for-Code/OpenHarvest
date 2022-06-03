@@ -21,7 +21,7 @@ import organisationRoutes from "./routes/organisation-route";
 import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
 import foodTrustRoutes from "./routes/food-trust-route";
-import actionRoutes from "./routes/actions-route"
+import weightRoutes from "./routes/weights-route"
 
 import { SocketIOManager, SocketIOManagerInstance } from "./sockets/socket.io";
 import { Server } from "http";
@@ -63,12 +63,14 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/recommendations", recommendationsRoutes);
 
 app.use("/api/weather", weatherRoutes);
-app.use("/api/foodtrust", foodTrustRoutes)
-app.use("/api/actions", actionRoutes)
 app.use("/api/coopManager", coopManagerRoutes);
 app.use("/api/organisation", organisationRoutes);
 app.use("/api/messaging", messageLogRoutes);
 app.use("/api/sms", smsRoutes);
+
+// blockchain related routes
+app.use("/api/foodtrust", foodTrustRoutes)
+app.use("/api/weights", weightRoutes)
 
 // Static Files
 const publicPath = path.resolve("public");
