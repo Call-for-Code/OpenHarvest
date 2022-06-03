@@ -153,7 +153,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Enter the Crop Template ID" id="cropTemplate_id" onChange={handleAddCropTemplateIdChange} warn={addWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button" style={{background: "green"}} onClick={handleSubmit}>Submit</Button>
+                    <Button type="button" style={{background: "green"}} onClick={handleSubmit}>Put</Button>
                 </Column>
             </Row>
             <Row style={rowStyle}>
@@ -161,7 +161,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Find ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleGetCropTemplateIdChange} warn={getWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button" onClick={handleSubmitGetActionWeightsById}>Submit</Button>
+                    <Button type="button" onClick={handleSubmitGetActionWeightsById}>Get</Button>
                 </Column>
             </Row>
             <Row style={rowStyle}>
@@ -169,7 +169,7 @@ const FarmerActions = () => {
                     <TextInput labelText="" placeholder="Delete ActionWeights by Crop Template ID" id="cropTemplate_id" onChange={handleDeleteCropTemplateIdChange} warn={deleteWarncropTemplateId} warnText="cropTemplate ID is required"/>
                 </Column>
                 <Column sm={2} md={2} lg={1}>
-                    <Button type="button"  style={{background: "red"}} onClick={handleSubmitDeleteActionWeightsById}>Submit</Button>
+                    <Button type="button"  style={{background: "red"}} onClick={handleSubmitDeleteActionWeightsById}>Delete</Button>
                 </Column>
             </Row>
         </Grid>
