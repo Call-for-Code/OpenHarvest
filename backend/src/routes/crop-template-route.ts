@@ -5,7 +5,7 @@ const router = Router();
 
 async function createOrUpdateCropTemplates(req: Request, res: Response) {
     try{
-        const query = {"crop_template_name": req.body.cropTemplateName};
+        const query = {"crop_template_name": req.body.crop_template_name};
         const update = {$set: req.body}
         const options = {upsert: true}
         const docs = await CropTemplateModel.updateOne(query, update, options)
@@ -43,9 +43,10 @@ router.get("/getCropTemplates"), async (req: Request, res: Response) => {
 }
 
 // return all ActionWeight for a given crop template ID
-router.get("/getCropTemplatesByName/:cropTemplateName", async (req: Request, res: Response) => {
+router.get("/getCropTemplateByName/:crop_template_name", async (req: Request, res: Response) => {
     try {
-        const docs = await CropTemplateModel.find({"crop_template_name": req.params.cropTemplateName})
+      console.log("crop_template_name", req.params.crop_template_name)
+        const docs = await CropTemplateModel.find({"crop_template_name": req.params.crop_template_name})
         .then(doc => {
             console.log(doc)
           })
@@ -60,9 +61,9 @@ router.get("/getCropTemplatesByName/:cropTemplateName", async (req: Request, res
 });
 
 // delete ActionWeight by given crop template ID
-router.delete("/deleteCropTemplatesByName/:cropTemplateName", async (req: Request, res: Response) => {
+router.delete("/deleteCropTemplateByName/:crop_template_name", async (req: Request, res: Response) => {
     try {
-        const docs = await CropTemplateModel.deleteOne({"crop_template_name": req.params.cropTemplateName})
+        const docs = await CropTemplateModel.deleteOne({"crop_template_name": req.params.crop_template_name})
         .then(doc => {
             console.log(doc)
           })

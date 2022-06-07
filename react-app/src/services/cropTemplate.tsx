@@ -1,35 +1,31 @@
 import axios from 'axios'
-// import { EISField, FieldResponse } from '../types/EIS';
 
-export interface CropTemplate {
+export interface CropTemplate{
     _id?: string,
-    action_a_weight: number,
-    action_b_weight: number,
-    action_c_weight: number,
-    action_d_weight: number,
-    crop_template_id: string
+    action_weights: Record<string, string>,
+    crop_template_name: string,
 }
 
-
 export class CropTemplateAPI{
-    APIBase = "/api/weights/";
+    APIBase = "/api/cropTemplates/";
     
     async getAllCropTemplates(): Promise<CropTemplate> {
         const data = await axios.get<CropTemplate>(this.APIBase + "getCropTemplate");
         return data.data;
     }
 
-    async getCropTemplateByName(cropTemplateName: string): Promise<CropTemplate> {
-        const data = await axios.get<CropTemplate>(this.APIBase + "getCropTemplateByName/" + cropTemplateName);
+    async getCropTemplateByName(crop_template_name: string): Promise<CropTemplate> {
+        const data = await axios.get<CropTemplate>(this.APIBase + "getCropTemplateByName/" + crop_template_name);
         return data.data;
     }
     
-    async deleteCropTemplateByName(cropTemplateName: string): Promise<CropTemplate> {
-        const data = await axios.delete<CropTemplate>(this.APIBase + "deleteCropTemplateByName/" + cropTemplateName);
+    async deleteCropTemplateByName(crop_template_name: string): Promise<CropTemplate> {
+        const data = await axios.delete<CropTemplate>(this.APIBase + "deleteCropTemplateByName/" + crop_template_name);
         return data.data;
     }
 
     async putCropTemplate(cropTemplateObject: CropTemplate): Promise<CropTemplate> {
+        console.log("cropTemplateObject from service: ", cropTemplateObject)
         const data = await axios.put<CropTemplate>(this.APIBase + "put", cropTemplateObject);
         return data.data
     }
