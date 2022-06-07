@@ -23,7 +23,18 @@ export async function getAllFarmers(): Promise<Farmer[]> {
 
 export async function getFarmer(farmer_id: string): Promise<Farmer> {
     const data = await axios.get<Farmer>(`/api/farmer/${farmer_id}`);
-    return data.data;
+    const farmer = data.data;
+    if (farmer.field) {
+        farmer.field.subFields = farmer.field.subFields.map(it => {
+            it.properties.crops = it.properties.crops.map(crop => {
+                crop.planted = new Date(crop.planted);
+                crop.harvested &&= new Date(crop.harvested); // Only make a date if it's a truthy value
+                return crop;
+            });
+            return it;
+        });
+    }
+    return farmer;
 }
 
 export async function addFarmer(farmer: FarmerAddDTO): Promise<Farmer> {

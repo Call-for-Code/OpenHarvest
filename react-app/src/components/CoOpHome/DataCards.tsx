@@ -2,6 +2,12 @@ import { Card , CARD_SIZES} from 'carbon-addons-iot-react';
 import React, { useEffect, useState } from "react";
 import { CardData, getDashboardCards } from '../../services/dashboard';
 
+/*
+ * TODO: We'll need to convert these to Value Cards instead of normal cards. 
+ * We can capture trends and other stuff
+ * https://carbon-addons-iot-react.com/?path=/story/1-watson-iot-valuecard--with-trends
+ */
+
 
 export function LandAreaCard() {
     const [cardData, setCardData] = useState<CardData>();

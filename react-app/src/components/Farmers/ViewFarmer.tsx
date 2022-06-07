@@ -5,7 +5,10 @@ import { Farmer, getAllFarmers, getFarmer } from "../../services/farmers";
 import { OpenHarvestMap } from "../Map/OpenHarvestMap";
 import { FieldEditorLayer } from "../Map/FieldEditorLayer";
 import { latLngBounds } from "leaflet";
-import { Field, SubField } from "../../types/field";
+import { Field, SubField, SubFieldCrop } from "../../types/field";
+import { ExpandableTile, SkeletonText, TileAboveTheFoldContent, TileBelowTheFoldContent } from "carbon-components-react";
+import { GeoJSON } from "react-leaflet";
+import { area } from "@turf/turf";
 
 export interface ViewFarmerParams {
     farmer_id: string
@@ -49,12 +52,115 @@ export function FarmerDetails(props: FarmerDetailsProps) {
     </Card>
 }
 
-export function FieldList(props: {field: Field}) {
-
+export function FieldList(props: {isLoading: boolean, field: Field | undefined}) {
+    const {isLoading, field} = props;
+    
+    return <div>
+        {isLoading ?
+            [0, 1].map(_ => 
+                <SubFieldComponent isLoading subField={undefined} />
+            )
+        :
+            field!!.subFields.map(it => 
+                <SubFieldComponent isLoading={false} subField={it} />
+            )
+        }
+    </div>
 }
 
-export function SubFieldComponent(props: {subField: SubField}) {
+export function SubFieldComponent(props: {isLoading: boolean, subField: SubField | undefined}) {
+    const {isLoading, subField} = props;
 
+    /**
+     * TODO: Move me to common types
+     */
+    function getPlantedCrop(crops: SubFieldCrop[]) {
+        return crops.find(it => it.harvested === null);
+    }
+
+    function getPlantedCropName(crops: SubFieldCrop[]) {
+        const crop = getPlantedCrop(crops);
+        if (crop) {
+            return crop.crop.name;
+        }
+        else if (crops.length > 0) {
+            return crops[0].crop.name
+        }
+        else {
+            return "None"
+        }
+    }
+
+    function squareMetresToHa(sqm: number) {
+        return sqm / 1000;
+    }    
+
+    const plantedCrop = isLoading ? undefined : getPlantedCrop(subField!!.properties.crops);
+    const plantedCropName = isLoading ? undefined : getPlantedCropName(subField!!.properties.crops);
+
+    let plantedDate = "";
+    let harvestedDate = "--";
+    let expectedYield = "";
+
+    if (subField && plantedCrop) {
+
+        plantedDate = plantedCrop.planted.toLocaleDateString();
+        harvestedDate = plantedCrop.harvested ? plantedCrop.harvested.toLocaleDateString() : "--";
+        
+        const sqm = squareMetresToHa(area(subField));
+        expectedYield = (sqm * 100).toFixed(2);
+    }
+    
+    
+
+    return <ExpandableTile>
+        <TileAboveTheFoldContent>
+            <div className="h-[80px] flex flex-row justify-between">
+                { isLoading ?
+                    <div className="h-[80px]">
+                        <SkeletonText heading width="30%" />
+                    </div>
+                :
+                    <div className="h-[80px] w-full flex flex-row justify-between">
+                        <div className="">
+                            <p className="font-bold">Name</p>
+                            <p>{subField!!.name}</p>
+                        </div>
+                        <div>
+                            <p className="font-bold">Crop Planted</p>
+                            <p>{plantedDate}</p>
+                        </div>                   
+                        <div>
+                            <p className="font-bold">Date Planted</p>
+                            <p>{plantedCropName}</p>
+                        </div>                   
+                        <div>
+                            <p className="font-bold">Harvest Date</p>
+                            <p>{harvestedDate}</p>
+                        </div>                   
+                        <div>
+                            <p className="font-bold">Expected Yield</p>
+                            <p>{expectedYield} Ha</p>
+                        </div>                   
+                    </div>
+                }
+            </div>
+            
+        </TileAboveTheFoldContent>
+        <TileBelowTheFoldContent>
+            Field History and current status
+            <div className="w-1/4 h-[200px]">
+                <OpenHarvestMap centre={isLoading ? undefined : subField!!.properties.centre}>
+                    {!isLoading &&
+                        <GeoJSON data={subField!!} />
+                    }
+                </OpenHarvestMap>
+            </div>
+        </TileBelowTheFoldContent>
+
+    </ExpandableTile>
+
+    
 }
 
 export function ViewFarmer() {
@@ -77,8 +183,11 @@ export function ViewFarmer() {
         headerMode={"STATIC"}
         collapsed={false}
         />
-        <div className="w-full h-[calc(100vh-96px)] flex flex-row">
+        <div className="w-full h-[calc(100vh-96px)] p-[30px] space-y-[20px]">
             <FarmerDetails isLoading={isLoading} farmer={farmer!!}/>
+            <h2>Fields</h2>
+            <FieldList isLoading={isLoading} field={farmer ? farmer.field : undefined} />
         </div>
+        
     </>
 }

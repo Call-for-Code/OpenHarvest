@@ -34,14 +34,10 @@ export function OpenHarvestMap(props: PropsWithChildren<OpenHarvestMapProps>) {
         defaultCentreCoords = latLng(auth.user!!.coopManager!!.location as LatLngTuple);
     }
     const defaultZoom = 13;
-    
-    const [centre, setCentre] = useState<LatLngExpression>(props.centre || defaultCentreCoords);
-    const [zoom, setZoom] = useState<number>(props.zoom || defaultZoom);
-    const [bounds, setBounds] = useState<LatLngBoundsExpression | undefined>(props.bounds);
 
-    useEffect(() => {
-        
-    }, [props.centre, props.zoom, props.bounds]);
+    const centre = props.centre || defaultCentreCoords;
+    const zoom = props.zoom || defaultZoom;
+    const bounds = props.bounds;
 
 
     return (
