@@ -52,107 +52,6 @@ function App(props: AppProps) {
                 props.history.push('/onboarding')
             }
         }
-<<<<<<< HEAD
-    }
-
-    render(): ReactElement {
-
-        return (
-            <>
-                <AuthProvider>
-                    <HeaderContainer
-                        render={({ isSideNavExpanded, onClickSideNavExpand }) => (                            
-                            <Nav />
-                        )}
-                    />
-
-                    <Content className="main-content">
-                        <Switch>
-                            <Route exact path="/" >
-                                <Redirect to={"/home"}/>
-                            </Route>
-                            <Route
-                                key={"onboarding"}
-                                path={"/onboarding"}
-                                exact
-                                render={() => <UserOnboarding />}
-                            />
-                            <Route
-                                key={"home"}
-                                path={"/home"}
-                                exact
-                                render={() => <CoOpHome />}
-                            />
-                            <Route
-                                key={"farmers"}
-                                path={"/farmers"}
-                                exact
-                                render={
-                                    () => 
-                                    <PrivateRoute>
-                                        <Farmers />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                key={"AddFarmer"}
-                                path={"/farmers/add"}
-                                exact
-                                render={
-                                    () => 
-                                    <PrivateRoute>
-                                        <AddFarmer />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                key={"crops"}
-                                path={"/crops"}
-                                exact
-                                render={() => 
-                                    <PrivateRoute>
-                                        <Crops />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                key={"messaging"}
-                                path={"/messaging"}
-                                exact
-                                render={() => 
-                                    <PrivateRoute>
-                                        <Messaging />
-                                    </PrivateRoute>
-                                }
-                            />
-                            <Route
-                                key={"foodTrust"}
-                                path={"/foodTrust"}
-                                exact
-                                render={() => 
-                                    <PrivateRoute>
-                                        <FoodTrust />
-                                    </PrivateRoute>
-                                }
-                            />
-
-                        </Switch>
-                    </Content>
-                </AuthProvider>
-            </>
-
-        );
-
-    }
-
-    private setShowLogoutModal(): void {
-        this.setState({
-            showLogoutModal: true
-        });
-    }
-
-
-=======
         load();        
     }, []);
 
@@ -230,6 +129,16 @@ function App(props: AppProps) {
                                 </PrivateRoute>
                             }
                         />
+                        <Route
+                            key={"foodTrust"}
+                            path={"/foodTrust"}
+                            exact
+                            render={() => 
+                                <PrivateRoute>
+                                    <FoodTrust />
+                                </PrivateRoute>
+                            }
+                        />
 
                     </Switch>
                 </Content>
@@ -237,7 +146,6 @@ function App(props: AppProps) {
         </>
 
     );
->>>>>>> 4dfbabb9f (Fixed a few different things)
 
 }
 
