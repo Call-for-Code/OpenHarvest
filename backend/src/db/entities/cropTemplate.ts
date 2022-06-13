@@ -29,4 +29,4 @@ export const CropTemplateSchema = new Schema({
     crop_template_name: String,
 });
 
-export const CropTemplateModel = model<CropTemplate>("cropTemplates", CropTemplateSchema);
+export const CropTemplateModel = model<CropTemplate>("cropTemplate", CropTemplateSchema);

@@ -4,6 +4,7 @@ import { PageTitleBar, Grid, Column, Row, RadioButton, RadioButtonGroup, Select,
 import {Information16} from '@carbon/icons-react';
 import {BusinessEvents, UnitsOfMeasure, EventTypeModalText, PackingIDModalText, AssetIdModalText} from './FoodTrustHelperData';
 import { FoodTrustAPI } from "../../services/food-trust";
+import CropTemplate from "../Crops/CropTemplate";
 
 const foodTrustAPI = new FoodTrustAPI()
 
@@ -265,6 +266,7 @@ const FoodTrust = () => {
                         <TransactionLookUp/>
                     </Column>
                 </Row>
+                <CropTemplate />
             </Grid>
         </>
     );

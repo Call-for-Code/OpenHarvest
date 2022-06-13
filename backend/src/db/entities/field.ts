@@ -1,6 +1,7 @@
 import { Feature, Polygon } from "geojson";
 import { Schema, model, ObjectId, Types } from 'mongoose';
 import { Crop } from "./crop";
+import { CropTemplate } from "./cropTemplate";
 const ObjectId = Schema.Types.ObjectId;
 
 export interface SubFieldCrop {
@@ -11,6 +12,8 @@ export interface SubFieldCrop {
      * Crop Information
      */
     crop: Crop;
+    crop_template?: CropTemplate
+    reputation_actions?: Record<string,boolean>
 }
 
 export interface SubFieldProperties {

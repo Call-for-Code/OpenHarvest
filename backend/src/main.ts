@@ -21,7 +21,7 @@ import organisationRoutes from "./routes/organisation-route";
 import messageLogRoutes from "./routes/messaging-route";
 import smsRoutes from "./routes/sms-route";
 import foodTrustRoutes from "./routes/food-trust-route";
-import cropTemplatetRoutes from "./routes/crop-template-route"
+import cropTemplateRoutes from "./routes/crop-template-route"
 
 import { SocketIOManager, SocketIOManagerInstance } from "./sockets/socket.io";
 import { Server } from "http";
@@ -70,7 +70,7 @@ app.use("/api/sms", smsRoutes);
 
 // blockchain related routes
 app.use("/api/foodtrust", foodTrustRoutes)
-app.use("/api/cropTemplates", cropTemplatetRoutes)
+app.use("/api/cropTemplates", cropTemplateRoutes)
 
 // Static Files
 const publicPath = path.resolve("public");

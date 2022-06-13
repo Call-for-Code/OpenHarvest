@@ -253,7 +253,8 @@ export function AddFarmer() {
                 name,
                 mobile,
                 address,
-                coopOrganisations: [ auth.user!!.selectedOrganisation!!._id!! ],
+                // coopOrganisations: [ auth.user!!.selectedOrganisation!!._id!! ], temp fix
+                coopOrganisations: ["test"],
                 fieldCount: field!!.subFields.length
             },
             field: field!!
