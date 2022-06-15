@@ -103,14 +103,16 @@ const CropTemplateSelector = () => {
         // UpdateSubFieldWithCropTemplate(fields, selectedCrop, selectedCropTemplate);
 
 
-        // get all reputation Actions for a field and then put them in a list
+        // get all reputation Actions for a field and then put them in a list (usefull for front end display)
         // const res = await cropTemplateAPI.getActionsForField("62a36eb32307b1b4ef8db8d9");
         // OrganizeReputationActions(res)
         
 
-        // updating reputation action values: 
+        // updating reputation action values. A successful update should generate a payload for gnosis
         // const field: Field = await cropTemplateAPI.getActionsForField("62a36eb32307b1b4ef8db8d9");
         // const res = await cropTemplateAPI.putField(UpdateReputationActions(field, selectedCrop, "", "wasdf", true));
+
+
 
     }
 
