@@ -3,7 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { PageTitleBar, Grid, Column, Row, RadioButton, RadioButtonGroup, Select, SelectItem, TextInput, Button, ComposedModal} from "carbon-addons-iot-react";
 import {Information16} from '@carbon/icons-react';
 import {BusinessEvents, UnitsOfMeasure, EventTypeModalText, PackingIDModalText, AssetIdModalText} from './FoodTrustHelperData';
-import { FoodTrustAPI } from "../../services/food-trust";
+import { FoodTrustAPI } from "../../services/foodTrust";
 import CropTemplate from "../Crops/CropTemplate";
 
 const foodTrustAPI = new FoodTrustAPI()
