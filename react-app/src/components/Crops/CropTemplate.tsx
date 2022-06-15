@@ -4,8 +4,8 @@ import {Add16} from '@carbon/icons-react';
 import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 import { CropService } from "../../services/CropService";
 import { Crop } from "../../services/crops";
-import { Field, SubField, SubFieldCrop} from "../../../../backend/src/db/entities/field"
-import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions, UpdateReputationActions } from './helperFunctions'
+// import { Field, SubField, SubFieldCrop} from "../../../../backend/src/db/entities/field"
+// import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions, UpdateReputationActions } from './helperFunctions'
 
 const cropTemplateAPI = new CropTemplateAPI();
 const cropService = new CropService();
