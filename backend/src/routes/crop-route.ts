@@ -29,6 +29,7 @@ async function createOrUpdateCrop(req: Request, res: Response) {
         const response = await cropService.saveOrUpdate(crop);
         res.json(response);
     } catch (e) {
+        console.log(e);
         res.status(500).json(e);
     }
 }

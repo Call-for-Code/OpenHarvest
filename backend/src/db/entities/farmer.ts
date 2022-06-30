@@ -12,6 +12,7 @@ export interface Farmer {
     coopOrganisations: string[],
     fieldCount: number;
     field?: Field;
+    ethKeyID: string;
 }
 
 export const FarmerSchema = new Schema({
@@ -23,7 +24,8 @@ export const FarmerSchema = new Schema({
     mobile: String,
     address: String,
     coopOrganisations: [String],
-    fieldCount: Number
+    fieldCount: Number,
+    ethKeyID: String
 });
 
 export const FarmerModel = model<Farmer>("farmer", FarmerSchema);

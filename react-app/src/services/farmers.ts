@@ -9,6 +9,7 @@ export interface Farmer {
     coopOrganisations: string[],
     fieldCount: number;
     field?: Field;
+    ethKeyID?: String;
 }
 
 export interface FarmerAddDTO {

@@ -14,6 +14,7 @@ export interface CropTemplate{
     _id?: string,
     action_weights: Record<string, string>,
     crop_template_name: string,
+    max_payout: number
 }
 
 export const CropTemplateSchema = new Schema({
@@ -27,6 +28,7 @@ export const CropTemplateSchema = new Schema({
         default: {}
     },
     crop_template_name: String,
+    max_payout: Number
 });
 
 export const CropTemplateModel = model<CropTemplate>("cropTemplate", CropTemplateSchema);

@@ -6,6 +6,7 @@ export interface CropTemplate{
     _id?: string,
     action_weights: Record<string, string>,
     crop_template_name: string,
+    max_payout: number
 }
 
 export class CropTemplateAPI{
@@ -38,8 +39,23 @@ export class CropTemplateAPI{
         return data.data;
     }
 
-    async putField(field: Field): Promise<Field> {
-        const data = await axios.put<Field>(this.APIBase + "updateField", field);
+    async updateRepActions( field: Field, 
+        cropId: string, 
+        farmer: string, 
+        actionName: string, 
+        actionStatus: boolean): Promise<Field> {
+        const data = await axios.put<Field>(this.APIBase + "updateRepActions", {
+            field : field,
+            cropId : cropId,
+            farmer : farmer,
+            actionName : actionName,
+            actionStatus : actionStatus
+        });
+        return data.data
+    }
+
+    async addCropTemplateToField(field: Field): Promise<Field> {
+        const data = await axios.put<Field>(this.APIBase + "addCropTemplateToField", field);
         return data.data
     }
 

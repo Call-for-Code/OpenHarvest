@@ -1,5 +1,4 @@
 import { Field, SubField, SubFieldCrop} from "../../../../backend/src/db/entities/field"
-// import { Crop } from "../../services/crops";
 import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 
 const generateReputationActionMap = (template: CropTemplate) => {
@@ -37,7 +36,8 @@ export async function UpdateSubFieldWithCropTemplate(
             }
 
             // update field.subfields.properties.crops with reputation and croptemplate in mongodb
-            const res = await cropTemplateAPI.putField(currentField);
+            const res = await cropTemplateAPI.addCropTemplateToField(currentField);
+            console.log("updated field: ", res)
     }
 }
 
@@ -55,28 +55,4 @@ export function OrganizeReputationActions(field: Field): Record<string, boolean>
     }
     
     return reputationMaps
-}
-
-// this function should receive a cropId and farmerId which can be used to find the proper SubFieldCrop
-// once found, we can set the action value to that of actionStatus arg.
-export function UpdateReputationActions(
-    field: Field, 
-    cropId: string, 
-    farmer: string, 
-    actionName: string, 
-    actionStatus: boolean): Field{
-
-        const subFieldsArray: SubField[] = field.subFields;
-        for(let subFieldIndex in subFieldsArray){
-            const subFieldCropsArray: SubFieldCrop[] = subFieldsArray[subFieldIndex].properties.crops;
-            for(let subFieldCropIndex in subFieldCropsArray){
-                if(subFieldCropsArray[subFieldCropIndex].crop._id?.toString() === cropId &&
-                subFieldCropsArray[subFieldCropIndex].farmer === farmer &&
-                subFieldCropsArray[subFieldCropIndex].reputation_actions
-                ){
-                    subFieldCropsArray[subFieldCropIndex].reputation_actions![actionName] = actionStatus;
-                }
-            }
-        }
-    return field;
 }
