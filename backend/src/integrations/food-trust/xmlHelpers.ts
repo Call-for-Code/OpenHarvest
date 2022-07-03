@@ -1,5 +1,3 @@
-import { time } from "@tensorflow/tfjs-node"
-
 const today = new Date()
 const dateArray = today.toString().split(" ")
 let month = today.getMonth()
