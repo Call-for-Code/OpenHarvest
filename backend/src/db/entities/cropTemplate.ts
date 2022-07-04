@@ -1,6 +1,5 @@
 
-import { string } from '@tensorflow/tfjs-node';
-import mongoose, { Schema, model, ObjectId, Types } from 'mongoose';
+import mongoose, { Schema, model, ObjectId } from 'mongoose';
 
 const ObjectId = Schema.Types.ObjectId;
 
