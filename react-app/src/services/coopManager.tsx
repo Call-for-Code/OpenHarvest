@@ -13,11 +13,18 @@ export interface CoopManager {
     coopOrganisations: string[]
 }
 
-export async function onboard(oAuthSource: string, oAuthId: string, user: CoopManager): Promise<CoopManager> {
-    const data = await axios.post<CoopManager>("/api/coopManager/onboard/", {
+export interface OnboardDTO {
+    token: string,
+    user: CoopManager
+}
+
+export async function onboard(oAuthSource: string, oAuthId: string, user: CoopManager): Promise<OnboardDTO> {
+    const data = await axios.post<OnboardDTO>("/api/coopManager/onboard/", {
         oAuthSource,
         oAuthId,
         user,
+    }, {
+        withCredentials: true
     })
     return data.data;
 }

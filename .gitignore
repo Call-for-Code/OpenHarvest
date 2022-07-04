@@ -218,3 +218,4 @@ backend/public
 *.pem
 
 package-lock.json
+mkcert.exe

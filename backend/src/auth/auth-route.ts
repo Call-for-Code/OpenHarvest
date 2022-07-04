@@ -1,9 +1,8 @@
 import { Router } from "express";
 import passport from "passport";
-import { formatUser, ensureAuthenticated } from "./helpers";
+import { formatUser, ensureAuthenticated, generateJWTFromOpenIDUser } from "./helpers";
 import { IBMidStrategy } from "./IBMiDStrategy";
 import { JWTOpenHarvestStrategy, opts } from "./jwtStrategy";
-import jwt from 'jsonwebtoken';
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -20,6 +19,9 @@ passport.use(JWTOpenHarvestStrategy);
 
 const router = Router();
 
+router.use(passport.initialize()); // This is only needed if we're using sessions: https://stackoverflow.com/a/56095662
+router.use(passport.session());
+
 router.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
 
 /**
@@ -31,8 +33,7 @@ router.get(
     passport.authenticate('openidconnect', {failureRedirect: '/failure'}),
     function (req, res) {
         // Encode a new JWT token and pass it to the web app via a http param
-        const formattedUser = formatUser(req.user);
-        const token = jwt.sign(formattedUser!!, opts.secretOrKey!!);
+        const token = generateJWTFromOpenIDUser(req.user, opts.secretOrKey)
         return res.redirect(redirect_url + "?token=" + token);
     }
 );

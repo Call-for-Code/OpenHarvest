@@ -104,8 +104,9 @@ export default function UserOnboarding() {
         const user = await onboard("IBMid", auth.user.id, coopManager);
         setIsSubmitting(false);
         console.log(user);
+        
         // Update the user with the organisation details
-        await auth.checkIfSignedIn();
+        await auth.loginFromToken(user.token)
         history.push("/home");
     }
 

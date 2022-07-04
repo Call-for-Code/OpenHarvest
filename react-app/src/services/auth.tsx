@@ -45,6 +45,7 @@ export interface AuthProviderType {
   isLoggedIn: boolean;
   loading: boolean;
   login: () => void;
+  loginFromToken: (token: string) => CoopManagerUser | null;
   checkIfSignedIn: () => Promise<CoopManagerUser | null>;
   signout: () => void;
 }
@@ -66,12 +67,16 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
     
     if (rawUser) {
       const user = rawUser;
+
+      console.log("User Logged In", user);
       
       setUser(user);
       setIsLoggedIn(true);
       AuthEventEmitter.emit("signedIn", user);
       return user
     } else {
+      console.log("User Logged Out");
+
       setUser(null);
       setIsLoggedIn(false);
       AuthEventEmitter.emit("signedOut");
@@ -86,6 +91,14 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
     else {
       window.location.href = "https://localhost:3000/auth/login";
     }
+  }
+
+  function loginFromToken(token: string) {
+    const segments = token.split(".");
+    const user = JSON.parse(atob(segments[1]))
+    setToken(token);
+    console.log("[Auth] Loaded token from auth transaction");
+    return handleUser(user, token);
   }
 
   async function checkIfSignedIn() {
@@ -154,6 +167,7 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
     loading,
     login,
     checkIfSignedIn,
+    loginFromToken,
     signout,
   }
 }

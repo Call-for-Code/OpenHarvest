@@ -2,6 +2,8 @@
 import { Router } from "express";
 import { getOrganisations } from "./../services/organisation.service";
 import { addCoopManagerToOrganisation, doesUserExist, getCoopManager, onBoardUser } from "./../services/coopManager.service";
+import { generateJWTFromOpenIDUser } from "./../auth/helpers";
+import { opts } from "./../auth/jwtStrategy";
 
 const router = Router();
 
@@ -49,7 +51,12 @@ router.post("/onboard", async (req, res) => {
     req.user.organisations = await getOrganisations(userDoc.coopOrganisations);
     req.user.selectedOrganisation = req.user.organisations[0];
 
-    res.json(userDoc.toObject());
+    const token = generateJWTFromOpenIDUser(req.user, opts.secretOrKey);
+
+    res.json({
+        token,
+        user: userDoc.toObject()
+    });
 });
 
 router.put("/setCurrentOrganisation", async (req, res) => {

@@ -1,3 +1,4 @@
+import jwt from 'jsonwebtoken';
 import { CoopManager } from "./../db/entities/coopManager";
 import { Organisation } from "./../db/entities/organisation";
 
@@ -21,24 +22,24 @@ export interface CoopManagerUser {
 }
 
 export function formatUser(user: any): CoopManagerUser {
-  return {
-    id: user.id,
-    email_verified: user._json.email_verified,
-    displayName: user.displayName,
-    given_name: user._json.given_name,
-    name: user._json.name,
-    family_name: user._json.family_name,
-    iss: user._json.iss,
-    aud: user._json.aud,
-    sub: user._json.sub,
-    iat: user._json.iat,
-    exp: user._json.exp,
-    accessToken: user.accessToken,
-    refreshToken: user.refreshToken,
-    coopManager: user.coopManager,
-    organisations: user.organisations,
-    selectedOrganisation: user.selectedOrganisation
-  }
+    return {
+      id: user.id,
+      email_verified: user._json.email_verified,
+      displayName: user.displayName,
+      given_name: user._json.given_name,
+      name: user._json.name,
+      family_name: user._json.family_name,
+      iss: user._json.iss,
+      aud: user._json.aud,
+      sub: user._json.sub,
+      iat: user._json.iat,
+      exp: user._json.exp,
+      accessToken: user.accessToken,
+      refreshToken: user.refreshToken,
+      coopManager: user.coopManager,
+      organisations: user.organisations,
+      selectedOrganisation: user.selectedOrganisation
+    }
 }
 
 export function ensureAuthenticated(req, res, next) {
@@ -51,4 +52,9 @@ export function ensureAuthenticated(req, res, next) {
     } else {
         return next();
     }
+}
+
+export function generateJWTFromOpenIDUser(user: any, secret: string) {
+    const formattedUser = formatUser(user);
+    return jwt.sign(formattedUser!!, secret);
 }
