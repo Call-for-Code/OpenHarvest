@@ -21,7 +21,18 @@ export default class CropService {
 
     async saveOrUpdate(crop: Crop) {
         if (crop._id) {
-            return CropModel.updateOne(crop);
+            const cropBody = {
+                type: crop.type,
+                name: crop.name,
+                planting_season: crop.planting_season,
+                time_to_harvest: crop.time_to_harvest,
+                is_ongoing: crop.is_ongoing,
+                yield_per_sqm: crop.yield_per_sqm,
+                crop_template: crop.crop_template
+            }
+            const response = CropModel.updateOne({_id: crop._id}, cropBody);
+            console.log("response from server: ", response)
+            return response;
         }
 
         return await new CropModel(crop).save();

@@ -1,0 +1,48 @@
+import { ethers, UnsignedTransaction } from "ethers";
+import { getPublicKey, getEthereumAddress, requestKmsSignature, determineCorrectV } from "./aws-kms-utils";
+
+export class AwsKmsSigner extends ethers.Signer {
+  keyId: string;
+  ethereumAddress: string;
+
+  constructor(keyId: string, provider?: ethers.providers.Provider) {
+    super();
+    ethers.utils.defineReadOnly(this, "provider", provider);
+    ethers.utils.defineReadOnly(this, "keyId", keyId);
+  }
+
+  async getAddress(): Promise<string> {
+    if (this.ethereumAddress === undefined) {
+      const key = await getPublicKey(this.keyId);
+      this.ethereumAddress = getEthereumAddress(key.PublicKey as Buffer);
+    }
+    return Promise.resolve(this.ethereumAddress);
+  }
+
+  async _signDigest(digestString: string): Promise<string> {
+    const digestBuffer = Buffer.from(ethers.utils.arrayify(digestString));
+    const sig = await requestKmsSignature(digestBuffer, this.keyId);
+    const ethAddr = await this.getAddress();
+    const { v } = determineCorrectV(digestBuffer, sig.r, sig.s, ethAddr);
+    return ethers.utils.joinSignature({
+      v,
+      r: `0x${sig.r.toString("hex")}`,
+      s: `0x${sig.s.toString("hex")}`,
+    });
+  }
+
+  async signMessage(message: string | ethers.utils.Bytes): Promise<string> {
+    return this._signDigest(ethers.utils.hashMessage(message));
+  }
+
+  async signTransaction(transaction: ethers.utils.Deferrable<ethers.providers.TransactionRequest>): Promise<string> {
+    const unsignedTx = await ethers.utils.resolveProperties(transaction);
+    const serializedTx = ethers.utils.serializeTransaction(<UnsignedTransaction>unsignedTx);
+    const transactionSignature = await this._signDigest(ethers.utils.keccak256(serializedTx));
+    return ethers.utils.serializeTransaction(<UnsignedTransaction>unsignedTx, transactionSignature);
+  }
+
+  connect(provider: ethers.providers.Provider): AwsKmsSigner {
+    return new AwsKmsSigner(this.keyId, provider);
+  }
+}

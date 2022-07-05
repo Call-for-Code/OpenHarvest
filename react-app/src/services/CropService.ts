@@ -31,6 +31,23 @@ export class CropService implements ICropService {
         });
     }
 
+    getCrop(id: string): Promise<Crop> {
+        return new Promise<Crop>((resolve, reject) => {
+            axios.get(this.baseUrl + "/" + id)
+                .then((res) => resolve(res.data))
+                .catch(reject);
+        });
+    }
+
+    updateCrop(crop: Crop): Promise<Crop> {
+        return new Promise<Crop>((resolve, reject) => {
+            axios.put(this.baseUrl, crop)
+                .then((res) => {
+                    resolve(res.data);
+                }).catch(reject);
+        });
+    }
+
     deleteCrop(id: string): Promise<void> {
         return new Promise<void>((resolve, reject) => {
             axios.delete(this.baseUrl + "/" + id)

@@ -5,7 +5,7 @@ import { Farmer, FarmerModel } from "../db/entities/farmer";
 import { Field, FieldModel } from "../db/entities/field";
 import { center, bbox, area, bboxPolygon } from "@turf/turf";
 import { FeatureCollection } from "geojson";
-
+import { kmsAuth } from "../web3/aws-sdk-authentication";
 
 const EISKey = process.env.EIS_apiKey;
 
@@ -111,6 +111,35 @@ export interface FarmerAddDTO {
     field: Field
 }
 
+// Create Pub/Priv key on AWS KMS using the FarmerId as alias
+const createEthAccount = async(farmerId: String) => {
+    
+    //Authenticate
+    const kms = kmsAuth();
+    
+    //Create Key
+    const cmk = await kms.createKey({
+        KeyUsage : 'SIGN_VERIFY',
+        KeySpec : 'ECC_SECG_P256K1',
+    }).promise();
+
+    // Assign farmerId as alias of created key
+    const keyId = cmk.KeyMetadata.KeyId;
+    const aliasResponse = await kms.createAlias({
+        AliasName : "alias/" + farmerId,
+        TargetKeyId : keyId
+    }).promise();
+
+    //Grant the application user IAM role permissions on the new key
+    const grantResponse = await kms.createGrant({
+        KeyId : keyId,
+        GranteePrincipal : process.env.OPEN_HARVEST_APPLICATION_USER_ARN,
+        Operations : ['GetPublicKey', 'Sign']
+    }).promise();
+
+    return keyId;
+}
+
 router.post("/add", async(req: Request, res: Response) => {
     const {farmer, field}: FarmerAddDTO = req.body;
     if (farmer == undefined) {
@@ -123,7 +152,7 @@ router.post("/add", async(req: Request, res: Response) => {
     }
     // First we'll create the farmer
     const farmerDoc = new FarmerModel(farmer);
-    const newFarmer = await farmerDoc.save();
+    let newFarmer = await farmerDoc.save();
 
     if (newFarmer._id == undefined) {
         throw new Error("Farmer ID is not defined after saving!")
@@ -131,6 +160,12 @@ router.post("/add", async(req: Request, res: Response) => {
 
     // Then we'll create the Field
     field.farmer_id = newFarmer._id.toHexString();
+
+    //Create and set ethAccount keyID to the farmer object
+    const farmerKeyId = await createEthAccount(field.farmer_id);
+    farmerDoc.ethKeyID = farmerKeyId;
+    await farmerDoc.save();
+      
 
     // Lets populate some of the field information
 
