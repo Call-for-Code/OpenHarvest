@@ -91,6 +91,7 @@ export class FormService implements IFormService {
         });
 
         if (isDefined(invalidField)) {
+            // console.log("Field Invalid", invalidField);
             return true;
         }
 

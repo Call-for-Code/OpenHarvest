@@ -36,6 +36,7 @@ export default function Nav() {
                         <>
                             <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
                             <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
+                            <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crop-guides">Crop Guides</HeaderMenuItem>
                             <HeaderMenuItem<NavLinkProps> element={NavLink} to="/messaging">Messaging</HeaderMenuItem>
                             <HeaderMenuItem<NavLinkProps> element={NavLink} to="/foodTrust">Food Trust</HeaderMenuItem>
                         </>
@@ -54,7 +55,9 @@ export default function Nav() {
                                 <>
                                     <HeaderMenuItem<NavLinkProps> element={NavLink} to="/farmers">Farmers</HeaderMenuItem>
                                     <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crops">Crops</HeaderMenuItem>
+                                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/crop-guides">Crop Guides</HeaderMenuItem>
                                     <HeaderMenuItem<NavLinkProps> element={NavLink} to="/messaging">Messaging</HeaderMenuItem>
+                                    <HeaderMenuItem<NavLinkProps> element={NavLink} to="/foodTrust">Food Trust</HeaderMenuItem>
                                 </>
                             )}
                         </HeaderSideNavItems>

@@ -1,0 +1,11 @@
+# These owners will be the default owners for everything in
+# the repo. Unless a later match takes precedence,
+# @global-owner1 and @global-owner2 will be requested for
+# review when someone opens a pull request.
+*       @rayoz12
+
+# Blockchain stuff
+backend/src/integrations/food-trust @JonathanScialpi
+react-app/src/components/FoodTrust @JonathanScialpi
+
+# When more people contribute we can add more settings here.
