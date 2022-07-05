@@ -2,10 +2,34 @@ import React from 'react'
 import { PageTitleBar } from "carbon-addons-iot-react";
 
 export interface CropGuide {
+    /**
+     * The name of the guide
+     */
     name: string;
+    /**
+     * The Crop this is associcated to
+     */
+    crop_id: string;
+    /**
+     * Actions that should be taken for this crop guide
+     */
     actions: {
+        /**
+         * The name of the action
+         */
         name: string;
-        dayDelta: string
+        /**
+         * The days delta from the previous action
+         */
+        dayDelta: string;
+        /**
+         * The reputation base value to be given out when completed
+         */
+        reputationBase: number;
+        /**
+         * The modifier percentage that can be modified by the coop manager
+         */
+        reputationPercentModifier: number;
     }
 }
 
