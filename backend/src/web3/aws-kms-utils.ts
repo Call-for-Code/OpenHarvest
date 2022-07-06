@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import { KMS } from "aws-sdk";
 import * as asn1 from "asn1.js";
 import BN from "bn.js";
-import { kmsAuth } from "./aws-sdk-authentication";
+import { kmsAuth } from "./authentication-functions";
  
 const kms = kmsAuth();
 /* this asn1.js library has some funky things going on */

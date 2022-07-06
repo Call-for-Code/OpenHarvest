@@ -31,7 +31,6 @@ export default class CropService {
                 crop_template: crop.crop_template
             }
             const response = CropModel.updateOne({_id: crop._id}, cropBody);
-            console.log("response from server: ", response)
             return response;
         }
 
