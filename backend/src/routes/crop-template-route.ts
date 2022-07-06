@@ -1,12 +1,9 @@
 import { Router, Request, Response } from "express";
 import { CropTemplateModel } from "../db/entities/cropTemplate";
-import { FieldModel } from "../db/entities/field"
-import { Crop } from "../db/entities/crop"
-import { FarmerModel } from "../db/entities/farmer"
-import { calculatePayment, UpdateReputationActions } from "../web3/helper-functions"
-// import { Schema, model, ObjectId, Types, isObjectIdOrHexString } from 'mongoose';
-// import { erc20ABI } from "../web3/utils/erc20-abi"
-
+import { FieldModel } from "../db/entities/field";
+import { FarmerModel } from "../db/entities/farmer";
+import { calculatePayment, UpdateReputationActions } from "../web3/helper-functions";
+import { gnosisConnection } from "../web3/authentication-functions";
 import { AwsKmsSigner } from "../web3/AwsKmsSigner";
 import { ColonyNetwork } from '@colony/sdk';
 const router = Router();
@@ -126,7 +123,7 @@ async function updateRepActions(req: Request, res: Response) {
 
         // connect to Gnosis network
         const ethers = require('ethers');
-        const provider = new ethers.providers.JsonRpcProvider(process.env.GNOSIS_RPC_URL);
+        const provider = gnosisConnection();
         const openHarvestSigner = new AwsKmsSigner(process.env.OPEN_HARVEST_KEY_ID!, provider);
         
         // connect OH account to Heifer colony

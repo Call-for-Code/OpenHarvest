@@ -9,3 +9,10 @@ export const kmsAuth = () => {
     const kms = new AWS.KMS();
     return kms;
 }
+
+// connect to Gnosis network
+export const gnosisConnection = () => {
+    const ethers = require('ethers');
+    const provider = new ethers.providers.JsonRpcProvider(process.env.GNOSIS_RPC_URL);
+    return provider;
+}

@@ -5,7 +5,7 @@ import { Farmer, FarmerModel } from "../db/entities/farmer";
 import { Field, FieldModel } from "../db/entities/field";
 import { center, bbox, area, bboxPolygon } from "@turf/turf";
 import { FeatureCollection } from "geojson";
-import { kmsAuth } from "../web3/aws-sdk-authentication";
+import { kmsAuth } from "../web3/authentication-functions";
 
 const EISKey = process.env.EIS_apiKey;
 
