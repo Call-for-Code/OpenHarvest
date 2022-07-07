@@ -172,12 +172,13 @@ npm start
 
 ## Authors
 
-![THETEAM](./images/THE_TEAM.PNG)
+//![THETEAM](./images/THE_TEAM.PNG)
 
-- Team Lead: Tyler Philips
-- Ravi Nain
+- Tyler Philips
 - Ryan Pereira
+- Jonathan Scialpi
 - Vikas Jagtap
+- Ravi Nain
 
 ## License
 
