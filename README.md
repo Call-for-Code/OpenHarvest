@@ -172,8 +172,6 @@ npm start
 
 ## Authors
 
-//![THETEAM](./images/THE_TEAM.PNG)
-
 - Tyler Philips
 - Ryan Pereira
 - Jonathan Scialpi
