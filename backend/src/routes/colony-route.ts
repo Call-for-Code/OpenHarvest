@@ -28,10 +28,7 @@ async function getReputationForFarmer(req: Request, res: Response){
             const colonyNetwork = new ColonyNetwork(farmerSigner);
             const colony = await colonyNetwork.getColony(process.env.HEIFER_COLONY_CONTRACT_ADDRESS!);
             const balance = await colony.getBalance();
-            console.log("balance: ", balance);
             const reputation = await colony.getReputation(farmerEthAddress);
-            console.log("reputation: ", reputation)
-            console.log("reputationReport: ", getReputationReport(req.body))
             res.json({
                 colony_balance : balance.toString(),
                 reputation : reputation.toString(),
