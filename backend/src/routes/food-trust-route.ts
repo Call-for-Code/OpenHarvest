@@ -1,6 +1,6 @@
 // import dependencies and initialize the express router
 import { Router } from "express";
-import { FoodTrustAPI } from "../integrations/food-trust/food-trust-api.service";
+import { FoodTrustAPI } from "../integrations/Blockchain/food-trust/food-trust-api.service";
 
 const router = Router();
 

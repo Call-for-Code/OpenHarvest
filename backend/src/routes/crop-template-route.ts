@@ -2,9 +2,9 @@ import { Router, Request, Response } from "express";
 import { CropTemplateModel } from "../db/entities/cropTemplate";
 import { FieldModel } from "../db/entities/field";
 import { FarmerModel } from "../db/entities/farmer";
-import { calculatePayment, UpdateReputationActions } from "../web3/helper-functions";
-import { gnosisConnection } from "../web3/authentication-functions";
-import { AwsKmsSigner } from "../web3/AwsKmsSigner";
+import { calculatePayment, UpdateReputationActions } from "../integrations/Blockchain/web3/helper-functions";
+import { gnosisConnection } from "../integrations/Blockchain/web3/authentication-functions";
+import { AwsKmsSigner } from "../integrations/Blockchain/web3/AwsKmsSigner";
 import { ColonyNetwork } from '@colony/sdk';
 const router = Router();
 
@@ -138,7 +138,7 @@ async function updateRepActions(req: Request, res: Response) {
         
         res.json(docs);
       }else{
-        throw new Error('The request must be made with a different action status than what is existing.')
+        throw new Error('The request must be made with a different action status than what is existing.');
       }
   }catch (e){
       console.error(e);
@@ -172,7 +172,7 @@ router.put("/updateRepActions", updateRepActions);
 router.put("/addCropTemplateToField", addCropTemplateToField);
 
 // return all Fields which have the given crop_id in their subFields.properties.crops
-router.get("/getActionsForField/:field_id", async (req: Request, res: Response) => {
+router.get("/getField/:field_id", async (req: Request, res: Response) => {
   try {
     const docs = await FieldModel.findById(req.params.field_id)
     .then(doc => {
