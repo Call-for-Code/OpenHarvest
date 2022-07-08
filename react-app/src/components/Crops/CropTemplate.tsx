@@ -4,12 +4,14 @@ import {Add16} from '@carbon/icons-react';
 import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 import { CropService } from "../../services/CropService";
 import { Crop } from "../../services/crops";
-import { getFarmer } from "../../services/farmers";
+import { getFarmer, Farmer } from "../../services/farmers";
 import { Field, SubField, SubFieldCrop} from "../../../../backend/src/db/entities/field"
-import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions } from './helperFunctions'
+import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions } from './helperFunctions';
+import { ColonyAPI } from '../../services/colony';
 
 const cropTemplateAPI = new CropTemplateAPI();
 const cropService = new CropService();
+const colonyService = new ColonyAPI();
 
 const rowStyle = {
     // justifyContent:"center",
@@ -130,14 +132,14 @@ const CropTemplateSelector = () => {
         const cropToUpdate: Crop = await cropService.getCrop(selectedCrop);
         cropToUpdate.crop_template = templateForSubmission;
         await cropService.updateCrop(cropToUpdate); //should check to see if the crop already has an associated template first... but can add that later
-        //2. add cropTemplate and rep actions to fields: search for existing Field.Subfield[] with Crop_id and update to add cropTemplate object
+        // 2. add cropTemplate and rep actions to fields: search for existing Field.Subfield[] with Crop_id and update to add cropTemplate object
         const fields: Field[] = await cropTemplateAPI.getFieldsforCropId(selectedCrop);
         UpdateSubFieldWithCropTemplate(fields, cropTemplateAPI, selectedCrop, templateForSubmission);
 
         // ******** UI display ********
 
         //get all reputation Actions for a field and then put them in a list (usefull for front end display)
-        // const res = await cropTemplateAPI.getActionsForField("62bdf886ff4ab905c24225a6");
+        // const res = await cropTemplateAPI.getField("62bdf886ff4ab905c24225a6");
         // console.log(OrganizeReputationActions(res))
         
         // ******** updating reputation action ********
@@ -148,8 +150,12 @@ const CropTemplateSelector = () => {
         // 4. Use the OpenHarvest's ethKeyID to instantiate a new AWSSigner with OpenHarvest's ethereum Address
         // 5. Use the farmer's ethKeyID to instantiate a new AWSSigner with the famer's ethereum Address
         // 6. Calculate the payout amount and send from OpenHarvest address using colony SDK's pay() function
-        // const field: Field = await cropTemplateAPI.getActionsForField("62bdf886ff4ab905c24225a6");
+        // const field: Field = await cropTemplateAPI.getField("62c87e05e468c7b44ad4af96");
         // await cropTemplateAPI.updateRepActions(field, selectedCrop, "", "MyAction", true);        
+        
+        // ******** get reputation data for farmer object ********
+        //await colonyService.getReputationForFarmer(field);
+        
     }
 
     // update state for addCropTemplateName
