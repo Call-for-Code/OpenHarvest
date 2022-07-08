@@ -59,8 +59,8 @@ export class CropTemplateAPI{
         return data.data
     }
 
-    async getActionsForField(fieldId: string): Promise<Field> {
-        const data = await axios.get<Field>(this.APIBase + "getActionsForField/" + fieldId);
+    async getField(fieldId: string): Promise<Field> {
+        const data = await axios.get<Field>(this.APIBase + "getField/" + fieldId);
         return data.data;
     }
 }
