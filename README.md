@@ -52,9 +52,13 @@ flowchart LR
   react<-->node
   node<-->MongoDB
   node<-->AfricasTalking
+  node<-->Twilio
+  node<-->IBMFoodTrust
 
   User<-->react
-  Integrations<-->node
+  EthersJS<-->node
+  Colony<-->node
+  AWS-KMS<-->node
 ```
 
 ### Infrastructure / deployment stack

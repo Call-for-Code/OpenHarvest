@@ -124,6 +124,49 @@ but in the future I think it would be worthwhile creating a DSL (Domain Specific
 It would also be worthwhile to investigate how other integration software approaches this problem like Home
 Assistant.
 
+## Blockchain Integrations
+
+### Colony
+
+[Colony](https://colony.io/) is a Decentralized Application which helps user build, deploy, and manage DAOs on [Gnosis Chain](https://gnosis.io/). 
+
+Heifer has deployed their own test DAO which can be found [here](https://xdai.colony.io/colony/heifertest). 
+
+To execute transactions using the HeiferDAO smart contract, OpenHarvest uses:
+- [EthersJS](https://docs.ethers.io/v5/) to create an RPC connection to Gnosis
+- [Colonly SDK](https://github.com/JoinColony/colonySDK) to run Colony DAO methods such as `getReputation`, `pay`, etc.
+- [AWS SDK (KMS)](https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/KMS.html) to create CMKs, manage key permissions, and generate cryptographic signatures for Gnosis transactions.
+
+Current workflow:  
+1. Farmer is added to OpenHarvest and a CMK is created and assigned to that farmer.
+2. Farmer completes a recommended action and OpenHarvest Gnosis account calculates the amount of HX (ERC20 token associated with the HeiferDAO)the farmer should receive.
+3. OpenHarvest application make a `pay` call to send/reward the Farmer with the HX tokens.
+
+### IBM Food Trust
+
+ The purpose of the integration is to track a crop's lifecycle events via Hyperledger Fabric. Read more about [EPCIS events here](https://www.ibm.com/docs/en/food-trust?topic=reference-epcis-events). API requests to the endpoints described below will be triggered upon a farmer's completion of a recommended action.
+
+ OpenHarvest has been integrated with [IBM Food Trust](https://www.ibm.com/blockchain/solutions/food-trust)'s sandbox instance for the pilot phase and will eventually be pointed to the Production environment.
+
+**Current Groundnut crop lifecycle:**
+1. Perform Drying Method 1 `OBSERVATION`
+2. Perform Drying Method 2 `OBSERVATION`
+3. Perform Drying Method 3 `OBSERVATION`
+4. Perform Drying Method 4 `OBSERVATION`
+5. Perform Drying Method 5 `OBSERVATION`
+6. Storage 6               `OBSERVATION`
+7. Package for Transport   `OBSERVATION`
+8. Transport to Retailer   `TRANSFORMATION`
+9. Unpack at retailer      `OBSERVATION`
+
+**Food Trust Express Routes & Sub-routes:**
+- /routes/food-trust-route 
+   - /foodTrustProducts             `POST`
+   - /foodTrustProductByDesciption  `GET`
+   - /foodTrustLocations            `POST`
+   - /foodTrustLocationsByOrg       `GET`
+   - /issueIFTTransaction           `POST`
+   - /getEventByAssetId             `GET`
 ## Events
 
 Events are an important aspect of the OpenHarvest integration platform and they serve both users and other
