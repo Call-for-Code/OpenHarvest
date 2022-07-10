@@ -6,20 +6,13 @@ import { SubFieldCrop } from "../../types/EIS";
 import { ICropService } from "../../services/CropService";
 import commonInjectableContainer from "../../common/di/inversify.config";
 import TYPES from "../../common/di/inversify.types";
+import { dateToDateInputString } from "../../helpers/dateUtils";
 
 export interface CropEditorModalProps {
     crop?: SubFieldCrop;
     open: boolean;
     setOpen: (openState: boolean) => void;
     finished: (crop: SubFieldCrop) => void;
-}
-
-function dateToDateInputString(date: Date | null): string {
-    if (date == null) return "";
-
-    var day = ("0" + date.getDate()).slice(-2);
-    var month = ("0" + (date.getMonth() + 1)).slice(-2);
-    return date.getFullYear()+"-"+(month)+"-"+(day);
 }
 
 export function CropEditorModal(props: PropsWithChildren<CropEditorModalProps>) {

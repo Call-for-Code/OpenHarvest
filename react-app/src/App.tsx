@@ -17,7 +17,7 @@ import { ViewFarmer } from "./components/Farmers/ViewFarmer";
 
 import {enableAllPlugins} from "immer"
 import { Messaging } from "./components/Messaging/Messaging";
-import { CropGuide } from "./components/Crops/CropGuide/CropGuide";
+import { CropGuidePage } from "./components/Crops/CropGuide/CropGuidePage";
 enableAllPlugins();
 
 type AppProps = RouteComponentProps ;
@@ -126,7 +126,7 @@ function App(props: AppProps) {
                             exact
                             render={() => 
                                 <PrivateRoute>
-                                    <CropGuide />
+                                    <CropGuidePage />
                                 </PrivateRoute>
                             }
                         />

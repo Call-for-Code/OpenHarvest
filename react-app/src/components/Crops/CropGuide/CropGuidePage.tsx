@@ -1,11 +1,30 @@
 import React, { useState } from 'react'
 import { PageTitleBar } from "carbon-addons-iot-react";
 import { Tabs, Tab, Checkbox, Button, TextInput } from 'carbon-components-react';
+import { CropGuideSettings } from './CropGuideSettings';
+import { CropGuideView } from './CropGuideView';
+import { getDateFromDayOffset } from '../../../helpers/dateUtils';
+
+export interface Settings {
+    keyDates: {
+        rainySeasonStart: number;
+        effectiveRainsStart: number;
+    }
+}
+
 /**
  * Page view
  * I'm going to go for a master detail view
  */
 export function CropGuidePage() {
+
+    const [settings, setSettings] = useState<Settings>({
+        keyDates: {
+            effectiveRainsStart: 45,
+            rainySeasonStart: 300
+        }
+    });
+
 
     return <div className="flex flex-col">
         <PageTitleBar
@@ -15,38 +34,15 @@ export function CropGuidePage() {
             collapsed={false}
         />
 
-        <div className="flex flex-row h-[calc(100vh-96px)]">
-            {/* <Tabs>
-                <TabList aria-label="List of tabs">
-                    <Tab>Tab Label 1</Tab>
-                    <Tab>Tab Label 2</Tab>
-                    <Tab disabled>Tab Label 3</Tab>
-                    <Tab>Tab Label 4 with a very long long label</Tab>
-                </TabList>
-                <TabPanels>
-                    <TabPanel>Tab Panel 1</TabPanel>
-                    <TabPanel>
-                        <form style={{ margin: '2em' }}>
-                        <legend className={`cds--label`}>Validation example</legend>
-                        <Checkbox id="cb" labelText="Accept privacy policy" />
-                        <Button
-                            style={{ marginTop: '1rem', marginBottom: '1rem' }}
-                            type="submit">
-                            Submit
-                        </Button>
-                        <TextInput
-                            type="text"
-                            labelText="Text input label"
-                            helperText="Optional help text"
-                        />
-                        </form>
-                    </TabPanel>
-                    <TabPanel>Tab Panel 3</TabPanel>
-                    <TabPanel>Tab Panel 4</TabPanel>
-                </TabPanels>
-            </Tabs> */}
+        <Tabs>
+            <Tab id="tab-1" label="Settings">
+                <CropGuideSettings currentSettings={settings} onSettingsUpdate={setSettings} />
+            </Tab>
+            <Tab id="tab-2" label="Crop Guide Editor">
+                <CropGuideView />
+            </Tab>
+        </Tabs>
 
-        </div>
     </div>
 }
 
