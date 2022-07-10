@@ -7,6 +7,9 @@ import { getAllOrganisations, Organisation, createOrganisation } from "./../../s
 import { ModalStateManager } from "../../helpers/ModalStateManager";
 import { CoopManager, onboard } from "../../services/coopManager";
 import { useHistory } from "react-router-dom";
+import { OpenHarvestMap } from "../Map/OpenHarvestMap";
+import { PointSelectorLayer } from "../Map/PointSelectorLayer";
+import { latLng } from "leaflet";
 
 export default function UserOnboarding() {
     const auth = useAuth();
@@ -21,7 +24,7 @@ export default function UserOnboarding() {
 
     // User Info State
     const [name, setName] = useState("");
-    const [location, setLocation] = useState("");
+    const [location, setLocation] = useState(latLng([-13.805811, 32.888162]));
     const [mobile, setMobile] = useState("");
     const [selectedOrg, setSelectedOrg] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -85,7 +88,7 @@ export default function UserOnboarding() {
         console.log("submitting user");
         console.log(location, mobile, selectedOrg);
         const coopManager: CoopManager = {
-            location: location.split(",").map(it => parseFloat(it)),
+            location: [location.lat, location.lng],
             mobile,
             coopOrganisations: [selectedOrg]
         }
@@ -109,7 +112,7 @@ export default function UserOnboarding() {
     return (
         <div className="w-9/12 mx-auto space-y-10">
             <PageTitleBar
-                title={"Welcome to Open Harvest. Let's Get Started"}
+                title={"Welcome to OpenHarvest. Let's Get Started"}
                 forceContentOutside
                 headerMode={"STATIC"}
                 collapsed={false}
@@ -156,8 +159,8 @@ export default function UserOnboarding() {
                                         id="location"
                                         labelText="Location"
                                         helperText="latitude,longitude"
-                                        value={location}
-                                        onChange={(e) => setLocation(e.target.value)}
+                                        value={location.toString()}
+                                        readOnly={true}
                                     />
                                     {/* <p>Mobile contact number</p> */}
                                     <TextInput
@@ -169,6 +172,11 @@ export default function UserOnboarding() {
                                         value={mobile}
                                         onChange={(e) => setMobile(e.target.value)}
                                     />
+                                </div>
+                                <div className="h-[500px]">
+                                    <OpenHarvestMap>
+                                        <PointSelectorLayer onPointSelected={setLocation} />
+                                    </OpenHarvestMap>
                                 </div>
                             </div>
                             

@@ -147,7 +147,7 @@ export function Weather7Day() {
     }
     else {
         const details = getWeeklyForecastDetails(forecast);
-        console.log(details);
+        // console.log(details);
         return (
             <Card
                 title={"Weather Forecast"}

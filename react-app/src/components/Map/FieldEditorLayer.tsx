@@ -4,17 +4,18 @@ import { Circle, FeatureGroup, GeoJSON } from "react-leaflet";
 import { Polygon as leafletPolygon } from "leaflet";
 import { EditControl } from "react-leaflet-draw";
 import produce from "immer"
-import { EISField, EISSubField, EISSubFieldProperties } from "./../../types/EIS";
+import { Field, SubField, SubFieldProperties } from "../../types/field";
 
 export interface FieldEditorLayerProps {
     /**
      * An existing one. If this is null or undefined a new one will be created and used.
      */
-    existingField?: EISField;
+    existingField?: Field;
     /**
      * Called when the field is updated in some way.
      */
-    onFieldUpdated?: (field: EISField) => void;
+    onFieldUpdated?: (field: Field) => void;
+    disableEdit?: boolean;
 }
 
 
@@ -25,18 +26,20 @@ export interface FieldEditorLayerProps {
  */
 export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>): ReactElement {
 
+    const disableEditing = props.disableEdit || false;
+
     // field will be late inited as part of the use effect which is why the type doesn't include `| null`
     // As to why I'm using a ref, it's because react-leaflet-draw doesn't update it's OnCreated Callback
     // Read more here: https://stackoverflow.com/questions/57847594/react-hooks-accessing-up-to-date-state-from-within-a-callback
     // const [field, setField] = useState<EISField>(null!!);
-    const fieldRef = useRef<EISField>(null!!)
+    const fieldRef = useRef<Field>(null!!)
     const [fieldLayers, setFieldLayers] = useState<React.ReactElement[]>([]);
 
-    function makeFieldLayers(field: EISField) {
+    function makeFieldLayers(field: Field) {
         if (field == null) {
             return;
         }
-        const layers = field.subFields.map(it => <GeoJSON data={it.geo.geojson} />);
+        const layers = field.subFields.map(it => <GeoJSON data={it} />);
         setFieldLayers(layers);
     }
 
@@ -46,27 +49,14 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
 
         const layer = event.layer;
 
-        const subfieldGeoJSON = layer.toGeoJSON() as Feature<Polygon, EISSubFieldProperties>;
-        subfieldGeoJSON.properties = {
-            farm_name: "test",
-            open_harvest_farmer_id: "",
-            open_harvest: {
-                farmer_id: "",
-                crops: []
-            }
-        }
+        const subfieldGeoJSON = layer.toGeoJSON() as Feature<Polygon, SubFieldProperties>;
         
-        // Make a feature collection 
-        const subfield: EISSubField = {
-            name: "field",
-            geo: {
-                type: "geojson",
-                geojson: {
-                    type: "FeatureCollection",
-                    features: [ subfieldGeoJSON ]
-                }
-            }
+        // @ts-expect-error Name is set further down.
+        const subfield: SubField = subfieldGeoJSON;
+        subfield.properties = {
+            crops: []
         }
+        subfield.name = "Name"
 
         // Create a new object for components listening outside
         const newField = produce(fieldRef.current, (draftField) => {
@@ -83,20 +73,20 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
 
     // console.log("Render", fieldRef.current, onCreated);
 
-    function polygonEdited(layer: leafletPolygon<EISSubFieldProperties>) {
+    function polygonEdited(layer: leafletPolygon<SubFieldProperties>) {
 
     }
-    function polygonDeleted(layer: leafletPolygon<EISSubFieldProperties>) {
+    function polygonDeleted(layer: leafletPolygon<SubFieldProperties>) {
 
     }
 
     useEffect(() => {
         const field_in = props.existingField;
-        let newField: EISField;
+        let newField: Field;
         if (field_in == null || field_in == undefined) {
             // Create a field
             newField = {
-                name: "string",
+                farmer_id: "",
                 subFields: []
             };
         }
@@ -114,18 +104,23 @@ export function FieldEditorLayer(props: PropsWithChildren<FieldEditorLayerProps>
     }, [fieldRef.current ? fieldRef.current.subFields.length : -1])
 
     return <FeatureGroup>
-        <EditControl
-            position='topright'
-            onEdited={(event: any) => {console.log("edited", event.layer)}}
-            onCreated={(e: any) => onCreated(e)}
-            onDeleted={(event: any) => console.log("deleted", event.layer)}
-            draw={{
-                polyline: false,
-                rectangle: false,
-                circle: false,
-                circlemarker: false,
-                marker: false
-            }}
-        />
+        {
+            !disableEditing &&
+            <EditControl
+                position='topright'
+                onEdited={(event: any) => {console.log("edited", event.layer)}}
+                onCreated={(e: any) => onCreated(e)}
+                onDeleted={(event: any) => console.log("deleted", event.layer)}
+                draw={{
+                    polyline: false,
+                    rectangle: false,
+                    circle: false,
+                    circlemarker: false,
+                    marker: false
+                }}
+            />
+        }
+        
+        {fieldLayers.map(Layer => <>{Layer}</>)}
     </FeatureGroup>
 }

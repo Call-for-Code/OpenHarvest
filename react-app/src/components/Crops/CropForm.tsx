@@ -12,6 +12,8 @@ import { ComposedModal } from "carbon-addons-iot-react";
 import { Crop } from "../../services/crops";
 import { CustomToast } from "../Toast/CustomToast";
 import { Toast } from "../../types/toast";
+import CropTemplateSelector from "./CropTemplate"
+// import { CropTemplate } from "../../services/cropTemplate";
 
 type CropFormProps = {
     selectedCrop?: ICropTableRow;
@@ -24,6 +26,7 @@ type CropFormState = {
     fieldStates: IFormFieldStates;
     toast?: Toast;
     loading: boolean;
+    // cropTemplate: CropTemplate
 };
 
 export default class CropForm extends Component<CropFormProps, CropFormState> {
@@ -44,10 +47,16 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         super(props);
 
         this.formFields = CropForm.getFormFields();
+        // let actionWeightsObj: Record<string, string> = {};
+        // let cropTemplateObj: CropTemplate = {
+        //     action_weights: actionWeightsObj,
+        //     crop_template_name : ""
+        // };
 
         this.state = {
             fieldStates: createFormState(this.formFields),
-            loading: true
+            loading: true,
+            // cropTemplate: cropTemplateObj
         };
 
         // handlers
@@ -60,6 +69,7 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         this.handleYieldsChange = this.handleYieldsChange.bind(this);
         this.handleTimeToHarvestChange = this.handleTimeToHarvestChange.bind(this);
         this.clearToast = this.clearToast.bind(this);
+        // this.handleSetCropTemplate = this.handleSetCropTemplate.bind(this)
 
         // helpers
         this.isSelected = this.isSelected.bind(this);
@@ -119,6 +129,12 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
         this.handleFormFieldChangeFromValue(event.target.value, "yields");
     }
 
+    // handleSetCropTemplate(template: CropTemplate): void{
+    //     this.setState({cropTemplate: template})
+    //     console.log("template: ",template)
+    //     console.log("state: ", this.state)
+    // }
+
     handleClose(): void {
         this.props.onCancel();
     }
@@ -134,7 +150,8 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
             planting_season: [this.state.fieldStates["plantingSeasonStart"].value as number, this.state.fieldStates["plantingSeasonEnd"].value as number],
             time_to_harvest: this.state.fieldStates["timeToHarvest"].value as number,
             is_ongoing: this.state.fieldStates["ongoing"].value as boolean,
-            yield_per_sqm: this.state.fieldStates["yields"].value as number
+            yield_per_sqm: this.state.fieldStates["yields"].value as number,
+            // crop_template: this.state.cropTemplate
         };
 
         this.cropService.saveCrop(values)
@@ -284,6 +301,7 @@ export default class CropForm extends Component<CropFormProps, CropFormState> {
                             invalidText={this.getInvalidMessage("yields")}/>
                     </Column>
                 </Row>
+                {/* <CropTemplateSelector handleSetCropTemplate={this.handleSetCropTemplate}/> */}
             </Grid>
         </ComposedModal>;
     }

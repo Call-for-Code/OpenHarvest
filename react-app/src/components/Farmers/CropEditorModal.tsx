@@ -68,10 +68,9 @@ export function CropEditorModal(props: PropsWithChildren<CropEditorModalProps>) 
             harvested: harvested,
             farmer: props.crop ? props.crop.farmer : ""
         }
-        console.log("save", farmerCrop);
+        
         props.finished(farmerCrop);
     }
-    
 
     // return <div>Hello</div>
     return <ComposedModal
@@ -89,11 +88,21 @@ export function CropEditorModal(props: PropsWithChildren<CropEditorModalProps>) 
                         :
                         "Edit this Crop"}
                 </p>
-                <Select id="farmer-crop-select" labelText="Choose a Crop" onChange={(val) => setSelectedCrop(crops.find(it => it._id == val.target.value)!!)}>
+                <Select 
+                    defaultValue="select-crop"
+                    id="farmer-crop-select" 
+                    labelText="Choose a Crop" 
+                    onChange={(val) => setSelectedCrop(crops.find(it => it._id == val.target.value)!!)}>
+                    <SelectItem
+                        disabled
+                        hidden
+                        text="Select Crop"
+                        value="select-crop"
+                    />
                     <SelectItem disabled hidden value="placeholder-item" text="Choose a Crop" />
-                {crops.map(it => 
-                    <SelectItem value={it._id} text={it.name} />
-                )}
+                    {crops.map(it => 
+                        <SelectItem value={it._id} text={it.name} />
+                    )}
                 </Select>
                 <div className="flex flex-row">
                     <TextInput

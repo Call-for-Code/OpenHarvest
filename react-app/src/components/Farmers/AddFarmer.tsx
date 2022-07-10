@@ -10,6 +10,7 @@ import { CropEditorModal } from "./CropEditorModal";
 import { addFarmer, FarmerAddDTO } from "../../services/farmers";
 import { useAuth } from "../../services/auth";
 import { useHistory } from "react-router";
+import { Field } from "../../types/field";
 
 
 const actions = {
@@ -116,7 +117,7 @@ export function AddFarmer() {
     const [address, setAddress] = useState("");
     // There can only really be one org
     const [coopOrgs, setCoopOrgs] = useState("");
-    const [field, setField] = useState<EISField | null>(null);
+    const [field, setField] = useState<Field | null>(null);
     const [fieldTableData, setFieldTableData] = useState<any>([]);
 
     const [isSaving, setIsSaving] = useState(false);
@@ -137,11 +138,11 @@ export function AddFarmer() {
             const crops = rowIds.filter(it => it.includes("crop"));
             crops.forEach(it => {
                 const splitRowId = it.split("-");
-                const fieldIdx = parseInt(splitRowId[2]);
-                const cropIdx = parseInt(splitRowId[5]);
+                const fieldIdx = parseInt(splitRowId[2]); // subfield index
+                const cropIdx = parseInt(splitRowId[5]); // Crop Index
 
                 setField(produce(draftField => {
-                    const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].geo.geojson.features[0].properties.open_harvest;
+                    const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].properties
                     subfieldOpenHarvestProperties.crops[cropIdx].harvested = new Date();
                 }));
             });
@@ -160,13 +161,13 @@ export function AddFarmer() {
             const cropIdx = parseInt(splitRowId[5]);
 
             setField(produce(draftField => {
-                const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].geo.geojson.features[0].properties.open_harvest;
+                const subfieldOpenHarvestProperties = draftField!!.subFields[fieldIdx].properties;
                 subfieldOpenHarvestProperties.crops[cropIdx].harvested = new Date();
             }));
         }
     };
 
-    const onFieldUpdated = (field: EISField) => {
+    const onFieldUpdated = (field: Field) => {
         setField(_ => field);
     }
 
@@ -179,7 +180,7 @@ export function AddFarmer() {
             throw new Error("field is null!");
         }
         setField(produce(draftField => {
-            const subfieldOpenHarvestProperties = draftField!!.subFields[idx].geo.geojson.features[0].properties.open_harvest;
+            const subfieldOpenHarvestProperties = draftField!!.subFields[idx].properties;
             subfieldOpenHarvestProperties.crops.push(crop);
         }));        
     }
@@ -189,8 +190,8 @@ export function AddFarmer() {
 
         if (field) {
             const tableData = field.subFields.map((it, i) => {
-                const feature = it.geo.geojson.features[0];
-                const crops: SubFieldCrop[] = feature.properties.open_harvest.crops;
+                const feature = it;
+                const crops: SubFieldCrop[] = feature.properties.crops;
                 const doesCropDataExist = crops.length > 0;
 
                 const sqm = squareMetresToHa(area(feature));
@@ -200,7 +201,7 @@ export function AddFarmer() {
                     return {
                         id: `subfield-id-${i}-crop-id-${index}`,
                         values: {
-                            name: field.name,
+                            name: feature.name,
                             area: sqm.toFixed(0),
                             crop: it.crop.name,
                             planted: it.planted.toLocaleDateString(),
@@ -220,7 +221,7 @@ export function AddFarmer() {
                 return {
                     id: `subfield-id-${i}`,
                     values: {
-                        name: field.name,
+                        name: feature.name,
                         area: sqm.toFixed(0),
                         crop: doesCropDataExist ? crops[0].crop.name : "None",
                         planted: doesCropDataExist ? crops[0].planted.toLocaleDateString() : "",

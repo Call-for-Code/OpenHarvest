@@ -58,10 +58,6 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 </div>
             </div>
 
-            <style>
-	            --card-default-height: 405px;
-            </style>
-
             <div className="m-[20px] space-y-[20px] md:flex md:flex-row md:space-x-[20px] md:space-y-0 justify-between">
                 <div className="w-full">
                     <YHBCTable></YHBCTable>

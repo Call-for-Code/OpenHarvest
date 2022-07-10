@@ -3,6 +3,8 @@ import { EventEmitter } from "eventemitter3";
 import { CoopManager } from './coopManager';
 import { Organisation } from './organisation';
 
+const localStorageTokenKey = "openharvest_token";
+
 export interface CoopManagerUser {
     id: string;
     email_verified: boolean
@@ -22,10 +24,14 @@ export interface CoopManagerUser {
     selectedOrganisation?: Organisation;
 }
 
+export interface AuthProviderProps {
+  token?: string
+}
+
 export const AuthContext = createContext<AuthProviderType>(undefined!!);
 
-export function AuthProvider({ children }: PropsWithChildren<{}>) {
-  const auth = useProvideAuth()
+export function AuthProvider({ children, token }: PropsWithChildren<AuthProviderProps>) {
+  const auth = useProvideAuth(token)
   return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>
 }
 
@@ -35,6 +41,8 @@ export const useAuth = () => {
 
 export interface AuthProviderType { 
   user: CoopManagerUser | null;
+  token?: string;
+  isLoggedIn: boolean;
   loading: boolean;
   login: () => void;
   checkIfSignedIn: () => Promise<CoopManagerUser | null>;
@@ -44,56 +52,86 @@ export interface AuthProviderType {
 // EventEmitter for Auth
 export const AuthEventEmitter = new EventEmitter();
 
-function useProvideAuth(): AuthProviderType {
-  const [user, setUser] = useState<CoopManagerUser | null>(null)
-  const [loading, setLoading] = useState(true)
+function useProvideAuth(initialToken?: string): AuthProviderType {
+  const [user, setUser] = useState<CoopManagerUser | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState(initialToken);
 
-  const handleUser = (rawUser: any) => {
+  function handleUser(rawUser: CoopManagerUser | null, token: string | null) {
+    setLoading(false);
+    
+    // @ts-expect-error It's totally valid to save a null value but TS doesn't think so.
+    localStorage.setItem(localStorageTokenKey, token);
+    
     if (rawUser) {
       const user = rawUser;
-
-      setLoading(false)
-      setUser(user)
+      
+      setUser(user);
+      setIsLoggedIn(true);
       AuthEventEmitter.emit("signedIn", user);
       return user
     } else {
-      setLoading(false)
-      setUser(null)
+      setUser(null);
+      setIsLoggedIn(false);
       AuthEventEmitter.emit("signedOut");
       return null
     }
   }
 
-  const login = () => {
+  function login() {
     if (process.env.NODE_ENV == "production") {
-      window.location.href = "/login";
+      window.location.href = "/auth/login";
     }
     else {
-      window.location.href = "https://localhost:3000/login";
+      window.location.href = "https://localhost:3000/auth/login";
     }
   }
 
-  const checkIfSignedIn = async () => {
-    setLoading(true)
+  async function checkIfSignedIn() {
+    setLoading(true);
 
-    let userInfo = null;
-    try {
-      const res = await fetch("/me");
-      userInfo = await res.json();
-      console.log(userInfo);
+    const localStorageToken = localStorage.getItem(localStorageTokenKey);
+
+    // Check if a token was passed in
+    if (token) {
+      // Lets parse the token and get user details
+      const segments = token.split(".");
+      const user = JSON.parse(atob(segments[1]))
+      setToken(token);
+      console.log("[Auth] Loaded token from auth transaction");
+      return handleUser(user, token);
     }
-    catch(e) {
-      console.log("User is not signed in.")
+    else if (localStorageToken !== null) {
+      // We also need to handle the case of an expired token
+      const segments = localStorageToken.split(".");
+      const user = JSON.parse(atob(segments[1]))
+      setToken(localStorageToken);
+      console.log("[Auth] Loaded token from localStorage");
+      return handleUser(user, localStorageToken);
     }
+    else {
+      try {
+        const res = await fetch("/me");
+        const userInfo = await res.json();
+        console.log(userInfo);
+        return handleUser(userInfo, null);
+      }
+      catch(e) {
+        console.log("User is not signed in.")
+        return handleUser(null, null);
+      }
+    }
+
+    // Check if there's a token in local storage
+
+    // else lets ask the server if there's a session active
+
+
     
-    return handleUser(userInfo);
   }
 
-  const signout = () => {
-    // return firebase
-    //   .auth()
-    //   .signOut()
-    //   .then(() => handleUser(false))
+  function signout() {
     if (process.env.NODE_ENV == "production") {
       window.location.href = "/logout";
     }
@@ -104,12 +142,15 @@ function useProvideAuth(): AuthProviderType {
 
   // Check if we're signed in already
   useEffect(() => {
-    const userSignedInInfo = checkIfSignedIn();
+    // console.log("Auth", initialToken);
+    checkIfSignedIn();
   }, [])
   
 
   return {
     user,
+    token,
+    isLoggedIn,
     loading,
     login,
     checkIfSignedIn,
