@@ -61,4 +61,40 @@ export class WeatherCompanyAPI {
 
         // return testForecastData;
     }
+    
+    async sixMonthHistory(geocode: GeoCode, commonOptions = this.defaultOptions) {
+        const paramOptions = {
+            geocode: this.GeoCodeToString(geocode),
+            apiKey: this.apiKey
+        }
+        const queryOptions = Object.assign({}, commonOptions, paramOptions);
+
+        this.apiHitCounter()
+
+        const response = await axios.get(this.baseAPI + "v3/wx/almanac/monthly/6month", {
+            params: queryOptions
+        });
+
+        return response.data;
+
+        // return testForecastData;
+    }
+
+    async twelveMonthHistory(geocode: GeoCode, commonOptions = this.defaultOptions) {
+        const paramOptions = {
+            geocode: this.GeoCodeToString(geocode),
+            apiKey: this.apiKey
+        }
+        const queryOptions = Object.assign({}, commonOptions, paramOptions);
+
+        this.apiHitCounter()
+
+        const response = await axios.get(this.baseAPI + "v3/wx/almanac/monthly/6month", {
+            params: queryOptions
+        });
+
+        return response.data;
+
+        // return testForecastData;
+    }
 }
