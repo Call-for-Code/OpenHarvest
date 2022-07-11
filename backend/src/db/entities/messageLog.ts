@@ -31,6 +31,10 @@ export interface MessageLog {
     source: Source
     timestamp: Date;
     /**
+     * The Group this message belongs to
+     */
+    group_id: string | null;
+    /**
      * For auditing purposes this is the message id from the service
      */
     messageRef: string;
@@ -50,6 +54,10 @@ export const MessageLogSchema = new Schema({
     status: String,
     source: String,
     timestamp: Date,
+    /**
+     * The Group this message belongs to
+     */
+    group_id: String,
     /**
      * For auditing purposes this is the message id from the service
      */

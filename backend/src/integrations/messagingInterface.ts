@@ -4,6 +4,7 @@ import { MessageLog } from "./../db/entities/messageLog";
 import { CoopManager } from "./../db/entities/coopManager";
 import { EventBusInstance } from "./../integrations/eventBus.service";
 import { OrganisationModel } from "./../db/entities/organisation";
+import { MessageGroup } from "./../db/entities/messageGroup";
 
 export declare interface MessagingInterface<ReceivedMessageType> {
     on(event: 'onMessage', listener: (message: MessageLog) => void): this;
@@ -22,7 +23,24 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
      * @param farmer Farmer we're sending a message to.
      * @param message The string message we want to send.
      */
-    abstract sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog>;
+    abstract sendMessageToFarmer(farmer: Farmer, message: string, group_id?: string): Promise<MessageLog>;
+
+    /**
+     * Sends a message to a group of farmers. A basic implementation is here which uses a for loop
+     * over sendMessageToFarmer but please implement a better one if your API / Service allows you
+     * to. The end goal being mass messaging.
+     * @param group Farmers we're sending this to
+     * @param message The message we're sending them
+     */
+    sendMessageToGroup(group: MessageGroup, message: string): Promise<MessageLog[]> {
+        if (group.farmers === undefined) {
+            throw new Error("Group is missing farmers!");
+        }
+        if (group._id === undefined) {
+            throw new Error("Group is missing id!");
+        }
+        return Promise.all(group.farmers.map(it => this.sendMessageToFarmer(it, message, group._id!!.toString())));
+    }
 
     /**
      * This method handles sending a message to a Coop Manager.
@@ -74,8 +92,9 @@ export abstract class MessagingInterface<ReceivedMessageType> extends EventEmitt
                 }
                 EventBusInstance.publishMessage(org, message);
             })
-            
         }
     }
+
+    async 
 
 }
