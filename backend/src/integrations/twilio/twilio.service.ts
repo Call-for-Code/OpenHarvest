@@ -37,7 +37,7 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
         this.client = twilio(accountSid, authToken);
     }
 
-    async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
+    async sendMessageToFarmer(farmer: Farmer, message: string, group_id?: string): Promise<MessageLog> {
         const number = farmer.mobile;
 
         if (message === undefined || message === null || message === "") {
@@ -53,6 +53,7 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
             status: Status.Sent,
             source: Source.OpenHarvest,
             timestamp: new Date(),
+            group_id: group_id ?? null,
             messageRef
         }
 
@@ -99,6 +100,7 @@ class TwilioAPI extends MessagingInterface<TwilioMessage> {
             status: Status.Unread,
             source: Source.Farmer,
             timestamp: new Date(),
+            group_id: null,
             messageRef: message.MessageSid
         }
 

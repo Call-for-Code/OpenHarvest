@@ -42,7 +42,7 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
      */
     private pendingMessages: SMSSyncMessage[] = [];
 
-    async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
+    async sendMessageToFarmer(farmer: Farmer, message: string, group_id?: string): Promise<MessageLog> {
         const number = farmer.mobile;
 
         if (message === undefined || message === null || message === "") {
@@ -58,6 +58,7 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
             status: Status.Sent,
             source: Source.OpenHarvest,
             timestamp: new Date(),
+            group_id: group_id ?? null,
             messageRef: messageRef
         }
 
@@ -118,6 +119,7 @@ export class SMSSyncAPI extends MessagingInterface<SMSSyncMessageReceivedFormat>
             status: Status.Unread,
             source: Source.Farmer,
             timestamp: new Date(parsedTimestamp),
+            group_id: null,
             messageRef: message.message_id
         }
 
