@@ -51,7 +51,7 @@ flowchart LR
   end
   react<-->node
   node<-->MongoDB
-  node<-->Twilio
+  node<-->Africa's Talking
 
   User<-->react
   Integrations<-->node
