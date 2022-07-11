@@ -216,5 +216,3 @@ backend/.env.dev.production
 backend/public
 
 *.pem
-
-package-lock.json
