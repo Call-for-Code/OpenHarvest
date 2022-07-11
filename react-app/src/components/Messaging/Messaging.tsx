@@ -5,7 +5,7 @@ import produce from "immer"
 import { Farmer, getAllFarmers } from "../../services/farmers";
 import { Chat32, Send32 } from "@carbon/icons-react";
 import { ConversationList, ConversationListProps } from "./ConversationList";
-import { ConversationListItemProps } from "./ConversationListItem";
+import { ConversationListItemProps, NewConversation } from "./ConversationListItem";
 import { getAllMessages, MessageLog, sendMessageToFarmer } from "../../services/messageLog";
 import { SocketIOClientInstance } from "./../../services/socket.io";
 import { Conversation } from "./Conversation";
@@ -26,6 +26,8 @@ export function Messaging() {
 
     const [conversations, setConversations] = useState<ConversationData[]>([]);
     const [selectedConvo, setSelectedConvo] = useState<ConversationData | null>(null);
+
+    const [inNewConvo, setInNewConvo] = useState(false);
 
     const [messageText, setMessageText] = useState<string>("");
 
@@ -174,7 +176,11 @@ export function Messaging() {
         <div className="flex flex-row h-[calc(100vh-96px)]">
             {/* Conversation List */}
             <div className="w-1/4 border-r-2 border-gray-300 border-solid">
-                <ConversationList messages={conversations} onConversationChange={changeConversation} ></ConversationList>
+                <ConversationList 
+                    messages={conversations} 
+                    onConversationChange={changeConversation}
+                    inNewConvo={inNewConvo}
+                    onNewConversation={() => setInNewConvo(true)} />
             </div>
             {/* Conversation */}
             <div className="w-3/4 flex flex-col">
