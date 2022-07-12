@@ -21,7 +21,7 @@ export function ConversationListItem(props: ConversationListItemProps) {
     </div>        
 }
 
-export function NewConversation(props: {
+export function NewConversationListItem(props: {
     isActive: boolean;
     onClick?: () => void;
 }) {

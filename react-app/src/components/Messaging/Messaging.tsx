@@ -5,10 +5,11 @@ import produce from "immer"
 import { Farmer, getAllFarmers } from "../../services/farmers";
 import { Chat32, Send32 } from "@carbon/icons-react";
 import { ConversationList, ConversationListProps } from "./ConversationList";
-import { ConversationListItemProps, NewConversation } from "./ConversationListItem";
+import { ConversationListItemProps, NewConversationListItem } from "./ConversationListItem";
 import { getAllMessages, MessageLog, sendMessageToFarmer } from "../../services/messageLog";
 import { SocketIOClientInstance } from "./../../services/socket.io";
 import { Conversation } from "./Conversation";
+import { NewConversation } from "./NewConversation";
 
 export interface ConversationData {
     name: string;
@@ -137,6 +138,9 @@ export function Messaging() {
     }, []);
 
     function changeConversation(farmer_id: string) {
+        setInNewConvo(false);
+
+
         const convo = conversations.find(it => it.farmer_id === farmer_id);
         selectedConvo!!.isActive = false;
         convo!!.isActive = true;
@@ -184,7 +188,12 @@ export function Messaging() {
             </div>
             {/* Conversation */}
             <div className="w-3/4 flex flex-col">
-                <Conversation conversation={selectedConvo}></Conversation>
+                {inNewConvo ? 
+                    <NewConversation farmers={farmers} onFarmerSelectionUpdated={(farmers => console.log(farmers))} />
+                :
+                    <Conversation conversation={selectedConvo}></Conversation>
+                }
+                
                 <div className="flex flex-row">
                     <TextArea placeholder="Message" labelText="" value={messageText} onChange={(e) => setMessageText(e.target.value)}/>
                     <div className="w-1/12 flex flex-col justify-center items-center hover:bg-[#e0e0e0] cursor-pointer" onClick={sendMessage}>

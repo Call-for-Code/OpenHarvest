@@ -1,5 +1,5 @@
 import React from "react";
-import { ConversationListItem, ConversationListItemProps, NewConversation } from "./ConversationListItem";
+import { ConversationListItem, ConversationListItemProps, NewConversationListItem } from "./ConversationListItem";
 
 export interface ConversationListProps {
     messages: ConversationListItemProps[];
@@ -14,7 +14,7 @@ export function ConversationList(props: ConversationListProps) {
         {props.messages.map(it =>
             <ConversationListItem key={it.farmer_id} {...it} onClick={() => props.onConversationChange(it.farmer_id)} />
         )}
-        <NewConversation isActive={props.inNewConvo} onClick={props.onNewConversation} />
+        <NewConversationListItem isActive={props.inNewConvo} onClick={props.onNewConversation} />
     </div>
         
 }
