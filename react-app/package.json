@@ -52,7 +52,8 @@
     "tailwindcss": "^3.0.23"
   },
   "scripts": {
-    "start": "GENERATE_SOURCEMAP=false PORT=3001 react-scripts start",
+    "start": "node start.js",
+    "unix-start": "GENERATE_SOURCEMAP=false PORT=3001 react-scripts start",
     "win-start": "set \"GENERATE_SOURCEMAP=false\" && set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
