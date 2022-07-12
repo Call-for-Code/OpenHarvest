@@ -14,6 +14,7 @@ import { Table } from "./DataTable";
 import { YHBCTable, YFBCTable } from "./DataTable";
 >>>>>>> 56f186f9 (data tables)
 import { LandAreaCard, NumCropsCard, NumFarmersCard, PrecipWeekCard } from "./DataCards";
+import { DashboardGrid, CARD_SIZES, CARD_TYPES, Card } from 'carbon-addons-iot-react';
 
 type CoOpHomeProps = {};
 type CopOpHomeState = {};
@@ -24,13 +25,17 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
     render(): ReactElement {
         return <div className="w-full">
             <PageTitleBar
-                title={"Home"}
+                title={"Co-op Manager Dashboard"}
                 forceContentOutside
                 headerMode={"STATIC"}
                 collapsed={false}
             />
 
+<<<<<<< HEAD
             <div className="flex space-x-4 m-[20px]">
+=======
+            <div className="flex space-x-4">
+>>>>>>> e0dbe82d (africatalks)
                 <div className="flex-none w-3/12 h-48">
                     <WeatherToday></WeatherToday>
                 </div>
@@ -38,6 +43,7 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                     <Weather7Day></Weather7Day>
                 </div>
             </div>
+<<<<<<< HEAD
 
             {/* <div className="w-9/12 h-[500px]">
                 <HomeMap></HomeMap>
@@ -83,9 +89,17 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                     <PiChartGNY></PiChartGNY>
                 </div>
             </div>
+=======
+{/* 
+            <div className="w-9/12 h-[500px]">
+                <HomeMap></HomeMap>
+            </div> */}
+>>>>>>> e0dbe82d (africatalks)
             
             <div>
                 <BarChartYFC></BarChartYFC>
+            </div>
+            <div>
                 <BarChartYHC></BarChartYHC>
             </div>
             <div  className="flex">
@@ -94,15 +108,19 @@ export default class CoOpHome extends Component<CoOpHomeProps, CopOpHomeState> {
                 <NumFarmersCard></NumFarmersCard>
                 <PrecipWeekCard></PrecipWeekCard>
             </div>
-            <div className="flex">
+
+            <div className="flex space-x-4">
+            
                 <YHBCTable></YHBCTable>
                 <PiChartGNT></PiChartGNT>
                 
             </div>
-            <div className="flex">
+            <div className="flex space-x-4">
                 <YFBCTable></YFBCTable>
                 <PiChartGNY></PiChartGNY>
             </div>
+            
+
             
 
         </div>

@@ -5,6 +5,19 @@ import LandAreasService from "../services/land-areas.service";
 const lotAreas = new LandAreasService();
 
 
+import { GeoCode } from "integrations/weather-company-api.types";
+import { WeatherCompanyAPI } from "./../integrations/weather-company-api.service";
+
+
+
+const api = new WeatherCompanyAPI();
+
+const testMchinjiMalawiCoords: GeoCode = {
+    latitude: -13.7971726,
+    longitude: 32.8874963
+}
+
+
 
 //data table
 const tableDataYHBC = [
