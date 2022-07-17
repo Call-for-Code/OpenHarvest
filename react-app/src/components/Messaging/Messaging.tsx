@@ -29,6 +29,7 @@ export function Messaging() {
     const [selectedConvo, setSelectedConvo] = useState<ConversationData | null>(null);
 
     const [inNewConvo, setInNewConvo] = useState(false);
+    const [newConvoFarmers, setNewConvoFarmers] = useState<Farmer[]>([])
 
     const [messageText, setMessageText] = useState<string>("");
 
@@ -83,63 +84,67 @@ export function Messaging() {
         }
     }, []);
 
-    useEffect(() => {
-        async function load() {
-            const farmers = await getAllFarmers();
-            setFarmers(farmers);
+    async function load() {
+        const farmers = await getAllFarmers();
+        setFarmers(farmers);
 
-            const messages = await getAllMessages();
-            setMessageLog(messages);
+        const messages = await getAllMessages();
+        setMessageLog(messages);
 
-            console.log(messages);
+        console.log(messages);
 
-            const convos = [];
-            const farmerToMessageLogMap: any = {};
-            
-            // Group by farmer_id
-            for (let i = 0; i < messages.length; i++) {
-                const message = messages[i];
-                if (message.farmer_id in farmerToMessageLogMap) {
-                    farmerToMessageLogMap[message.farmer_id].push(message);
-                }
-                else {
-                    farmerToMessageLogMap[message.farmer_id] = [message];
-                }
+        const convos = [];
+        const farmerToMessageLogMap: any = {};
+        
+        // Group by farmer_id
+        for (let i = 0; i < messages.length; i++) {
+            const message = messages[i];
+            if (message.farmer_id in farmerToMessageLogMap) {
+                farmerToMessageLogMap[message.farmer_id].push(message);
             }
-
-            // Make conversations
-            for (const farmer_id in farmerToMessageLogMap) {
-                const messageLogs: MessageLog[] = farmerToMessageLogMap[farmer_id];
-                messageLogs.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-                
-                const farmerInfo = farmers.find(it => it._id == farmer_id);
-                if (farmerInfo == undefined) {
-                    throw new Error("Unknown Farmer in Message!");
-                }
-                const name = farmerInfo.name;
-                const preview = messageLogs[messageLogs.length - 1].message;
-
-                convos.push({
-                    name,
-                    farmer_id,
-                    preview,
-                    isActive: false,
-                    messages: messageLogs
-                });
+            else {
+                farmerToMessageLogMap[message.farmer_id] = [message];
             }
-
-            convos[0].isActive = true;
-            setSelectedConvo(convos[0]);
-            setConversations(convos);
-
         }
 
+        // Make conversations
+        for (const farmer_id in farmerToMessageLogMap) {
+            const messageLogs: MessageLog[] = farmerToMessageLogMap[farmer_id];
+            messageLogs.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+            
+            const farmerInfo = farmers.find(it => it._id == farmer_id);
+            if (farmerInfo == undefined) {
+                throw new Error("Unknown Farmer in Message!");
+            }
+            const name = farmerInfo.name;
+            const preview = messageLogs[messageLogs.length - 1].message;
+
+            convos.push({
+                name,
+                farmer_id,
+                preview,
+                isActive: false,
+                messages: messageLogs
+            });
+        }
+        
+        if (convos.length > 0) {
+            convos[0].isActive = true;
+            setSelectedConvo(convos[0]);
+        }
+        else {
+            setInNewConvo(true);
+        }
+        setConversations(convos);
+
+    }
+
+    useEffect(() => {        
         load();
     }, []);
 
     function changeConversation(farmer_id: string) {
         setInNewConvo(false);
-
 
         const convo = conversations.find(it => it.farmer_id === farmer_id);
         selectedConvo!!.isActive = false;
@@ -151,14 +156,21 @@ export function Messaging() {
 
     // Sends a message on the selected conversation
     async function sendMessage() {
-        const message = messageText;
+        if (inNewConvo) {
+            // Create the convo and get it from the server
+            
 
-        const farmer = selectedConvo!!.farmer_id;
-        const messageLog = await sendMessageToFarmer(farmer, message)
-
-        setSelectedConvo(produce(draftConvo => {
-            draftConvo!!.messages.push(messageLog);
-        }));        
+        }
+        else {
+            const message = messageText;
+    
+            const farmer = selectedConvo!!.farmer_id;
+            const messageLog = await sendMessageToFarmer(farmer, message)
+    
+            setSelectedConvo(produce(draftConvo => {
+                draftConvo!!.messages.push(messageLog);
+            }));
+        }
     }
 
 
@@ -189,7 +201,7 @@ export function Messaging() {
             {/* Conversation */}
             <div className="w-3/4 flex flex-col">
                 {inNewConvo ? 
-                    <NewConversation farmers={farmers} onFarmerSelectionUpdated={(farmers => console.log(farmers))} />
+                    <NewConversation farmers={farmers} onFarmerSelectionUpdated={setNewConvoFarmers} />
                 :
                     <Conversation conversation={selectedConvo}></Conversation>
                 }

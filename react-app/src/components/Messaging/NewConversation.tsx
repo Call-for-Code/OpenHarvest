@@ -1,5 +1,5 @@
 import { Send32 } from "@carbon/icons-react";
-import { TextArea } from "carbon-components-react";
+import { Tag, TextArea, TextInput } from "carbon-components-react";
 import React, { useEffect, useState } from "react";
 import { Farmer, getAllFarmers } from "../../services/farmers";
 import { ListBoxComponent } from "carbon-components-react";
@@ -40,6 +40,14 @@ const testFarmers: Farmer[] = [
         mobile: ""
     },
 ]
+
+function getColourFromName(name: string) {
+    const colours = ["red","magenta","purple","blue","cyan","teal","green","gray","cool-gray","warm-gray","high-contrast","outline"];
+    
+    const firstCharCode = name.charCodeAt(0);
+    const idx = firstCharCode % colours.length;
+    return colours[idx];
+}
 
 export function NewConversation(props: NewConversationProps) {
     const [isLoading, setIsLoading] = useState(true);
@@ -92,13 +100,17 @@ export function NewConversation(props: NewConversationProps) {
         onStateChange({ inputValue, type, selectedItem }) {
             // here is where we filter on the items. First remove the ones already selected
             const noSelectedItems = farmers.filter(it => {
-                return selectedItems.indexOf(it) < 0 || it !== selectedItem
+                return selectedItems.indexOf(it) < 0; // || it !== selectedItem
             });
             let filteredItems = noSelectedItems;
             // Then filter by the names
             if (inputValue) {
                 filteredItems = noSelectedItems.filter(it => it.name.toLowerCase().includes(inputValue.toLowerCase()))
             }
+
+            
+            // console.log("Args", inputValue, type, selectedItem);
+            // console.log("filteredItems", filteredItems);
 
             setFarmerItems(filteredItems);
 
@@ -112,15 +124,9 @@ export function NewConversation(props: NewConversationProps) {
                     break
                 default:
                     break
-            }
-
-            
+            }            
         },
     })
-
-    function createConversation() {
-        console.log("Message Text");
-    }
 
     return <div className="flex flex-col h-full">
         <div className="w-full">
@@ -133,27 +139,24 @@ export function NewConversation(props: NewConversationProps) {
                         selectedItem,
                         index,
                     ) {
+                        const colour = getColourFromName(selectedItem.name);
                         return (
-                            <span
-                                className="bg-gray-100 rounded-md px-1 focus:bg-red-400"
-                                key={`selected-item-${index}`}
+                            <Tag
+                                type={colour}
+                                filter
                                 {...getSelectedItemProps({ selectedItem, index })}
-                            >
+                                onClose={e => {
+                                    e.stopPropagation()
+                                    removeSelectedItem(selectedItem)
+                                }}>
                                 {selectedItem.name}
-                                <span
-                                    className="px-1 cursor-pointer"
-                                    onClick={e => {
-                                        e.stopPropagation()
-                                        removeSelectedItem(selectedItem)
-                                    }}
-                                >
-                                    &#10005;
-                                </span>
-                            </span>
+                            </Tag>
                         )
                     })}
                     <div className="flex gap-0.5 grow" {...getComboboxProps()}>
-                        <input
+                        <TextInput
+                            id="name"
+                            labelText="Name"
                             className="w-full"
                             {...getInputProps(getDropdownProps({ preventKeyAction: isOpen }))}
                         />
@@ -168,6 +171,7 @@ export function NewConversation(props: NewConversationProps) {
                     </div>
                 </div>
             </div>
+
             <ul
                 {...getMenuProps()}
                 className="absolute bg-white shadow-md max-h-80 overflow-scroll overflow-x-hidden w-3/4"
