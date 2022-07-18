@@ -21,7 +21,7 @@ export enum Status {
 
 export interface MessageLog {
     _id?: Types.ObjectId;
-    farmer_id: string | null;
+    farmer_id: string;
     /**
      * Address is just the generic way to refer to a phone number or and email.
      */
