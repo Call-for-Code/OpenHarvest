@@ -6,14 +6,14 @@ import { Farmer, getAllFarmers } from "../../services/farmers";
 import { Chat32, Send32 } from "@carbon/icons-react";
 import { ConversationList, ConversationListProps } from "./ConversationList";
 import { ConversationListItemProps, NewConversationListItem } from "./ConversationListItem";
-import { getAllMessages, MessageLog, sendMessageToFarmer } from "../../services/messageLog";
+import { getAllMessages, getIndexFromFarmerIds, getThreads, MessageLog, sendMessageToFarmer, sendMessageToNewGroup, sendMessageToThread, ThreadsDTO } from "../../services/messageLog";
 import { SocketIOClientInstance } from "./../../services/socket.io";
 import { Conversation } from "./Conversation";
 import { NewConversation } from "./NewConversation";
 
 export interface ConversationData {
     name: string;
-    farmer_id: string;
+    thread_id: string;
     preview: string;
     isActive: boolean;
     messages: MessageLog[]
@@ -22,8 +22,7 @@ export interface ConversationData {
 export function Messaging() {
 
     const [farmers, setFarmers] = useState<Farmer[]>([]);
-    const [messageLog, setMessageLog] = useState<MessageLog[]>([]);
-    const [conversationList, setConversationList] = useState<ConversationListItemProps[]>([]);
+    const [threads, setThreads] = useState<ThreadsDTO[]>([])
 
     const [conversations, setConversations] = useState<ConversationData[]>([]);
     const [selectedConvo, setSelectedConvo] = useState<ConversationData | null>(null);
@@ -48,7 +47,7 @@ export function Messaging() {
 
                 // Get the message's farmer and at it to them
                 const farmer_id = message.farmer_id;
-                const farmerConvo = draftConvos.find(it => it.farmer_id === farmer_id);
+                const farmerConvo = draftConvos.find(it => it.thread_id === farmer_id);
                 if (farmerConvo) {
                     // We can add it directly
                     farmerConvo.messages.push(message);
@@ -60,7 +59,7 @@ export function Messaging() {
 
                     draftConvos.push({
                         name,
-                        farmer_id,
+                        thread_id: farmer_id,
                         preview,
                         isActive: false,
                         messages: [message]
@@ -70,7 +69,7 @@ export function Messaging() {
             }));
 
             // Update the Selected convo just incase that's the one that changed
-            if (selectedConvo!!.farmer_id == message.farmer_id) {
+            if (selectedConvo!!.thread_id == message.farmer_id) {
                 setSelectedConvo(produce(draftConvo => {
                     draftConvo!!.messages.push(message)
                 }));
@@ -84,59 +83,43 @@ export function Messaging() {
         }
     }, []);
 
-    async function load() {
-        const farmers = await getAllFarmers();
-        setFarmers(farmers);
-
-        const messages = await getAllMessages();
-        setMessageLog(messages);
-
-        console.log(messages);
-
-        const convos = [];
-        const farmerToMessageLogMap: any = {};
-        
-        // Group by farmer_id
-        for (let i = 0; i < messages.length; i++) {
-            const message = messages[i];
-            if (message.farmer_id in farmerToMessageLogMap) {
-                farmerToMessageLogMap[message.farmer_id].push(message);
-            }
-            else {
-                farmerToMessageLogMap[message.farmer_id] = [message];
-            }
-        }
-
-        // Make conversations
-        for (const farmer_id in farmerToMessageLogMap) {
-            const messageLogs: MessageLog[] = farmerToMessageLogMap[farmer_id];
-            messageLogs.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
-            
-            const farmerInfo = farmers.find(it => it._id == farmer_id);
-            if (farmerInfo == undefined) {
-                throw new Error("Unknown Farmer in Message!");
-            }
-            const name = farmerInfo.name;
-            const preview = messageLogs[messageLogs.length - 1].message;
-
-            convos.push({
+    async function generateConversations(threads: ThreadsDTO[]) {
+        // Transform threads to conversation data
+        const convos: ConversationData[] = threads.map(thread => {
+            const name = thread.isGroup ? thread.farmers.map(it => it.name).join(", ") : thread.farmers[0].name;
+            return {
                 name,
-                farmer_id,
-                preview,
+                thread_id: thread.thread_id,
+                preview: thread.preview,
                 isActive: false,
-                messages: messageLogs
-            });
-        }
+                messages: thread.messages
+            }
+        });
+
+        console.log("Convos", convos);
         
         if (convos.length > 0) {
             convos[0].isActive = true;
             setSelectedConvo(convos[0]);
+            setInNewConvo(false);
         }
         else {
+            setSelectedConvo(null);
             setInNewConvo(true);
         }
         setConversations(convos);
+    }
 
+    async function load() {
+        const farmers = await getAllFarmers();
+        setFarmers(farmers);
+
+        const threads = await getThreads();
+        setThreads(threads);
+
+        console.log(threads);
+        
+        generateConversations(threads);
     }
 
     useEffect(() => {        
@@ -146,7 +129,7 @@ export function Messaging() {
     function changeConversation(farmer_id: string) {
         setInNewConvo(false);
 
-        const convo = conversations.find(it => it.farmer_id === farmer_id);
+        const convo = conversations.find(it => it.thread_id === farmer_id);
         selectedConvo!!.isActive = false;
         convo!!.isActive = true;
 
@@ -164,16 +147,42 @@ export function Messaging() {
         if (inNewConvo) {
             // Create the convo and get it from the server
             const farmers = newConvoFarmers;
-            console.log(farmers.map(it => it.name), messageText);
+            const isGroup = farmers.length > 1;
             
+            const farmer_ids = farmers.map(it => it._id!!);
+            const thread_id = getIndexFromFarmerIds(farmer_ids);
+
+            let thread: ThreadsDTO;
+            if (isGroup) {
+                thread = await sendMessageToNewGroup(farmer_ids, messageText);
+            }
+            else {
+                const messageLog = await sendMessageToThread(thread_id, messageText);
+                // Create thread
+                thread = {
+                    thread_id,
+                    farmers: farmers,
+                    isGroup: farmers.length > 1,
+                    preview: messageText,
+                    messages: [messageLog]
+                }
+            }
+
+            console.log(farmers.map(it => it.name), messageText);
+
+
+            const newThreads = [...threads, thread];
+            setThreads(newThreads);
+            generateConversations(newThreads);
         }
         else {
             const message = messageText;
     
-            const farmer = selectedConvo!!.farmer_id;
+            const farmer = selectedConvo!!.thread_id;
             const messageLog = await sendMessageToFarmer(farmer, message);
     
             setSelectedConvo(produce(draftConvo => {
+                draftConvo!!.preview = messageLog.message;
                 draftConvo!!.messages.push(messageLog);
             }));
         }

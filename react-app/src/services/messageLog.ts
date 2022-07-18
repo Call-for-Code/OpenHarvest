@@ -15,9 +15,17 @@ export interface MessageLog {
      */
     address: string;
     message: string;
-    isViewed: boolean;
+    status: string;
     source: Source
     timestamp: Date;
+    /**
+     * The Group this message belongs to
+     */
+    group_id: string | null;
+    /**
+     * For auditing purposes this is the message id from the service
+     */
+    messageRef: string;
 }
 
 export interface ThreadsDTO {
@@ -29,6 +37,14 @@ export interface ThreadsDTO {
     isGroup: boolean;
     preview: string;
     messages: MessageLog[];
+}
+
+export function getIndexFromFarmerIds(ids: string[]): string {
+    return ids.join("|");
+}
+
+export function getFarmerIdsFromIndex(index: string): string[] {
+    return index.split("|");
 }
 
 export async function getAllMessages(): Promise<MessageLog[]> {
@@ -61,7 +77,7 @@ export async function sendMessageToFarmer(farmer_id: string, message: string): P
 }
 
 export async function sendMessageToNewGroup(farmer_ids: string[], message: string) {
-    const req = await axios.post("/api/messaging/new-thread", {
+    const req = await axios.post<ThreadsDTO>("/api/messaging/new-thread", {
         farmer_ids,
         message
     });
@@ -69,8 +85,8 @@ export async function sendMessageToNewGroup(farmer_ids: string[], message: strin
     return data;
 }
 
-export async function sendMessageToGroup(thread_id: string, message: string) {
-    const req = await axios.post("/api/messaging/thread", {
+export async function sendMessageToThread(thread_id: string, message: string) {
+    const req = await axios.post<MessageLog>("/api/messaging/thread", {
         thread_id,
         message
     });

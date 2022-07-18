@@ -83,7 +83,7 @@ router.get("/threads", async (req, res) => {
                 threadMap[index] = thread;
             }
         }
-        else if (message.group_id !== null && message.farmer_id === null) {
+        else if (message.group_id !== null) {
             // This is a group message
             // The combined
             index = groupLookup[message.group_id];
@@ -91,7 +91,7 @@ router.get("/threads", async (req, res) => {
                 const thread: ThreadsDTO = {
                     thread_id: index,
                     farmers: [],
-                    isGroup: false,
+                    isGroup: true,
                     preview: "",
                     messages: []
                 }
@@ -109,6 +109,7 @@ router.get("/threads", async (req, res) => {
     // Get the farmers and add it to the thread
     const threads: ThreadsDTO[] = Array.from(Object.values(threadMap));
     const farmer_ids = threads.map(it => it.isGroup ? getFarmerIdsFromIndex(it.thread_id) : it.thread_id).flat();    
+    console.log(threads, farmer_ids, getFarmerIdsFromIndex(threads[0].thread_id));
     const farmers = await FarmerModel.find({_id: {$in: farmer_ids}});
     const farmerLookup: {[key: string]: Farmer} = {};
     for (const farmer of farmers) {
@@ -124,6 +125,10 @@ router.get("/threads", async (req, res) => {
         else {
             thread.farmers = [farmerLookup[thread.thread_id]];
         }
+
+        thread.messages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+
+        thread.preview = thread.messages[thread.messages.length - 1].message;
     }
     
     res.json(threads);
@@ -165,7 +170,7 @@ router.post('/new-thread', async (req, res) => {
         const thread: ThreadsDTO = {
             thread_id: index,
             farmers,
-            isGroup: false,
+            isGroup: true,
             preview: body.message,
             messages: messageLogs
         }

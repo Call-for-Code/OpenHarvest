@@ -143,6 +143,7 @@ export function NewConversation(props: NewConversationProps) {
                         const colour = getColourFromName(selectedItem.name);
                         return (
                             <Tag
+                                key={"tag"+index}
                                 type={colour}
                                 filter
                                 {...getSelectedItemProps({ selectedItem, index })}
