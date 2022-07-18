@@ -21,7 +21,7 @@ export enum Status {
 
 export interface MessageLog {
     _id?: Types.ObjectId;
-    farmer_id: string;
+    farmer_id: string | null;
     /**
      * Address is just the generic way to refer to a phone number or and email.
      */
@@ -45,6 +45,9 @@ export const MessageLogSchema = new Schema({
         type: ObjectId,
         auto: true
     },
+    /**
+     * The farmer this message was sent to. It's null when this belongs to a group.
+     */
     farmer_id: String,
     /**
      * Address is just the generic way to refer to a phone number or and email.
@@ -55,7 +58,7 @@ export const MessageLogSchema = new Schema({
     source: String,
     timestamp: Date,
     /**
-     * The Group this message belongs to
+     * The Group this message belongs to. If this is null it's a direct message
      */
     group_id: String,
     /**

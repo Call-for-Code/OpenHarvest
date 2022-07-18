@@ -156,21 +156,28 @@ export function Messaging() {
 
     // Sends a message on the selected conversation
     async function sendMessage() {
+        if (messageText === "") {
+            console.error("Message is empty!");
+            return;
+        }
+
         if (inNewConvo) {
             // Create the convo and get it from the server
+            const farmers = newConvoFarmers;
+            console.log(farmers.map(it => it.name), messageText);
             
-
         }
         else {
             const message = messageText;
     
             const farmer = selectedConvo!!.farmer_id;
-            const messageLog = await sendMessageToFarmer(farmer, message)
+            const messageLog = await sendMessageToFarmer(farmer, message);
     
             setSelectedConvo(produce(draftConvo => {
                 draftConvo!!.messages.push(messageLog);
             }));
         }
+        setMessageText("");
     }
 
 
@@ -201,7 +208,7 @@ export function Messaging() {
             {/* Conversation */}
             <div className="w-3/4 flex flex-col">
                 {inNewConvo ? 
-                    <NewConversation farmers={farmers} onFarmerSelectionUpdated={setNewConvoFarmers} />
+                    <NewConversation farmers={farmers} onFarmerSelectionUpdated={(farmers) => {console.log(farmers.map(it => it.name)); setNewConvoFarmers(farmers)}} />
                 :
                     <Conversation conversation={selectedConvo}></Conversation>
                 }

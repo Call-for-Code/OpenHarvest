@@ -52,11 +52,12 @@ function getColourFromName(name: string) {
 export function NewConversation(props: NewConversationProps) {
     const [isLoading, setIsLoading] = useState(true);
 
-    // const { farmers } = props;
-    const farmers = testFarmers;
+    const { farmers } = props;
+    // const farmers = testFarmers;
 
+    // This is state because it's mutated according to what to display in the auto complete box
     const [farmerItems, setFarmerItems] = useState([...farmers])
-    const [farmersAdded, setFarmersAdded] = useState<Farmer[]>([]);
+    // const [farmersAdded, setFarmersAdded] = useState<Farmer[]>([]);
 
     const {
         getSelectedItemProps,
@@ -64,7 +65,7 @@ export function NewConversation(props: NewConversationProps) {
         addSelectedItem,
         removeSelectedItem,
         selectedItems,
-    } = useMultipleSelection({ initialSelectedItems: [farmers[0], farmers[1]] })
+    } = useMultipleSelection<Farmer>({ initialSelectedItems: [] })
     const {
         isOpen,
         getToggleButtonProps,
@@ -119,7 +120,7 @@ export function NewConversation(props: NewConversationProps) {
                 case useCombobox.stateChangeTypes.ItemClick:
                     if (selectedItem) {
                         addSelectedItem(selectedItem)
-                        props.onFarmerSelectionUpdated(selectedItems);
+                        props.onFarmerSelectionUpdated([...selectedItems, selectedItem]);
                     }
                     break
                 default:
@@ -146,8 +147,10 @@ export function NewConversation(props: NewConversationProps) {
                                 filter
                                 {...getSelectedItemProps({ selectedItem, index })}
                                 onClose={e => {
-                                    e.stopPropagation()
-                                    removeSelectedItem(selectedItem)
+                                    e.stopPropagation();
+                                    removeSelectedItem(selectedItem);
+                                    selectedItems.splice(selectedItems.indexOf(selectedItem), 1);
+                                    props.onFarmerSelectionUpdated(selectedItems);
                                 }}>
                                 {selectedItem.name}
                             </Tag>
