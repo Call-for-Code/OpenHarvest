@@ -109,7 +109,7 @@ router.get("/threads", async (req, res) => {
     // Get the farmers and add it to the thread
     const threads: ThreadsDTO[] = Array.from(Object.values(threadMap));
     const farmer_ids = threads.map(it => it.isGroup ? getFarmerIdsFromIndex(it.thread_id) : it.thread_id).flat();    
-    console.log(threads, farmer_ids, getFarmerIdsFromIndex(threads[0].thread_id));
+    // console.log(threads, farmer_ids, getFarmerIdsFromIndex(threads[0].thread_id));
     const farmers = await FarmerModel.find({_id: {$in: farmer_ids}});
     const farmerLookup: {[key: string]: Farmer} = {};
     for (const farmer of farmers) {

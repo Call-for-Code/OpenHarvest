@@ -35,45 +35,47 @@ export function Messaging() {
     // Register EventEmitter Event Handlers
     useEffect(() => {
         const onMessage = (message: MessageLog) => {
-            console.log("Messaging OnMessage");
+            console.log("Messaging OnMessage", message);
 
             const messagesFarmer = farmers.find(it => it._id == message.farmer_id);
             if (messagesFarmer == undefined) {
-                throw new Error("Unknown Farmer in Message!");
+                console.log(farmers, message.farmer_id);
+                console.error("Unknown Farmer in Message!");
+                return;
             }
 
-            setConversations(produce(draftConvos => {
-                console.log(conversations);
-
-                // Get the message's farmer and at it to them
-                const farmer_id = message.farmer_id;
-                const farmerConvo = draftConvos.find(it => it.thread_id === farmer_id);
-                if (farmerConvo) {
-                    // We can add it directly
-                    farmerConvo.messages.push(message);
+            const existingThread = threads.find(it => it.thread_id === message.farmer_id);
+            if (existingThread) {
+                existingThread.messages.push(message);
+            }
+            else {
+                // Create thread
+                const thread = {
+                    thread_id: message.farmer_id,
+                    farmers: [messagesFarmer],
+                    isGroup: false,
+                    preview: messageText,
+                    messages: [message]
                 }
-                else {
-                    // We need to construct a new Conversation Data item and add it
-                    const name = messagesFarmer.name;
-                    const preview = message.message;
+                threads.push(thread);
+            }
 
-                    draftConvos.push({
-                        name,
-                        thread_id: farmer_id,
-                        preview,
-                        isActive: false,
-                        messages: [message]
-                    });
-                }
-                console.log(draftConvos);
-            }));
+            const newThreads = [...threads];
+            setThreads(newThreads);
+            generateConversations(newThreads);
+
+            if (selectedConvo && selectedConvo.thread_id == message.farmer_id) {
+                const newConvo = conversations.find(it => it.thread_id === message.farmer_id);
+                setSelectedConvo(newConvo!!);
+            }
+            
 
             // Update the Selected convo just incase that's the one that changed
-            if (selectedConvo!!.thread_id == message.farmer_id) {
-                setSelectedConvo(produce(draftConvo => {
-                    draftConvo!!.messages.push(message)
-                }));
-            }
+            // if (selectedConvo && selectedConvo.thread_id == message.farmer_id) {
+            //     setSelectedConvo(produce(draftConvo => {
+            //         draftConvo!!.messages.push(message)
+            //     }));
+            // }
         }
 
         SocketIOClientInstance.on("messaging", onMessage);
@@ -81,7 +83,7 @@ export function Messaging() {
         return () => {
             SocketIOClientInstance.off("messaging", onMessage);    
         }
-    }, []);
+    }, [farmers]);
 
     async function generateConversations(threads: ThreadsDTO[]) {
         // Transform threads to conversation data
