@@ -1,7 +1,6 @@
 
 import axios from "axios";
 
-
 //Pi graphs - Dashboard UI
 export interface YeildData {
     group : string;
@@ -53,6 +52,9 @@ export async function getDashboardTempBar(): Promise<BarData> {
     const data = await axios.get<BarData>("/api/dashboard/tiles/");
     return data.data;
 }
+
+
+
 
 
 

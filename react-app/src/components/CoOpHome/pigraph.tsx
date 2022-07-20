@@ -14,6 +14,7 @@ export function PiChartGNY() {
     }, []);
       
     return (
+      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -29,6 +30,7 @@ export function PiChartGNY() {
           title={'Ground Nut Yield'}
           values={chartData}
         />
+        </div>
     );
   }
 
@@ -44,6 +46,7 @@ export function PiChartGNY() {
     }, []);
       
     return (
+      <div style={{ width: `700px`, margin: 20 }}>
         <PieChartCard
           availableActions={{ expand: true }}
           content={{
@@ -59,5 +62,6 @@ export function PiChartGNY() {
           title={'Number of Farmers per Ground Nut Type'}
           values={chartData}
         />
+        </div>
     );
   }

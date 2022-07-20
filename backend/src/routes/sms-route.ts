@@ -7,6 +7,7 @@ import { Router } from "express";
 import { MessageLogModel } from "../db/entities/messageLog";
 import { SMSSyncAPIInstance, SMSSyncMessageReceivedFormat } from "./../integrations/smsSync/smsSync.service";
 import { TwilioInstance, TwilioMessage } from "../integrations/twilio/twilio.service";
+import { AfricaTalksInstance, ATMessage } from "../integrations/AfricaTalks/africaTalks.service";
 
 const router = Router();
 
@@ -64,5 +65,25 @@ router.post("/twilio-delivery-status", async (req, res) => {
     res.status(200).end();
 });
 
+
+
+
+
+
+
+router.post("/africatalks-ussd-incoming", async (req, res) => {
+    // console.log("africatalks Message:", req.body);
+    const message: ATMessage = req.body;
+    
+    AfricaTalksInstance.onReceivedMessage(message);
+
+    res.status(200).end();
+});
+
+router.post("/africatalks-delivery-status", async (req, res) => {
+    console.log("africatalks Delivery Message:", req.body);
+
+    res.status(200).end();
+});
 
 export default router;

@@ -23,4 +23,13 @@ router.get("/farmerForecast", async (req, res) => {
     res.json(forecast);
 });
 
+
+router.get("/12MonthForecast", async (req, res) => {
+    console.log("12MonthForecast");
+    const geocode = testMchinjiMalawiCoords;
+    const forecast = await api.daily15DayForecast(geocode);
+    // console.log(forecast);
+    res.json(forecast);
+});
+
 export default router;
