@@ -64,5 +64,28 @@ router.post("/twilio-delivery-status", async (req, res) => {
     res.status(200).end();
 });
 
+router.post("/africatalks-sms-incoming", async (req, res) => {
+    // console.log("africatalks Message:", req.body);
+    const message: ATMessage = req.body;
+    
+    AfricaTalksInstance.onReceivedMessage(message);
+
+    res.status(200).end();
+});
+
+router.post("/africatalks-ussd-incoming", async (req, res) => {
+    // console.log("africatalks Message:", req.body);
+    const message: ATMessage = req.body;
+    
+    AfricaTalksInstance.onReceivedUSSDMessage(message);
+
+    res.status(200).end();
+});
+
+router.post("/africatalks-delivery-status", async (req, res) => {
+    console.log("africatalks Delivery Message:", req.body);
+
+    res.status(200).end();
+});
 
 export default router;
