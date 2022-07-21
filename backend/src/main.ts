@@ -35,7 +35,7 @@ const app = express();
 app.use(cors());
 
 // enable parsing of http request body
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Enable session for the sole reason of passport-ci-oidc. WE ARE NOT SUPPORTING SESSION BASED AUTH
