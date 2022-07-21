@@ -27,7 +27,11 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
 
 ## Demo video
 
-[![Watch the video](images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=6gZagLno-v8&t=10s)
+[![Watch the video](images/OPENHARVEST1.PNG)] 
+
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/6gZagLno-v8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+ </p>
 
 ## Demo URL
 This is built against master on request.
