@@ -3,6 +3,7 @@
     "@carbon/charts": "^0.54.12",
     "@carbon/charts-react": "^0.54.12",
     "@colony/colony-js": "^5.1.1",
+    "africastalking": "^0.5.5",
     "carbon-components": "^10.54.0",
     "d3": "^7.3.0"
   }
