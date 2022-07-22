@@ -52,7 +52,6 @@ flowchart LR
   react<-->node
   node<-->MongoDB
   node<-->AfricasTalking
-  node<-->Twilio
   node<-->IBMFoodTrust
 
   User<-->react
