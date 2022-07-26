@@ -53,7 +53,7 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
         this.SMSClient = africastalking.SMS;
     }
 
-    async sendMessageToFarmer(farmer: Farmer, message: string): Promise<MessageLog> {
+    async sendMessageToFarmer(farmer: Farmer, message: string, group_id?: string): Promise<MessageLog> {
         const number = farmer.mobile;
 
         if (message === undefined || message === null || message === "") {
@@ -69,6 +69,7 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
             status: Status.Sent,
             source: Source.OpenHarvest,
             timestamp: new Date(),
+            group_id: group_id ?? null,
             messageRef
         }
 
@@ -116,6 +117,7 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
             status: Status.Unread,
             source: Source.Farmer,
             timestamp: new Date(),
+            group_id: null,
             messageRef: message.Sessionid+message.text
         }
 
@@ -146,6 +148,7 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
             status: Status.Unread,
             source: Source.Farmer,
             timestamp: new Date(),
+            group_id: null,
             messageRef: message.Sessionid+message.text
         }
 
@@ -163,11 +166,16 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
             status: Status.Unread,
             source: Source.OpenHarvest,
             timestamp: new Date(),
+            group_id: null,
             messageRef: "OH"+message.Sessionid+message.text
         }
 
-        const messageLogResponseDoc = await MessageLogModel.create(messageLogEntry);
-        
+        const messageLogDoc = await MessageLogModel.create(messageLogEntry);
+        const messageLogResponseDoc = await MessageLogModel.create(messageLogResponse);
+                
+        this.emit("onMessage", messageLogDoc);
+        this.notify(messageLogDoc);
+
         this.emit("onMessage", messageLogResponseDoc);
         this.notify(messageLogResponseDoc);
 

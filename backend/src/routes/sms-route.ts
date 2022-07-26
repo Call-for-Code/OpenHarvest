@@ -7,6 +7,7 @@ import { Router } from "express";
 import { MessageLogModel } from "../db/entities/messageLog";
 import { SMSSyncAPIInstance, SMSSyncMessageReceivedFormat } from "./../integrations/smsSync/smsSync.service";
 import { TwilioInstance, TwilioMessage } from "../integrations/twilio/twilio.service";
+import { AfricaTalksInstance, ATMessage } from "../integrations/AfricaTalks/africaTalks.service";
 
 const router = Router();
 
