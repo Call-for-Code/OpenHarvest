@@ -1,12 +1,11 @@
-import React, { Component, ReactElement, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextArea } from "carbon-components-react";
-import { PageTitleBar, StatefulTable } from "carbon-addons-iot-react";
+import { PageTitleBar } from "carbon-addons-iot-react";
 import produce from "immer"
 import { Farmer, getAllFarmers } from "../../services/farmers";
-import { Chat32, Send32 } from "@carbon/icons-react";
-import { ConversationList, ConversationListProps } from "./ConversationList";
-import { ConversationListItemProps, NewConversationListItem } from "./ConversationListItem";
-import { getAllMessages, getIndexFromFarmerIds, getThreads, MessageLog, sendMessageToFarmer, sendMessageToNewGroup, sendMessageToThread, ThreadsDTO } from "../../services/messageLog";
+import { Send32 } from "@carbon/icons-react";
+import { ConversationList } from "./ConversationList";
+import { getIndexFromFarmerIds, getThreads, MessageLog, sendMessageToFarmer, sendMessageToNewGroup, sendMessageToThread, ThreadsDTO } from "../../services/messageLog";
 import { SocketIOClientInstance } from "./../../services/socket.io";
 import { Conversation } from "./Conversation";
 import { NewConversation } from "./NewConversation";
@@ -62,15 +61,27 @@ export function Messaging() {
 
             const newThreads = [...threads];
             setThreads(newThreads);
-            generateConversations(newThreads);
+            const generated = generateConversations(newThreads, selectedConvo);
 
+            // Update the Selected convo just incase that's the one that changed
             if (selectedConvo && selectedConvo.thread_id == message.farmer_id) {
-                const newConvo = conversations.find(it => it.thread_id === message.farmer_id);
-                setSelectedConvo(newConvo!!);
+                selectedConvo!!.messages.push(message);
+                selectedConvo!!.preview = message.message;
+
+                const newConvo = {...selectedConvo!!};
+                const selectedConvoIndex = generated.conversations.indexOf(selectedConvo!!);
+                if (selectedConvoIndex == -1) {
+                    throw new Error("Failed to find selected convo")
+                }
+                conversations[selectedConvoIndex] = newConvo;            
+                const newConvos = [...conversations];
+
+                setSelectedConvo(newConvo);
+                setConversations(newConvos);
             }
             
 
-            // Update the Selected convo just incase that's the one that changed
+            
             // if (selectedConvo && selectedConvo.thread_id == message.farmer_id) {
             //     setSelectedConvo(produce(draftConvo => {
             //         draftConvo!!.messages.push(message)
@@ -83,9 +94,9 @@ export function Messaging() {
         return () => {
             SocketIOClientInstance.off("messaging", onMessage);    
         }
-    }, [farmers]);
+    }, [farmers, threads]);
 
-    async function generateConversations(threads: ThreadsDTO[]) {
+    function generateConversations(threads: ThreadsDTO[], currentConvo?: ConversationData | null) {
         // Transform threads to conversation data
         const convos: ConversationData[] = threads.map(thread => {
             const name = thread.isGroup ? thread.farmers.map(it => it.name).join(", ") : thread.farmers[0].name;
@@ -101,8 +112,15 @@ export function Messaging() {
         console.log("Convos", convos);
         
         if (convos.length > 0) {
-            convos[0].isActive = true;
-            setSelectedConvo(convos[0]);
+            if (currentConvo) {
+                const convo = convos.find(it => it.thread_id === currentConvo.thread_id);
+                convo!!.isActive = true;
+                setSelectedConvo(convo!!);
+            }
+            else {
+                convos[0].isActive = true;
+                setSelectedConvo(convos[0]);
+            }
             setInNewConvo(false);
         }
         else {
@@ -110,6 +128,11 @@ export function Messaging() {
             setInNewConvo(true);
         }
         setConversations(convos);
+
+        return {
+            selectedConvo,
+            conversations
+        }
     }
 
     async function load() {
@@ -132,11 +155,27 @@ export function Messaging() {
         setInNewConvo(false);
 
         const convo = conversations.find(it => it.thread_id === farmer_id);
+        if (convo == undefined) {
+            throw new Error("Unknown Thread!");
+        }
+
+        // setSelectedConvo(produce(draftConvo => {
+        //     draftConvo!!.isActive = false;
+        // }));
+
+        // setConversations(produce(convos => {
+        //     const convo = convos.find(it => it.thread_id === farmer_id);
+        //     convo!!.isActive = true;
+
+        //     const selectedCon = convos.find(it => it.thread_id === selectedConvo!!.thread_id);
+        //     const 
+        // }));
+
         selectedConvo!!.isActive = false;
         convo!!.isActive = true;
 
-        setSelectedConvo(convo!!);
-        
+        setSelectedConvo(convo);
+        setConversations([...conversations]);
     }
 
     // Sends a message on the selected conversation
@@ -183,10 +222,24 @@ export function Messaging() {
             const farmer = selectedConvo!!.thread_id;
             const messageLog = await sendMessageToFarmer(farmer, message);
     
-            setSelectedConvo(produce(draftConvo => {
-                draftConvo!!.preview = messageLog.message;
-                draftConvo!!.messages.push(messageLog);
-            }));
+            // setSelectedConvo(produce(draftConvo => {
+            //     draftConvo!!.preview = messageLog.message;
+            //     draftConvo!!.messages.push(messageLog);
+            // }));
+
+            selectedConvo!!.messages.push(messageLog);
+            selectedConvo!!.preview = messageLog.message;
+
+            const newConvo = {...selectedConvo!!};
+            const selectedConvoIndex = conversations.indexOf(selectedConvo!!);
+            if (selectedConvoIndex == -1) {
+                throw new Error("Failed to find selected convo")
+            }
+            conversations[selectedConvoIndex] = newConvo;            
+            const newConvos = [...conversations];
+
+            setSelectedConvo(newConvo);
+            setConversations(newConvos);
         }
         setMessageText("");
     }
@@ -209,7 +262,7 @@ export function Messaging() {
 
         <div className="flex flex-row h-[calc(100vh-96px)]">
             {/* Conversation List */}
-            <div className="w-1/4 border-r-2 border-gray-300 border-solid">
+            <div className="w-1/4 border-r-2 border-gray-300 border-solid h-full overflow-auto">
                 <ConversationList 
                     messages={conversations} 
                     onConversationChange={changeConversation}
@@ -217,7 +270,7 @@ export function Messaging() {
                     onNewConversation={() => setInNewConvo(true)} />
             </div>
             {/* Conversation */}
-            <div className="w-3/4 flex flex-col">
+            <div className="w-3/4">
                 {inNewConvo ? 
                     <NewConversation farmers={farmers} onFarmerSelectionUpdated={(farmers) => {console.log(farmers.map(it => it.name)); setNewConvoFarmers(farmers)}} />
                 :
