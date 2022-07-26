@@ -65,8 +65,8 @@ router.post("/twilio-delivery-status", async (req, res) => {
     res.status(200).end();
 });
 
-router.post("/africatalks-sms-incoming", async (req, res) => {
-    // console.log("africatalks Message:", req.body);
+router.post("/africastalking-sms-incoming", async (req, res) => {
+    console.log("africastalking Message:", req.body);
     const message: ATMessage = req.body;
     
     AfricasTalkingInstance.onReceivedMessage(message);
@@ -74,8 +74,8 @@ router.post("/africatalks-sms-incoming", async (req, res) => {
     res.status(200).end();
 });
 
-router.post("/africatalks-ussd-incoming", async (req, res) => {
-    // console.log("africatalks Message:", req.body);
+router.post("/africastalking-ussd-incoming", async (req, res) => {
+    console.log("africastalking Message:", req.body);
     const message: ATMessage = req.body;
     
     AfricasTalkingInstance.onReceivedUSSDMessage(message);
