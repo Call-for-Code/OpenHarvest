@@ -57,22 +57,21 @@ app.use(session({
 // app.use('/api/names', nameRoutes);
 app.use("/auth/", AuthRoutes);
 
-app.use("/api/farmer", farmerRoutes);
-app.use("/api/lot", lotRoutes);
-app.use("/api/crop", cropRoutes);
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/recommendations", recommendationsRoutes);
+app.use("/api/farmer", passport.authenticate('jwt', { session: false }), farmerRoutes);
+app.use("/api/lot", passport.authenticate('jwt', { session: false }),lotRoutes);
+app.use("/api/crop", passport.authenticate('jwt', { session: false }),cropRoutes);
+app.use("/api/dashboard", passport.authenticate('jwt', { session: false }),dashboardRoutes);
+app.use("/api/recommendations", passport.authenticate('jwt', { session: false }),recommendationsRoutes);
 
-app.use("/api/weather", weatherRoutes);
-app.use("/api/coopManager", coopManagerRoutes);
-app.use("/api/organisation", organisationRoutes);
-app.use("/api/messaging", messageLogRoutes);
-app.use("/api/sms", smsRoutes);
+app.use("/api/weather", passport.authenticate('jwt', { session: false }),weatherRoutes);
+app.use("/api/coopManager", passport.authenticate('jwt', { session: false }),coopManagerRoutes);
+app.use("/api/organisation", passport.authenticate('jwt', { session: false }),organisationRoutes);
+app.use("/api/messaging", passport.authenticate('jwt', { session: false }),messageLogRoutes);
+app.use("/api/sms",passport.authenticate('jwt', { session: false }), smsRoutes);
 
 // blockchain related routes
-app.use("/api/foodtrust", foodTrustRoutes)
-app.use("/api/cropTemplates", cropTemplateRoutes)
-app.use("/api/colony", colony)
+app.use("/api/foodtrust", passport.authenticate('jwt', { session: false }),foodTrustRoutes)
+app.use("/api/cropTemplates", passport.authenticate('jwt', { session: false }),cropTemplateRoutes)
 
 // Static Files
 const publicPath = path.resolve("public");
