@@ -216,3 +216,4 @@ backend/.env.dev.production
 backend/public
 
 *.pem
+mkcert.exe

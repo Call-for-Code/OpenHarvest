@@ -20,6 +20,7 @@
     "@turf/turf": "^6.5.0",
     "@types/geojson": "^7946.0.8",
     "@types/uuid": "^8.3.4",
+    "africastalking": "^0.5.5",
     "aws-sdk": "^2.1159.0",
     "axios": "^0.26.0",
     "cookie-parser": "^1.4.6",
