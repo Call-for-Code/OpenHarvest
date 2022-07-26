@@ -1,8 +1,8 @@
-import { CoopManager } from "./../../db/entities/coopManager";
+import { CoopManager } from "../../db/entities/coopManager";
 import Africastalking from "africastalking";
-import { Farmer, FarmerModel } from "./../../db/entities/farmer";
-import { MessageLog, MessageLogModel, Source, Status } from "./../../db/entities/messageLog";
-import { MessagingInterface } from "./../../integrations/messagingInterface";
+import { Farmer, FarmerModel } from "../../db/entities/farmer";
+import { MessageLog, MessageLogModel, Source, Status } from "../../db/entities/messageLog";
+import { MessagingInterface } from "../messagingInterface";
 
 
 
@@ -24,7 +24,7 @@ export interface ATMessage {
  * This class handles interfacing with twilio.
  * It provides one 
  */
-class AfricaTalksAPI extends MessagingInterface<ATMessage> {
+class AfricasTalkingAPI extends MessagingInterface<ATMessage> {
 
     SMSClient: any;
     SMSShortCode: string;
@@ -211,4 +211,4 @@ class AfricaTalksAPI extends MessagingInterface<ATMessage> {
     
 }
 
-export const AfricaTalksInstance = new AfricaTalksAPI();
+export const AfricasTalkingInstance = new AfricasTalkingAPI();

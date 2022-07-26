@@ -4,11 +4,11 @@ import { TwilioInstance } from "./../integrations/twilio/twilio.service";
 import { MessageLog, MessageLogModel } from "../db/entities/messageLog";
 import { getFarmerIdsFromIndex, getIndexFromFarmerIds, MessageGroup, MessageGroupModel } from "../db/entities/messageGroup";
 import { FarmerModel, Farmer } from "../db/entities/farmer";
-
-// We need to create and run a particular instance based on configuration.
-// Or intelligently by looking at the number we're sending to.
+import { MessageInterfaceSender } from "../integrations/messagingInterfaceSender";
 
 const router = Router();
+
+const messageSender = new MessageInterfaceSender();
 
 router.get("/", async (req, res) => {
     const messages = await MessageLogModel.find({}).lean();
@@ -26,7 +26,8 @@ router.post("/sendSMSToFarmer", async (req, res) => {
     }
     
     try {
-        const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
+        // const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
+        const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
         res.json(messageLog)
     }
     catch (e: any) {
@@ -165,7 +166,8 @@ router.post('/new-thread', async (req, res) => {
     group.farmers = farmers;
 
     try {
-        const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
+        // const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
+        const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
         
         const thread: ThreadsDTO = {
             thread_id: index,
@@ -210,7 +212,8 @@ router.post('/thread', async (req, res) => {
         group.farmers = farmers;
 
         try {
-            const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
+            // const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
+            const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
             return res.json(messageLogs.map(it => it.messageRef));
         }
         catch (e: any) {
@@ -224,7 +227,8 @@ router.post('/thread', async (req, res) => {
         }
 
         try {
-            const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
+            // const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
+            const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
             res.json(messageLog)
         }
         catch (e: any) {
