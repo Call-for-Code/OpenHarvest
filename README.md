@@ -85,7 +85,7 @@ flowchart LR
 
 ### Prerequisites
 
-- [Node](https://nodejs.org/) and [NPM](https://www.npmjs.com/) (Included with node)
+- [Node](https://nodejs.org/) **minimim: v16** and [NPM](https://www.npmjs.com/) (Included with node)
 - [Git](https://git-scm.com/)
 - [MongoDB](https://www.mongodb.com/)  Instructions on deploying and configuring this are included below
 
@@ -106,7 +106,7 @@ flowchart LR
    mkcert localhost 127.0.0.1
    ```
 
-3. Create Mongodb dData directory, anywhere you want but preferably in the same directory as Docker Compose. This is optional for Windows users.
+3. Create Mongodb data directory, anywhere you want but preferably in the same directory as Docker Compose. This is optional for Windows users.
 
    ```bash
    mkdir {YOUR_PATH}
