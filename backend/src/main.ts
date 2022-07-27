@@ -6,6 +6,7 @@ import https from 'https';
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import bodyParser from "body-parser";
+import passport from "passport";
 import 'dotenv/config';
 
 import { mongoInit } from "./db/mongodb";
@@ -47,8 +48,8 @@ app.use(session({
 }));
 
 // Passport
-// app.use(passport.initialize()); // This is only needed if we're using sessions: https://stackoverflow.com/a/56095662
-// app.use(passport.session());
+app.use(passport.initialize()); // This is only needed if we're using sessions: https://stackoverflow.com/a/56095662
+app.use(passport.session());
 
 
 

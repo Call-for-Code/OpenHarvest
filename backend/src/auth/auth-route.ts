@@ -22,6 +22,20 @@ const router = Router();
 
 router.get('/login', passport.authenticate('openidconnect', { state: Math.random().toString(36).substr(2, 10) }));
 
+router.get('/logout', (req, res) => {
+    if (req.user) {
+        if (req.user.logout) {
+            req.user.logout();
+        }
+        req.session.destroy(() => {
+            res.redirect(redirect_url);
+        });
+    }
+    else {
+        res.redirect(redirect_url);
+    }
+});
+
 /**
  * This handles the callback from IBMid
  * Complete url: '/auth/sso/callback'
