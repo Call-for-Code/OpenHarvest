@@ -30,7 +30,7 @@ export function OpenHarvestMap(props: PropsWithChildren<OpenHarvestMapProps>) {
     const auth = useAuth();
 
     let defaultCentreCoords = latLng([-13.805811, 32.888162]); // Mchinji, Malawai
-    if (auth.isLoggedIn) {
+    if (auth.isLoggedIn && auth.user!!.coopManager) {
         defaultCentreCoords = latLng(auth.user!!.coopManager!!.location as LatLngTuple);
     }
     const defaultZoom = 13;
