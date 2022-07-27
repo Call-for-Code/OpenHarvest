@@ -105,8 +105,8 @@ export default function UserOnboarding() {
         setIsSubmitting(false);
         console.log(user);
         // Update the user with the organisation details
-        await auth.checkIfSignedIn();
-        history.push("/home");
+        await auth.checkIfSignedIn(true);
+        history.push("/");
     }
 
     return (

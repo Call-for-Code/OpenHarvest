@@ -45,7 +45,7 @@ export interface AuthProviderType {
   isLoggedIn: boolean;
   loading: boolean;
   login: () => void;
-  checkIfSignedIn: () => Promise<CoopManagerUser | null>;
+  checkIfSignedIn: (forceRefesh?: boolean) => Promise<CoopManagerUser | null>;
   signout: () => void;
 }
 
@@ -57,21 +57,27 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(initialToken);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   function handleUser(rawUser: CoopManagerUser | null, token: string | null) {
     setLoading(false);
+    setFirstLoad(false);
     
     // @ts-expect-error It's totally valid to save a null value but TS doesn't think so.
     localStorage.setItem(localStorageTokenKey, token);
     
     if (rawUser) {
       const user = rawUser;
+
+      console.log("[Auth] Logging in User:", user);
       
       setUser(user);
       setIsLoggedIn(true);
       AuthEventEmitter.emit("signedIn", user);
       return user
     } else {
+      console.log("[Auth] Logging out");
+
       setUser(null);
       setIsLoggedIn(false);
       AuthEventEmitter.emit("signedOut");
@@ -88,13 +94,14 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
     }
   }
 
-  async function checkIfSignedIn() {
+  async function checkIfSignedIn(forceRefesh = false) {
     setLoading(true);
+    
 
     const localStorageToken = localStorage.getItem(localStorageTokenKey);
 
     // Check if a token was passed in
-    if (token) {
+    if (token && !forceRefesh) {
       // Lets parse the token and get user details
       const segments = token.split(".");
       const user = JSON.parse(atob(segments[1]))
@@ -102,7 +109,7 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
       console.log("[Auth] Loaded token from auth transaction");
       return handleUser(user, token);
     }
-    else if (localStorageToken !== null) {
+    else if (localStorageToken !== null && !forceRefesh) {
       // We also need to handle the case of an expired token
       const segments = localStorageToken.split(".");
       const user = JSON.parse(atob(segments[1]))
@@ -112,7 +119,7 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
     }
     else {
       try {
-        const res = await fetch("/me");
+        const res = await fetch("/auth/me");
         const userInfo = await res.json();
         console.log(userInfo);
         return handleUser(userInfo, null);
@@ -127,16 +134,17 @@ function useProvideAuth(initialToken?: string): AuthProviderType {
 
     // else lets ask the server if there's a session active
 
-
+    
     
   }
 
   function signout() {
+    localStorage.removeItem(localStorageTokenKey);
     if (process.env.NODE_ENV == "production") {
-      window.location.href = "/logout";
+      window.location.href = "/auth/logout";
     }
     else {
-      window.location.href = "https://localhost:3000/logout";
+      window.location.href = "https://localhost:3000/auth/logout";
     }
   }
 

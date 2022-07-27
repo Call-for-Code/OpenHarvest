@@ -10,7 +10,7 @@ module.exports = function(app) {
         })
     );
     app.use(
-        '/me',
+        '/auth/me',
         createProxyMiddleware({
             target: 'https://localhost:3000',
             changeOrigin: true,
