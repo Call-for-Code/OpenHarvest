@@ -7,7 +7,7 @@ RUN npm config set unsafe-perm true
 RUN npm install -g typescript
 RUN npm install -g ts-node
 USER node
-RUN npm install
+RUN npm install --force
 COPY --chown=node:node ./react-app .
 RUN npm run build
 

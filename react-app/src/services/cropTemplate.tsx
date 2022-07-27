@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { Crop } from './crops'
-import { Field } from '../../../backend/src/db/entities/field'
 
 export interface CropTemplate{
     _id?: string,
@@ -34,17 +33,17 @@ export class CropTemplateAPI{
 
     // field services
 
-    async getFieldsforCropId(cropId: string):  Promise<Field[]> {
-        const data = await axios.get<Field[]>(this.APIBase + "getFieldsforCropId/" + cropId);
+    async getFieldsforCropId(cropId: string):  Promise<any> {
+        const data = await axios.get<any>(this.APIBase + "getFieldsforCropId/" + cropId);
         return data.data;
     }
 
-    async updateRepActions( field: Field, 
+    async updateRepActions( field: any, 
         cropId: string, 
         farmer: string, 
         actionName: string, 
-        actionStatus: boolean): Promise<Field> {
-        const data = await axios.put<Field>(this.APIBase + "updateRepActions", {
+        actionStatus: boolean): Promise<any> {
+        const data = await axios.put<any>(this.APIBase + "updateRepActions", {
             field : field,
             cropId : cropId,
             farmer : farmer,
@@ -54,13 +53,13 @@ export class CropTemplateAPI{
         return data.data
     }
 
-    async addCropTemplateToField(field: Field): Promise<Field> {
-        const data = await axios.put<Field>(this.APIBase + "addCropTemplateToField", field);
+    async addCropTemplateToField(field: any): Promise<any> {
+        const data = await axios.put<any>(this.APIBase + "addCropTemplateToField", field);
         return data.data
     }
 
-    async getField(fieldId: string): Promise<Field> {
-        const data = await axios.get<Field>(this.APIBase + "getField/" + fieldId);
+    async getField(fieldId: string): Promise<any> {
+        const data = await axios.get<any>(this.APIBase + "getField/" + fieldId);
         return data.data;
     }
 }
