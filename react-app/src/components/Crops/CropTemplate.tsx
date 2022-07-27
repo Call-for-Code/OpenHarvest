@@ -5,7 +5,7 @@ import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 import { CropService } from "../../services/CropService";
 import { Crop } from "../../services/crops";
 import { getFarmer, Farmer } from "../../services/farmers";
-import { Field, SubField, SubFieldCrop} from "../../../../backend/src/db/entities/field"
+
 import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions } from './helperFunctions';
 import { ColonyAPI } from '../../services/colony';
 
@@ -133,7 +133,7 @@ const CropTemplateSelector = () => {
         cropToUpdate.crop_template = templateForSubmission;
         await cropService.updateCrop(cropToUpdate); //should check to see if the crop already has an associated template first... but can add that later
         // 2. add cropTemplate and rep actions to fields: search for existing Field.Subfield[] with Crop_id and update to add cropTemplate object
-        const fields: Field[] = await cropTemplateAPI.getFieldsforCropId(selectedCrop);
+        const fields: any = await cropTemplateAPI.getFieldsforCropId(selectedCrop);
         UpdateSubFieldWithCropTemplate(fields, cropTemplateAPI, selectedCrop, templateForSubmission);
 
         // ******** UI display ********
