@@ -151,7 +151,7 @@ flowchart LR
       driver: local
    ```
 
-5. `cd` into `/backend` and rename `.env.example` to `.env` and replace the placeholder values.
+5. Email openharvest@gmail.com to receive the .env file, `cd` into `/backend` and save file.
 
 6. ```bash
    npm i
