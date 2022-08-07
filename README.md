@@ -10,7 +10,7 @@ OpenHarvest is a winner in the 2021 [Call for Code](https://developer.ibm.com/ca
 
 - [OpenHarvest](#openharvest)
   - [Contents](#contents)
-  - [Awards])(#awards)
+  - [Awards](#awards)
   - [Demo video](#demo-video)
   - [Demo URL](#demo-url)
   - [Architecture](#architecture)
