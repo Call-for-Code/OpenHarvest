@@ -5,6 +5,8 @@ import { CropTemplate, CropTemplateAPI} from "../../services/cropTemplate";
 import { CropService } from "../../services/CropService";
 import { Crop } from "../../services/crops";
 import { getFarmer, Farmer } from "../../services/farmers";
+import { Field } from "../../types/field";
+import ReputationActions from "../Farmers/ReputationActions";
 
 import { UpdateSubFieldWithCropTemplate, OrganizeReputationActions } from './helperFunctions';
 import { ColonyAPI } from '../../services/colony';
@@ -274,6 +276,7 @@ const CropTemplateSelector = () => {
                     <Button type="button" style={{background: "green"}} onClick={handleSubmit}>Create New Template</Button>
                 </Column>
             </Row> 
+            <ReputationActions selectedCrop={selectedCrop}/>
         </>
     )
 }

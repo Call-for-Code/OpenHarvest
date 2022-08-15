@@ -50,7 +50,7 @@ export class CropTemplateAPI{
             actionName : actionName,
             actionStatus : actionStatus
         });
-        return data.data
+        return data
     }
 
     async addCropTemplateToField(field: any): Promise<any> {

@@ -36,22 +36,22 @@ export async function UpdateSubFieldWithCropTemplate(
 
             // update field.subfields.properties.crops with reputation and croptemplate in mongodb
             const res = await cropTemplateAPI.addCropTemplateToField(currentField);
-            console.log("updated field: ", res)
     }
 }
 
 export function OrganizeReputationActions(field: any): Record<string, boolean>[]{
     let reputationMaps: Record<string, boolean>[] = []
-
+    
     const subFieldsArray: any = field.subFields;
+    
     for(let subFieldIndex in subFieldsArray){
         const subFieldCropsArray: any = subFieldsArray[subFieldIndex].properties.crops;
+
         for(let subFieldCropIndex in subFieldCropsArray){
             if(subFieldCropsArray[subFieldCropIndex].reputation_actions != null){
                 reputationMaps.push(subFieldCropsArray[subFieldCropIndex].reputation_actions!)
             }
         }
     }
-    
     return reputationMaps
 }

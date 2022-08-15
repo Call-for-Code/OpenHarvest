@@ -22,7 +22,7 @@ export function UpdateReputationActions(
             const subFieldCropsArray: SubFieldCrop[] = subFieldsArray[subFieldIndex].properties.crops;
             for(let subFieldCropIndex in subFieldCropsArray){
                 if(subFieldCropsArray[subFieldCropIndex].crop._id?.toString() === cropId &&
-                subFieldCropsArray[subFieldCropIndex].farmer === farmer &&
+                (subFieldCropsArray[subFieldCropIndex].farmer === farmer || subFieldCropsArray[subFieldCropIndex].farmer === "") &&
                 subFieldCropsArray[subFieldCropIndex].reputation_actions
                 ){
                     statusUpdated = (subFieldCropsArray[subFieldCropIndex].reputation_actions![actionName] != actionStatus);
