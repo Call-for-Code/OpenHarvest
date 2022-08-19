@@ -6,6 +6,8 @@ OpenHarvest is a software platform that is developed based on the non for profit
 
 OpenHarvest is a winner in the 2021 [Call for Code](https://developer.ibm.com/callforcode/) IBM Challenge and has now been Open Sourced as part of the IBM [Sustainability Accelerator](https://newsroom.ibm.com/2022-02-17-IBM-launches-2-year-global-pro-bono-environmental-program-for-non-profits) program.
 
+Follow us on Medium! https://medium.com/@openharvest
+
 ## Contents
 
 - [OpenHarvest](#openharvest)
