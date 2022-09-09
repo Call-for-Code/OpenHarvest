@@ -166,6 +166,8 @@ flowchart LR
    npm start
    ```
 
+note: if 'npm i' fails, add '--force'
+
 #### Frontend
 
 ```bash
