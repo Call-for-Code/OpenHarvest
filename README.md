@@ -95,8 +95,9 @@ flowchart LR
 
 - [Node](https://nodejs.org/) **minimim: v16** and [NPM](https://www.npmjs.com/) (Included with node)
 - [Git](https://git-scm.com/)
-- [MongoDB](https://www.mongodb.com/)  Instructions on deploying and configuring this are included below
-
+- [MongoDB](https://www.mongodb.com/) 
+  Windows users must download Mongo DB Community: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.1-signed.msi 
+  Instructions on deploying and configuring this are included below
 ### Building app
 
 #### Backend
