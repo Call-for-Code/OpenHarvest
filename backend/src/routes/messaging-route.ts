@@ -4,11 +4,11 @@ import { TwilioInstance } from "./../integrations/twilio/twilio.service";
 import { MessageLog, MessageLogModel } from "../db/entities/messageLog";
 import { getFarmerIdsFromIndex, getIndexFromFarmerIds, MessageGroup, MessageGroupModel } from "../db/entities/messageGroup";
 import { FarmerModel, Farmer } from "../db/entities/farmer";
-import { MessageInterfaceSender } from "../integrations/messagingInterfaceSender";
+// import { MessageInterfaceSender } from "../integrations/messagingInterfaceSender";
 
 const router = Router();
 
-const messageSender = new MessageInterfaceSender();
+// const messageSender = new MessageInterfaceSender();
 
 router.get("/", async (req, res) => {
     const messages = await MessageLogModel.find({}).lean();
@@ -27,8 +27,8 @@ router.post("/sendSMSToFarmer", async (req, res) => {
     
     try {
         // const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
-        const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
-        res.json(messageLog)
+        // const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
+        // res.json(messageLog)
     }
     catch (e: any) {
         res.status(500).send(e).end();
@@ -167,18 +167,18 @@ router.post('/new-thread', async (req, res) => {
 
     try {
         // const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
-        const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
+        // const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
         
-        const thread: ThreadsDTO = {
-            thread_id: index,
-            farmers,
-            isGroup: true,
-            preview: body.message,
-            messages: messageLogs
-        }
+        // const thread: ThreadsDTO = {
+        //     thread_id: index,
+        //     farmers,
+        //     isGroup: true,
+        //     preview: body.message,
+        //     // messages: messageLogs
+        // }
 
         // return res.json(messageLogs.map(it => it.messageRef));
-        return res.json(thread);
+        // return res.json(thread);
     }
     catch (e: any) {
         res.status(500).send(e).end();
@@ -213,8 +213,8 @@ router.post('/thread', async (req, res) => {
 
         try {
             // const messageLogs = await TwilioInstance.sendMessageToGroup(group, body.message);
-            const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
-            return res.json(messageLogs.map(it => it.messageRef));
+            // const messageLogs = await messageSender.sendMessageToGroup(group, body.message);
+            // return res.json(messageLogs.map(it => it.messageRef));
         }
         catch (e: any) {
             res.status(500).send(e).end();
@@ -228,8 +228,8 @@ router.post('/thread', async (req, res) => {
 
         try {
             // const messageLog = await TwilioInstance.sendMessageToFarmer(farmer, message);
-            const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
-            res.json(messageLog)
+            // const messageLog = await messageSender.sendMessageToFarmer(farmer, message);
+            // res.json(messageLog)
         }
         catch (e: any) {
             res.status(500).send(e).end();
