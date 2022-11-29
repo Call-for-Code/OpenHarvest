@@ -1,10 +1,10 @@
 # OpenHarvest
 
-[![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+[![License](https://img.shields.io/badge/License-Apache2-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0) [![Slack](https://img.shields.io/static/v1?label=Slack&message=%23openharvest&color=blue)](https://callforcode.org/slack)
 
-OpenHarvest is a software platform that is developed based on the non for profit organization Heifer's requirements to help farmers in Malawi's ndichuma project. The platform is used by a co-op manager to keep track of farmers, fields, and crops. Displaying visual data and using the latest technologies to ensure farmer's succeed in growing their crops and making a profit. This is done by sending sms weather based recommendations for when specific tasks from the recommendation matrix should be performed as well as integrating weather forecasts and automatic data driven verification to confirm if farmers have performed the behaviour or not. Based on these behaviours the tool will allocate blockchain based reputation tokens which will be recorded for each farmer. Each farmer's reputation will be shared with Heifer as they will be working with financial institutions to provided lower rates for loans.
+OpenHarvest is an open source software platform that is developed based on the non for profit organization Heifer's requirements to help farmers in Malawi's ndichuma project. The platform is used by a co-op manager to keep track of farmers, fields, and crops. Displaying visual data and using the latest technologies to ensure farmer's succeed in growing their crops and making a profit. This is done by sending sms weather based recommendations for when specific tasks from the recommendation matrix should be performed as well as integrating weather forecasts and automatic data driven verification to confirm if farmers have performed the behaviour or not. Based on these behaviours the tool will allocate blockchain based reputation tokens which will be recorded for each farmer. Each farmer's reputation will be shared with Heifer as they will be working with financial institutions to provided lower rates for loans.
 
-OpenHarvest is a winner in the 2021 [Call for Code](https://developer.ibm.com/callforcode/) IBM Challenge and has now been Open Sourced as part of the IBM [Sustainability Accelerator](https://newsroom.ibm.com/2022-02-17-IBM-launches-2-year-global-pro-bono-environmental-program-for-non-profits) program.
+OpenHarvest is a winner in the 2021 [Call for Code](https://developer.ibm.com/callforcode/). With the help of [IBM Sustainability Accelerator](https://www.ibm.com/impact/initiatives/ibm-sustainability-accelerator) program the project has being evolving. Please check the [IBM Sustainability Accelerator blog](https://newsroom.ibm.com/2022-02-17-IBM-launches-2-year-global-pro-bono-environmental-program-for-non-profits) to learn about the project development and its collaboration.
 
 Follow us on Medium! https://medium.com/@openharvest
 
@@ -24,11 +24,14 @@ Follow us on Medium! https://medium.com/@openharvest
     - [Building app](#building-app)
       - [Backend](#backend)
   - [Built with](#built-with)
-  - [Authors](#authors)
+  - [Contributing](#contributing)
+  - [Technical Steering Committee](#technical-steering-committee)
+  - [Join the Community](#join-the-community)
   - [License](#license)
   - [Acknowledgments](#acknowledgments)
-  
+
 ## Awards
+
 Originally OpenHarvest was a submission for IBM's call for code challenge, a global competition to use code to create a solution to environmental issues such as sustainability. OpenHarvest was a web application designed to balance farming production in India. Farmers in India are struggling with marketing their crops. The greatest instance of this was with India's recent onion shortage. Essentially, farmers are being told that the market needs specific goods which results in a massive surplus as all the farmers dedicated their crops to the market's needs. This results in many farmers’ watching entire crops go to waste. These crops can take over a year to grow and leave the farmer in debt rather than making a profit. One of our group members has great insight into this issue as he has family in the farming industry.
 
 OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challenge. It took on a key agricultural challenge prompt in the [Call for Code](https://developer.ibm.com/callforcode/) competition.
@@ -38,10 +41,10 @@ OpenHarvest was a top solution created for the 2021 Call for Code IBMer Challeng
 [![Watch the video](images/OPENHARVEST1.PNG)](https://www.youtube.com/watch?v=6gZagLno-v8&t=10s)
 
 ## Demo URL
+
 This is built against master on request.
 
 Available at: https://openharvest.net
-
 
 ## Architecture
 
@@ -95,9 +98,10 @@ flowchart LR
 
 - [Node](https://nodejs.org/) **minimim: v16** and [NPM](https://www.npmjs.com/) (Included with node)
 - [Git](https://git-scm.com/)
-- [MongoDB](https://www.mongodb.com/) 
-  Windows users must download Mongo DB Community: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.1-signed.msi 
+- [MongoDB](https://www.mongodb.com/)
+  Windows users must download Mongo DB Community: https://fastdl.mongodb.org/windows/mongodb-windows-x86_64-6.0.1-signed.msi
   Instructions on deploying and configuring this are included below
+
 ### Building app
 
 #### Backend
@@ -184,13 +188,24 @@ npm start
 - Node.js
 - IBM Cloud
 
-## Authors
+## Contributing
 
-- Tyler Philips
-- Ryan Pereira
-- Jonathan Scialpi
-- Vikas Jagtap
-- Ravi Nain
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, areas where we'd like to see community contributions, and the process for submitting pull requests to the project.
+
+## Technical Steering Committee
+
+Per the The OpenHarvest Technical Charter
+
+| Name             | Organization         |
+| ---------------- | -------------------- |
+| Tyler Philips    | IBM                  |
+| Jonathan Scialpi | IBM                  |
+| Vikas Jagtap     | IBM                  |
+| David Gill       | Heifer International |
+
+## Join the Community
+
+Join the **#openharvest** slack channel in the [Call for Code](https://callforcode.org/slack) workspace.
 
 ## License
 
