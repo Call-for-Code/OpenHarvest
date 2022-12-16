@@ -199,6 +199,7 @@ Per the The OpenHarvest Technical Charter
 | Name             | Organization         |
 | ---------------- | -------------------- |
 | Tyler Philips    | IBM                  |
+| Ryan  Pereira    | IBM                  |
 | Jonathan Scialpi | IBM                  |
 | Vikas Jagtap     | IBM                  |
 | David Gill       | Heifer International |
