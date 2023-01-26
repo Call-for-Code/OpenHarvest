@@ -194,7 +194,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 ## Technical Steering Committee
 
-Per the The [OpenHarvest Technical Charte](OpenHarvest Technical Charter.pdf)
+Per the The [OpenHarvest Technical Charter.pdf](OpenHarvest Technical Charter)
 
 | Name             | Organization         |
 | ---------------- | -------------------- |
