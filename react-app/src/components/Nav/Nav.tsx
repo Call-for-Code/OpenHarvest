@@ -30,7 +30,7 @@ export default function Nav() {
                     </div> */}
                 </HeaderName>
 
-                <HeaderNavigation aria-label="IBM Open Harvest">
+                <HeaderNavigation aria-label="Open Harvest">
                     <HeaderMenuItem<NavLinkProps> element={NavLink} to="/home">Home</HeaderMenuItem>
                     {auth.isLoggedIn && (
                         <>
