@@ -9,6 +9,9 @@ import { kmsAuth } from "../integrations/Blockchain/web3/authentication-function
 
 const EISKey = process.env.EIS_apiKey;
 
+//Authenticate with AWS KMS
+const kms = kmsAuth();
+
 if (EISKey == undefined) {
     console.error("You must define 'EIS_apiKey' in the environment!");
     process.exit(-1);
@@ -112,10 +115,7 @@ export interface FarmerAddDTO {
 }
 
 // Create Pub/Priv key on AWS KMS using the FarmerId as alias
-const createEthAccount = async(farmerId: String) => {
-    
-    //Authenticate
-    const kms = kmsAuth();
+const createEthAccount = async(farmerId: String) => {    
     
     //Create Key
     const cmk = await kms.createKey({
@@ -164,6 +164,11 @@ router.post("/add", async(req: Request, res: Response) => {
     //Create and set ethAccount keyID to the farmer object
     const farmerKeyId = await createEthAccount(field.farmer_id);
     farmerDoc.ethKeyID = farmerKeyId;
+    
+    // Set FarmerId to ETH Address
+    const farmerPubKey = kms.getPublicKey(farmerKeyId);
+    const ethAddress = kms.getEthereumAddress(farmerPubKey);
+    farmerDoc._id = ethAddress;
     await farmerDoc.save();
       
 
