@@ -136,7 +136,7 @@ async function updateRepActions(req: Request, res: Response) {
         const farmerEthAddress = await farmerSigner.getAddress();
         await colony.pay(farmerEthAddress, ethers.utils.parseUnits(payment.toString()));
         
-        res.json(docs);
+        res.status(200).json(docs);
       }else{
         throw new Error('The request must be made with a different action status than what is existing.');
       }
